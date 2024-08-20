@@ -18,7 +18,10 @@ def get_collection_list(user_collection: list) -> list:
         else [KeyboardButton("Меню")]
 
 
-main_menu_buttons = [KeyboardButton("🎟 Получить карту"), KeyboardButton("📊 Статистика"),
-                     KeyboardButton("ℹ️ Информация")]
+main_menu_buttons = [KeyboardButton("🏳️‍🌈 Получение карт"), KeyboardButton("🏳️‍🌈 Статистика"),
+                     KeyboardButton("🏳️‍🌈 Коллекция")]
+
+roll_menu_buttons = [KeyboardButton("🏳️‍🌈 Получить карту"), KeyboardButton("🏳️‍🌈 Меню")]
 
 main_menu_markup = ReplyKeyboardMarkup(build_menu(main_menu_buttons, n_cols=2), resize_keyboard=True)
+roll_menu_markup = ReplyKeyboardMarkup(build_menu(roll_menu_buttons, n_cols=2), resize_keyboard=True)

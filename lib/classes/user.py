@@ -1,5 +1,8 @@
+import datetime
 import logging
+import time
 from collections import namedtuple
+from typing import Union
 
 from pymongo.results import UpdateResult
 from telegram import User as TelegramUser
@@ -7,7 +10,7 @@ from telegram import User as TelegramUser
 from lib.init import USER_COLLECTION
 
 UserData = namedtuple("UserData",
-                      ['id', 'username', 'collection', 'last_roll', 'rolls_available'])
+                      ['id', 'username', 'dor', 'collection', 'last_roll', 'rolls_available'])
 
 
 class User:
@@ -17,6 +20,7 @@ class User:
         self.collection: list = data.collection
         self.last_roll: int = data.last_roll
         self.rolls_available: int = data.rolls_available
+        self.date_of_registration: int = data.dor
 
     @staticmethod
     def user_registered(telegram_id: int) -> bool:
@@ -28,13 +32,18 @@ class User:
         user_data = {"id": user.id,
                      "username": user.username,
                      "collection": [],
-                     "last_roll": 0,
-                     "rolls_available": 1}
+                     "last_roll": time.time(),
+                     "rolls_available": 1,
+                     "dor": datetime.datetime.now().timestamp()}
         USER_COLLECTION.insert_one(user_data)
         logging.log(logging.INFO, "Registered user %s" % user.username)
 
     @staticmethod
-    def get(user: TelegramUser):
+    def get(user: Union[TelegramUser, None], update: int = None):
+        if update:
+            data = USER_COLLECTION.find_one({"id": update, }, {"_id": 0})
+            return User(UserData(**data))
+
         if not User.user_registered(user.id):
             User.register(user)
 
