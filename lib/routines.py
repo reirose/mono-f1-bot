@@ -4,7 +4,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 from lib.classes.user import User
 from lib.init import CARDS_COLLECTION, USER_COLLECTION
-from lib.variables import cards_list
+from lib.variables import cards_list, cards_dict, cards_by_category
 
 scheduler = BackgroundScheduler()
 
@@ -22,6 +22,8 @@ def update_free_roll():
 def update_cards():
     db_data = list(CARDS_COLLECTION.find({}, {"_id": 0}))
     for x in db_data:
-        cards_list.update({x["id"]: x["name"]})
+        cards_list.append(x)
+        cards_dict.update({x["code"]: x})
+        cards_by_category[x["category"]].append(x["code"])
 
     logging.log(logging.INFO, f"Updated {len(db_data)} cards.")

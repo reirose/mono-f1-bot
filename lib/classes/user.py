@@ -10,7 +10,8 @@ from telegram import User as TelegramUser
 from lib.init import USER_COLLECTION
 
 UserData = namedtuple("UserData",
-                      ['id', 'username', 'dor', 'collection', 'last_roll', 'rolls_available'])
+                      ['id', 'username', 'dor', 'collection', 'last_roll', 'rolls_available', 'status',
+                       'coins', 'market'])
 
 
 class User:
@@ -21,6 +22,9 @@ class User:
         self.last_roll: int = data.last_roll
         self.rolls_available: int = data.rolls_available
         self.date_of_registration: int = data.dor
+        self.status: str = data.status
+        self.coins: int = data.coins
+        self.market: str = data.market
 
     @staticmethod
     def user_registered(telegram_id: int) -> bool:
@@ -34,14 +38,17 @@ class User:
                      "collection": [],
                      "last_roll": time.time(),
                      "rolls_available": 1,
-                     "dor": datetime.datetime.now().timestamp()}
+                     "dor": datetime.datetime.now().timestamp(),
+                     "status": "idle",
+                     "coins": 0,
+                     "market": ""}
         USER_COLLECTION.insert_one(user_data)
         logging.log(logging.INFO, "Registered user %s" % user.username)
 
     @staticmethod
-    def get(user: Union[TelegramUser, None], update: int = None):
+    def get(user: Union[TelegramUser, None], update: Union[int, str] = None):
         if update:
-            data = USER_COLLECTION.find_one({"id": update, }, {"_id": 0})
+            data = USER_COLLECTION.find_one({"id" if type(update) == int else "username": update}, {"_id": 0})
             return User(UserData(**data))
 
         if not User.user_registered(user.id):
@@ -51,12 +58,16 @@ class User:
         return User(UserData(**data))
 
     def write(self) -> bool:
+        self.collection.sort()
         res: UpdateResult = USER_COLLECTION.update_one({"id": self.id},
                                                        {"$set": {
                                                            "username": self.username,
                                                            "collection": self.collection,
                                                            "last_roll": self.last_roll,
-                                                           "rolls_available": self.rolls_available
+                                                           "rolls_available": self.rolls_available,
+                                                           "status": self.status,
+                                                           "coins": self.coins,
+                                                           "market": self.market
                                                        }},
                                                        upsert=False)
         return res.acknowledged

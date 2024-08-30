@@ -11,7 +11,7 @@ async def start(update: Update, _: ContextTypes.DEFAULT_TYPE):
     telegram_user = update.effective_user
     mes = update.message
 
-    user = User.get(telegram_user)
+    User.get(telegram_user)
 
     await mes.reply_text(text="Добро пожаловать, снова!",
                          reply_markup=main_menu_markup)

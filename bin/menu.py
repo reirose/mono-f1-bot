@@ -18,7 +18,8 @@ async def menu(update: Update, _: ContextTypes.DEFAULT_TYPE):
 
     response = (f"<b>{user.username} • {user.id}</b>\n\n"
                 f"Карт в коллекции: {cards_n}\n"
-                f"      <i>из которых уникальные: {unique_cards_n}</i>\n"
+                f"<i>из которых уникальные: {unique_cards_n}</i>\n"
+                f"Монет: {user.coins} 🪙\n"
                 f"Дней в игре: {days_in_game}")
 
     await mes.reply_text(response,
