@@ -1,3 +1,8 @@
+"""
+Маркапы всех клавиатур в игре - тестовых и инлайн
+"""
+
+
 import math
 from collections import Counter
 
@@ -12,6 +17,11 @@ CARDS_PER_PAGE = 7
 
 
 async def generate_market_cards_keyboard(page):
+    """
+    Генерация списка карт в макрете ( взято с чатгпт, поэтому трогать не советую с: )
+    :param page: текущая страница
+    :return: маркап текущей страницы клавиатуры
+    """
     cards = list(cards_dict.values())
     cards_codes_names = [{card["code"]: card["name"]} for card in cards]
 
@@ -42,6 +52,11 @@ async def generate_market_cards_keyboard(page):
 
 async def generate_collection_keyboard(update: Update, context: ContextTypes.DEFAULT_TYPE,
                                        telegram_user, page: int, in_market: bool):
+    """
+    Генерация списка карт в просмотре коллекции ( взято с чатгпт, поэтому трогать не советую с: )
+    :param page: текущая страница
+    :return: маркап текущей страницы клавиатуры
+    """
     user_cards = User.get(telegram_user).collection
     user_cards = [cards_dict[x] for x in user_cards]
 
@@ -97,7 +112,15 @@ shop_inline_markup = InlineKeyboardMarkup([[InlineKeyboardButton("1 пак - 10 
 def build_menu(buttons,
                n_cols,
                header_buttons=None,
-               footer_buttons=None):
+               footer_buttons=None) -> list:
+    """
+    Функция для построениы текстовой клавиатуры
+    :param buttons: список кнопок вида KeyboardButton("string")
+    :param n_cols: количество столбцов в клавиатуре
+    :param header_buttons: кнопки первого ряда (опционально)
+    :param footer_buttons: кнопки последнего ряда (опционально)
+    :return: список клавиатуры для бота
+    """
     menu = [buttons[i:i + n_cols] for i in range(0, len(buttons), n_cols)]
     if header_buttons:
         menu.insert(0, header_buttons)

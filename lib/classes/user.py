@@ -9,6 +9,7 @@ from telegram import User as TelegramUser
 
 from lib.init import USER_COLLECTION
 
+# кастомный тип переменной для более быстрой обработки инфы с БД
 UserData = namedtuple("UserData",
                       ['id', 'username', 'dor', 'collection', 'last_roll', 'rolls_available', 'status',
                        'coins', 'market'])
@@ -28,11 +29,21 @@ class User:
 
     @staticmethod
     def user_registered(telegram_id: int) -> bool:
+        """
+        Проверка есть ли пользователь в БД
+        :param telegram_id: численный id пользователя в тг (напр. 352318827)
+        :return: true, если зарегистрирован
+        """
         res = [x for x in USER_COLLECTION.find({"id": telegram_id})]
         return True if res else False
 
     @staticmethod
     def register(user: TelegramUser) -> None:
+        """
+        Регистрация пользователя
+        :param user: объект пользователя тг (не id, не username, именно весь пакет данных) (да, много памяти занимает,
+        но это единоразовая процедура для каждого пользователя)
+        """
         user_data = {"id": user.id,
                      "username": user.username,
                      "collection": [],
@@ -47,6 +58,12 @@ class User:
 
     @staticmethod
     def get(user: Union[TelegramUser, None], update: Union[int, str] = None):
+        """
+        Формирование объекта пользователя из БД
+        :param user: объект пользователя
+        :param update: не помню, зачем делал, но можно не по объекту получить, а по id или username опльзователя
+        :return:
+        """
         if update:
             data = USER_COLLECTION.find_one({"id" if type(update) == int else "username": update}, {"_id": 0})
             return User(UserData(**data))
@@ -58,7 +75,11 @@ class User:
         return User(UserData(**data))
 
     def write(self) -> bool:
-        self.collection.sort()
+        """
+        Запись пользователя в БД
+        :return: true, если всё ок
+        """
+        self.collection.sort()  # сортировка карт для более красивого отображения
         res: UpdateResult = USER_COLLECTION.update_one({"id": self.id},
                                                        {"$set": {
                                                            "username": self.username,

@@ -61,3 +61,6 @@ probability_by_category: dict = {
 }
 
 cards_in_pack: int = 5
+
+
+dev_list: list = [352318827]

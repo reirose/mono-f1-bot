@@ -1,3 +1,7 @@
+"""
+Рутинные функции, не столь относящиеся к игровому процессу, сколь к работе бота
+"""
+
 import logging
 
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -10,6 +14,9 @@ scheduler = BackgroundScheduler()
 
 
 def update_free_roll():
+    """
+    Добавление крутки пользователям
+    """
     user_ids = [x["id"] for x in list(USER_COLLECTION.find({}, {"_id": 0}))]
     for user_id in user_ids:
         user = User.get(None, update=user_id)
@@ -20,6 +27,9 @@ def update_free_roll():
 
 
 def update_cards():
+    """
+    Обновление всех необходимых локальных списков и словарей с картами из БД
+    """
     db_data = list(CARDS_COLLECTION.find({}, {"_id": 0}))
     for x in db_data:
         cards_list.append(x)

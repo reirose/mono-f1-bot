@@ -5,7 +5,7 @@ from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQu
 
 from bin.callback_button_handler import button_callback
 from bin.collection import view_collection_list, collection_menu, list_cards
-from bin.market import market_menu, market_place_card, conv_handler, buy_command
+from bin.market import market_menu, conv_handler, buy_command
 from bin.menu import menu
 from bin.roll import roll, roll_menu
 from bin.service_commands import start
@@ -18,6 +18,9 @@ from lib.filters import (other_button_filter, menu_button_filter, roll_menu_butt
                          dev_mode, shop_button_filter, me_button_filter, market_button_filter)
 from lib.routines import update_cards, scheduler, update_free_roll
 
+# Запуск планировщика задач и добаление в него:
+# - обновление локальной БД карт раз в 15 минут
+# - добавление бесплатных круток в 8 и 20 часов
 scheduler.start()
 
 scheduler.add_job(update_cards, 'interval', hours=0.25)
@@ -25,18 +28,15 @@ scheduler.add_job(update_free_roll, 'cron', hour=20, minute=0, second=0)
 scheduler.add_job(update_free_roll, 'cron', hour=8, minute=0, second=0)
 
 
-async def print_test(update, _):
-    user_input = update.message.text
-    await update.message.reply_text(f"You entered: {user_input}")
-    return ConversationHandler.END
-
-
 def main():
+    # объект всего приложения
     app: Application = Application.builder().token(TOKEN).build()
 
+    # текстовые команды (через "/")
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("buy", buy_command, has_args=True))
 
+    # обработчики текстовых сообщений (для кнопок)
     app.add_handler(MessageHandler(dev_mode & other_button_filter, other_menu))
     app.add_handler(MessageHandler(dev_mode & menu_button_filter, menu))
     app.add_handler(MessageHandler(dev_mode & me_button_filter, menu))
@@ -48,7 +48,9 @@ def main():
     app.add_handler(MessageHandler(dev_mode & shop_button_filter, shop_menu))
     app.add_handler(MessageHandler(dev_mode & market_button_filter, market_menu))
 
+    # обработчик беседы (для продажи)
     app.add_handler(conv_handler)
+    # обработчик инлайн кнопок
     app.add_handler(CallbackQueryHandler(button_callback))
 
     app.run_polling(allowed_updates=Update.ALL_TYPES)
