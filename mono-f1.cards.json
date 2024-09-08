@@ -28,7 +28,7 @@
 },
 {
   "code": "c_005",
-  "name": "Charles Leclerc",
+  "name": "HORNERarles Leclerc",
   "type": "driver",
   "team": "Ferrari",
   "category": "uncommon"
@@ -91,7 +91,7 @@
 },
 {
   "code": "c_014",
-  "name": "Logan Sargeant",
+  "name": "Franco Colapinto",
   "type": "driver",
   "team": "Williams",
   "category": "common"
@@ -210,140 +210,140 @@
 },
 {
   "code": "c_201",
-  "name": "MV1 • SP11",
+  "name": "Verstappen • Perez",
   "type": "duo",
   "team": "Red Bull",
   "category": "uncommon"
 },
 {
   "code": "c_202",
-  "name": "LH44 • GR63",
+  "name": "Hamilton • Russel",
   "type": "duo",
   "team": "Mercedes",
   "category": "uncommon"
 },
 {
   "code": "c_203",
-  "name": "CL16 • CJ55",
+  "name": "Leclerc • Sainz",
   "type": "duo",
   "team": "Ferrari",
   "category": "uncommon"
 },
 {
   "code": "c_204",
-  "name": "LN4 • OP81",
+  "name": "Norris • Piastri",
   "type": "duo",
   "team": "McLaren",
   "category": "uncommon"
 },
 {
   "code": "c_205",
-  "name": "FA14 • LS18",
+  "name": "Alonso • Stroll",
   "type": "duo",
   "team": "Aston Martin",
   "category": "uncommon"
 },
 {
   "code": "c_206",
-  "name": "PG10 • EO31",
+  "name": "Gasly • Ocon",
   "type": "duo",
   "team": "Alpine",
   "category": "uncommon"
 },
 {
   "code": "c_207",
-  "name": "AA23 • LS2",
+  "name": "Albon • Colapinto",
   "type": "duo",
   "team": "Williams",
   "category": "uncommon"
 },
 {
   "code": "c_208",
-  "name": "DR3 • YT22",
+  "name": "Ricciardo • Tsunoda",
   "type": "duo",
   "team": "RB",
   "category": "uncommon"
 },
 {
   "code": "c_209",
-  "name": "VB77 • ZG24",
+  "name": "Bottas • Guanyu",
   "type": "duo",
   "team": "Sauber",
   "category": "uncommon"
 },
 {
   "code": "c_210",
-  "name": "KM20 • NH27",
+  "name": "Magnussen • Hulkenberg",
   "type": "duo",
   "team": "Haas",
   "category": "uncommon"
 },
 {
   "code": "c_301",
-  "name": "MV1 • SP11 • CH",
+  "name": "VER • PER • Horner",
   "type": "team",
   "team": "Red Bull",
   "category": "uncommon"
 },
 {
   "code": "c_302",
-  "name": "LH44 • GR63 • TW",
+  "name": "HAM • RUS • Wolff",
   "type": "team",
   "team": "Mercedes",
   "category": "uncommon"
 },
 {
   "code": "c_303",
-  "name": "CL16 • CJ55 • FV",
+  "name": "LEC • SAI • Vassuer",
   "type": "team",
   "team": "Ferrari",
   "category": "uncommon"
 },
 {
   "code": "c_304",
-  "name": "LN4 • OP81 • ZB",
+  "name": "NOR • PIA • Brawn",
   "type": "team",
   "team": "McLaren",
   "category": "uncommon"
 },
 {
   "code": "c_305",
-  "name": "FA14 • LS18 • MK",
+  "name": "ALO • STR • Krack",
   "type": "team",
   "team": "Aston Martin",
   "category": "uncommon"
 },
 {
   "code": "c_306",
-  "name": "PG10 • EO31 • OO",
+  "name": "GAS • OCO • Oakes",
   "type": "team",
   "team": "Alpine",
   "category": "uncommon"
 },
 {
   "code": "c_307",
-  "name": "AA23 • LS2 • JV",
+  "name": "ALB • COL • Vowels",
   "type": "team",
   "team": "Williams",
   "category": "uncommon"
 },
 {
   "code": "c_308",
-  "name": "DR3 • YT22 • LM",
+  "name": "RIC • TSU • Mekies",
   "type": "team",
   "team": "RB",
   "category": "uncommon"
 },
 {
   "code": "c_309",
-  "name": "VB77 • ZG24 • AB",
+  "name": "BOT • ZHO • Bravi",
   "type": "team",
   "team": "Sauber",
   "category": "uncommon"
 },
 {
   "code": "c_310",
-  "name": "KM20 • NH27 • AK",
+  "name": "MAG • HUL • Kamatsu",
   "type": "team",
   "team": "Haas",
   "category": "uncommon"
