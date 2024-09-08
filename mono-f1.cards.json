@@ -1,0 +1,420 @@
+[{
+  "code": "c_001",
+  "name": "Max Verstappen",
+  "type": "driver",
+  "team": "Red Bull",
+  "category": "rare"
+},
+{
+  "code": "c_002",
+  "name": "Sergio Perez",
+  "type": "driver",
+  "team": "Red Bull",
+  "category": "common"
+},
+{
+  "code": "c_003",
+  "name": "Lewis Hamilton",
+  "type": "driver",
+  "team": "Mercedes",
+  "category": "rare"
+},
+{
+  "code": "c_004",
+  "name": "George Russell",
+  "type": "driver",
+  "team": "Mercedes",
+  "category": "uncommon"
+},
+{
+  "code": "c_005",
+  "name": "Charles Leclerc",
+  "type": "driver",
+  "team": "Ferrari",
+  "category": "uncommon"
+},
+{
+  "code": "c_006",
+  "name": "Carlos Sainz Jr.",
+  "type": "driver",
+  "team": "Ferrari",
+  "category": "uncommon"
+},
+{
+  "code": "c_007",
+  "name": "Lando Norris",
+  "type": "driver",
+  "team": "McLaren",
+  "category": "uncommon"
+},
+{
+  "code": "c_008",
+  "name": "Oscar Piastri",
+  "type": "driver",
+  "team": "McLaren",
+  "category": "uncommon"
+},
+{
+  "code": "c_009",
+  "name": "Fernando Alonso",
+  "type": "driver",
+  "team": "Aston Martin",
+  "category": "uncommon"
+},
+{
+  "code": "c_010",
+  "name": "Lance Stroll",
+  "type": "driver",
+  "team": "Aston Martin",
+  "category": "common"
+},
+{
+  "code": "c_011",
+  "name": "Pierre Gasly",
+  "type": "driver",
+  "team": "Alpine",
+  "category": "common"
+},
+{
+  "code": "c_012",
+  "name": "Esteban Ocon",
+  "type": "driver",
+  "team": "Alpine",
+  "category": "common"
+},
+{
+  "code": "c_013",
+  "name": "Alexander Albon",
+  "type": "driver",
+  "team": "Williams",
+  "category": "common"
+},
+{
+  "code": "c_014",
+  "name": "Logan Sargeant",
+  "type": "driver",
+  "team": "Williams",
+  "category": "common"
+},
+{
+  "code": "c_015",
+  "name": "Daniel Ricciardo",
+  "type": "driver",
+  "team": "RB",
+  "category": "common"
+},
+{
+  "code": "c_016",
+  "name": "Yuki Tsunoda",
+  "type": "driver",
+  "team": "RB",
+  "category": "common"
+},
+{
+  "code": "c_017",
+  "name": "Valtteri Bottas",
+  "type": "driver",
+  "team": "Sauber",
+  "category": "common"
+},
+{
+  "code": "c_018",
+  "name": "Zhou Guanyu",
+  "type": "driver",
+  "team": "Sauber",
+  "category": "common"
+},
+{
+  "code": "c_019",
+  "name": "Kevin Magnussen",
+  "type": "driver",
+  "team": "Haas",
+  "category": "common"
+},
+{
+  "code": "c_020",
+  "name": "Nico Hulkenberg",
+  "type": "driver",
+  "team": "Haas",
+  "category": "common"
+},
+{
+  "code": "c_101",
+  "name": "Christian Horner",
+  "type": "team_principal",
+  "team": "Red Bull",
+  "category": "uncommon"
+},
+{
+  "code": "c_102",
+  "name": "Toto Wolff",
+  "type": "team_principal",
+  "team": "Mercedes",
+  "category": "uncommon"
+},
+{
+  "code": "c_103",
+  "name": "Frederic Vasseur",
+  "type": "team_principal",
+  "team": "Ferrari",
+  "category": "uncommon"
+},
+{
+  "code": "c_104",
+  "name": "Zak Brown",
+  "type": "team_principal",
+  "team": "McLaren",
+  "category": "uncommon"
+},
+{
+  "code": "c_105",
+  "name": "Mike Krack",
+  "type": "team_principal",
+  "team": "Aston Martin",
+  "category": "uncommon"
+},
+{
+  "code": "c_106",
+  "name": "Oliver Oakes",
+  "type": "team_principal",
+  "team": "Alpine",
+  "category": "uncommon"
+},
+{
+  "code": "c_107",
+  "name": "James Vowles",
+  "type": "team_principal",
+  "team": "Williams",
+  "category": "uncommon"
+},
+{
+  "code": "c_108",
+  "name": "Laurent Mekies",
+  "type": "team_principal",
+  "team": "RB",
+  "category": "uncommon"
+},
+{
+  "code": "c_109",
+  "name": "Alessandro Alunni Bravi",
+  "type": "team_principal",
+  "team": "Sauber",
+  "category": "uncommon"
+},
+{
+  "code": "c_110",
+  "name": "Ayao Komatsu",
+  "type": "team_principal",
+  "team": "Haas",
+  "category": "uncommon"
+},
+{
+  "code": "c_201",
+  "name": "MV1 • SP11",
+  "type": "duo",
+  "team": "Red Bull",
+  "category": "uncommon"
+},
+{
+  "code": "c_202",
+  "name": "LH44 • GR63",
+  "type": "duo",
+  "team": "Mercedes",
+  "category": "uncommon"
+},
+{
+  "code": "c_203",
+  "name": "CL16 • CJ55",
+  "type": "duo",
+  "team": "Ferrari",
+  "category": "uncommon"
+},
+{
+  "code": "c_204",
+  "name": "LN4 • OP81",
+  "type": "duo",
+  "team": "McLaren",
+  "category": "uncommon"
+},
+{
+  "code": "c_205",
+  "name": "FA14 • LS18",
+  "type": "duo",
+  "team": "Aston Martin",
+  "category": "uncommon"
+},
+{
+  "code": "c_206",
+  "name": "PG10 • EO31",
+  "type": "duo",
+  "team": "Alpine",
+  "category": "uncommon"
+},
+{
+  "code": "c_207",
+  "name": "AA23 • LS2",
+  "type": "duo",
+  "team": "Williams",
+  "category": "uncommon"
+},
+{
+  "code": "c_208",
+  "name": "DR3 • YT22",
+  "type": "duo",
+  "team": "RB",
+  "category": "uncommon"
+},
+{
+  "code": "c_209",
+  "name": "VB77 • ZG24",
+  "type": "duo",
+  "team": "Sauber",
+  "category": "uncommon"
+},
+{
+  "code": "c_210",
+  "name": "KM20 • NH27",
+  "type": "duo",
+  "team": "Haas",
+  "category": "uncommon"
+},
+{
+  "code": "c_301",
+  "name": "MV1 • SP11 • CH",
+  "type": "team",
+  "team": "Red Bull",
+  "category": "uncommon"
+},
+{
+  "code": "c_302",
+  "name": "LH44 • GR63 • TW",
+  "type": "team",
+  "team": "Mercedes",
+  "category": "uncommon"
+},
+{
+  "code": "c_303",
+  "name": "CL16 • CJ55 • FV",
+  "type": "team",
+  "team": "Ferrari",
+  "category": "uncommon"
+},
+{
+  "code": "c_304",
+  "name": "LN4 • OP81 • ZB",
+  "type": "team",
+  "team": "McLaren",
+  "category": "uncommon"
+},
+{
+  "code": "c_305",
+  "name": "FA14 • LS18 • MK",
+  "type": "team",
+  "team": "Aston Martin",
+  "category": "uncommon"
+},
+{
+  "code": "c_306",
+  "name": "PG10 • EO31 • OO",
+  "type": "team",
+  "team": "Alpine",
+  "category": "uncommon"
+},
+{
+  "code": "c_307",
+  "name": "AA23 • LS2 • JV",
+  "type": "team",
+  "team": "Williams",
+  "category": "uncommon"
+},
+{
+  "code": "c_308",
+  "name": "DR3 • YT22 • LM",
+  "type": "team",
+  "team": "RB",
+  "category": "uncommon"
+},
+{
+  "code": "c_309",
+  "name": "VB77 • ZG24 • AB",
+  "type": "team",
+  "team": "Sauber",
+  "category": "uncommon"
+},
+{
+  "code": "c_310",
+  "name": "KM20 • NH27 • AK",
+  "type": "team",
+  "team": "Haas",
+  "category": "uncommon"
+},
+{
+  "code": "c_401",
+  "name": "RB20",
+  "type": "car",
+  "team": "Red Bull",
+  "category": "rare"
+},
+{
+  "code": "c_402",
+  "name": "W15",
+  "type": "car",
+  "team": "Mercedes",
+  "category": "rare"
+},
+{
+  "code": "c_403",
+  "name": "SF-24",
+  "type": "car",
+  "team": "Ferrari",
+  "category": "rare"
+},
+{
+  "code": "c_404",
+  "name": "MCL38",
+  "type": "car",
+  "team": "McLaren",
+  "category": "rare"
+},
+{
+  "code": "c_405",
+  "name": "AMR24",
+  "type": "car",
+  "team": "Aston Martin",
+  "category": "rare"
+},
+{
+  "code": "c_406",
+  "name": "A524",
+  "type": "car",
+  "team": "Alpine",
+  "category": "rare"
+},
+{
+  "code": "c_407",
+  "name": "FW46",
+  "type": "car",
+  "team": "Williams",
+  "category": "rare"
+},
+{
+  "code": "c_408",
+  "name": "VCARB 01",
+  "type": "car",
+  "team": "RB",
+  "category": "rare"
+},
+{
+  "code": "c_409",
+  "name": "C44",
+  "type": "car",
+  "team": "Sauber",
+  "category": "rare"
+},
+{
+  "code": "c_410",
+  "name": "VF-24",
+  "type": "car",
+  "team": "Haas",
+  "category": "rare"
+}]
