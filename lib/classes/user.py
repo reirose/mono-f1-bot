@@ -12,7 +12,7 @@ from lib.init import USER_COLLECTION
 # кастомный тип переменной для более быстрой обработки инфы с БД
 UserData = namedtuple("UserData",
                       ['id', 'username', 'dor', 'collection', 'last_roll', 'rolls_available', 'status',
-                       'coins', 'market'])
+                       'coins', 'market', 'garant'])
 
 
 class User:
@@ -26,6 +26,7 @@ class User:
         self.status: str = data.status
         self.coins: int = data.coins
         self.market: str = data.market
+        self.garant: int = data.garant
 
     @staticmethod
     def user_registered(telegram_id: int) -> bool:
@@ -52,7 +53,8 @@ class User:
                      "dor": datetime.datetime.now().timestamp(),
                      "status": "idle",
                      "coins": 0,
-                     "market": ""}
+                     "market": "",
+                     "garant": 0}
         USER_COLLECTION.insert_one(user_data)
         logging.log(logging.INFO, "Registered user %s" % user.username)
 
@@ -88,7 +90,8 @@ class User:
                                                            "rolls_available": self.rolls_available,
                                                            "status": self.status,
                                                            "coins": self.coins,
-                                                           "market": self.market
+                                                           "market": self.market,
+                                                           "garant": self.garant
                                                        }},
                                                        upsert=False)
         return res.acknowledged

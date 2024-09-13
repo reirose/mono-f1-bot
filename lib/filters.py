@@ -12,7 +12,7 @@ from telegram.ext import filters
 
 from lib.variables import dev_list
 
-DEV_MODE = 0  # режим разработки - пользование возможно только пользователям с id в dev_list
+DEV_MODE = False  # режим разработки - пользование возможно только пользователям с id в dev_list
 if DEV_MODE:
     logging.critical("DEBUG MODE")
 

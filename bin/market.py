@@ -69,20 +69,21 @@ async def market_place_card(update: Update, _: ContextTypes.DEFAULT_TYPE):
         price = int(update.message.text)
     except ValueError:
         await update.message.reply_text("Неверный ввод.")
-        await menu(update, _)
-        return
+        # await menu(update, _)
+        return "market_sell_card"
 
     if price <= 0:
         await update.message.reply_text("Неверный ввод.")
-        await menu(update, _)
-        return
+        # await menu(update, _)
+        return "market_sell_card"
 
     user = User.get(update.effective_user)
     card_code = user.market
     user.collection.remove(card_code)
     user.market = ""
     user.write()
-    op_id = uuid.uuid4().hex[:-12]
+    op_id = uuid.uuid4().hex[-8:]
+    print(op_id)
     MARKET_COLLECTION.insert_one({"id": op_id,
                                   "code": card_code,
                                   "price": price,

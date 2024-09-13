@@ -1,5 +1,4 @@
 import datetime
-import logging
 import random
 
 from telegram import Update
@@ -7,12 +6,11 @@ from telegram.ext import ContextTypes
 
 from lib.classes.user import User
 from lib.keyboard_markup import roll_menu_markup
-from lib.variables import probability_by_category, cards_by_category, cards_in_pack, cards_dict, category_to_plain_text
+from lib.variables import probability_by_category, cards_by_category, cards_in_pack, \
+    category_to_plain_text, garant_list, color_by_category, roll_cards_dict
 
 
-def select_card_weighted():
-    # LEGENDARY_N
-    # EPIC_N
+def select_card_weighted(garant: bool = None):
     categories = ["common"] * cards_in_pack
 
     for category, probabilities in probability_by_category.items():
@@ -28,11 +26,15 @@ def select_card_weighted():
             for index in chosen_indices:
                 categories[index] = category
 
+    if not any(cat in ["rare", "epic", "legendary"] for cat in categories) and garant:
+        print("garant rolled")
+        categories[categories.index("common")] = random.choices(["rare", "legendary"], [0.9, 0.1])[0]  # , "epic"])
+
     rolled_cards = []
     for cat in categories:
-        card = cards_dict[random.choice(cards_by_category[cat])]
+        card = roll_cards_dict[random.choice(cards_by_category[cat])]
         if card in rolled_cards:
-            card = cards_dict[random.choice(cards_by_category[cat])]
+            card = roll_cards_dict[random.choice(cards_by_category[cat])]
         rolled_cards.append(card)
     return rolled_cards
 
@@ -55,7 +57,8 @@ async def roll_menu(update: Update, _: ContextTypes.DEFAULT_TYPE):
     time_left = "меньше минуты" if (not hrs and not mins and not (next_free_roll_time // 60)) \
         else f"{hrs} ч {mins} мин"
 
-    response = (f"<b>Доступно круток:</b> 🏳️‍🌈 {user.rolls_available}\n\n"
+    response = (f"<b>Доступно круток:</b> 🏳️‍🌈 {user.rolls_available}\n"
+                f"Гарант: {user.garant}\n\n"
                 f"До следующей бесплатной попытки: {time_left}")
 
     await mes.reply_text(response,
@@ -89,9 +92,15 @@ async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await mes.reply_text(f"У вас не осталось доступных круток!\n\nОсталось до бесплатной: {time_left}")
         return
 
-    rolled_cards = select_card_weighted()
+    garant = user.garant >= 20
+    rolled_cards = select_card_weighted(garant=garant)
+    rolled_cards.reverse()
+
     print(f"{user.username} rolled: "
           f"{', '.join([card['name'] for card in rolled_cards])}")
+
+    user.garant = 0 if (garant or any(card in garant_list for card in [x["code"] for x in rolled_cards])) else \
+        user.garant + 1
     user.rolls_available -= 1
     user.status = 'rolling'
     user.write()
@@ -107,7 +116,8 @@ async def roll_pre_result(context):
     rolled_cards = job.data[1]
     mes = job.data[2]
 
-    response = (f"Получена карта: {category_to_plain_text[rolled_cards[0]['category']]} "
+    response = (f"Получена карта: {color_by_category[rolled_cards[0]['category']]} "
+                f"{category_to_plain_text[rolled_cards[0]['category']]} "
                 f"<b>{rolled_cards[0]['name']}!</b> "
                 f"{'🆕 ' if rolled_cards[0]['code'] not in user.collection else ''}\n")
 
@@ -128,12 +138,8 @@ async def update_roll_result(context):
     mes = job.data[2]
     sent = job.data[3]
 
-    if not rolled_cards:
-        user.status = "idle"
-        user.write()
-        return
-
-    response = (f"Получена карта: {category_to_plain_text[rolled_cards[0]['category']]} "
+    response = (f"Получена карта: {color_by_category[rolled_cards[0]['category']]} "
+                f"{category_to_plain_text[rolled_cards[0]['category']]} "
                 f"<b>{rolled_cards[0]['name']}!</b> "
                 f"{'🆕 ' if rolled_cards[0]['code'] not in user.collection else ''}\n")
 
@@ -143,4 +149,9 @@ async def update_roll_result(context):
     await mes.reply_text(text=response,
                          reply_markup=roll_menu_markup,
                          parse_mode="HTML")
+
+    if not rolled_cards:
+        user.status = "idle"
+        user.write()
+        return
     context.job_queue.run_once(update_roll_result, 1, data=[user, rolled_cards, mes, sent])

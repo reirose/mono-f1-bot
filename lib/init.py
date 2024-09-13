@@ -4,7 +4,7 @@ import logging as log
 
 from pymongo import MongoClient
 
-BOT_INFO = 20  # уровень информации для логов, чтобы не выводило лишнюю хуйню
+BOT_INFO = 25  # уровень информации для логов, чтобы не выводило лишнюю хуйню
 log.basicConfig(level=BOT_INFO,
                 format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 

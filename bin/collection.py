@@ -6,7 +6,7 @@ from telegram.ext import ContextTypes
 
 from lib.classes.user import User
 from lib.keyboard_markup import collection_menu_markup, generate_collection_keyboard
-from lib.variables import cards_dict, category_to_plain_text, type_to_plain_text
+from lib.variables import cards_dict, category_to_plain_text, type_to_plain_text, color_by_category
 
 
 async def show_card(query, context, in_market: bool):
@@ -22,8 +22,8 @@ async def show_card(query, context, in_market: bool):
     response = (f"{card_name}\n\n"
                 f"Команда: {card_team}\n"
                 f"Тип карты: {card_type}\n"
-                f"Редкость: {card_category}"
-                f"{f'\n\n<i>Всего: {card_n} шт.</i>' if card_n > 1 else ''}")
+                f"Редкость: {color_by_category[card['category']]} {card_category}\n\n"
+                f"{f'<i>Всего: {card_n} шт.</i>' if card_n > 1 else ''}")
 
     market_s = "market_" if in_market else ""
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Продать",
@@ -100,7 +100,7 @@ async def view_collection_list(update: Update, _: ContextTypes.DEFAULT_TYPE):
         n_of = f'({n} шт)' if n > 1 else ''
 
         response += (f"{next_type_div}"
-                     f"{card['name']} | {card['team']} {n_of}\n")
+                     f"{color_by_category[card['category']]} {card['name']} | {card['team']} {n_of}\n")
         prev = card["type"]
 
     await mes.reply_text(response,

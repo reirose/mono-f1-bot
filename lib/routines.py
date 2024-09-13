@@ -8,7 +8,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 from lib.classes.user import User
 from lib.init import CARDS_COLLECTION, USER_COLLECTION
-from lib.variables import cards_list, cards_dict, cards_by_category
+from lib.variables import cards_list, cards_dict, cards_by_category, roll_cards_dict
 
 scheduler = BackgroundScheduler()
 
@@ -35,5 +35,7 @@ def update_cards():
         cards_list.append(x)
         cards_dict.update({x["code"]: x})
         cards_by_category[x["category"]].append(x["code"])
+        if x["category"] not in ["limited"]:
+            roll_cards_dict.update({x["code"]: x})
 
     logging.log(logging.INFO, f"Updated {len(db_data)} cards.")

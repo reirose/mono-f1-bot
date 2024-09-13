@@ -1,5 +1,6 @@
 cards_list: list = []
 cards_dict: dict = {}
+roll_cards_dict: dict = {}
 cards_by_category: dict = {
     "common": [],
     "uncommon": [],
@@ -9,7 +10,7 @@ cards_by_category: dict = {
 }
 
 category_to_plain_text: dict = {
-    "common": "Обычная",
+    "common": "Стандартная",
     "uncommon": "Необычная",
     "rare": "Редкая",
     "epic": "Эпическая",
@@ -41,13 +42,13 @@ type_to_plain_text: dict = {
     "car": "Болид",
     "event": "Ивент",
     "unique": "Уникальная",
-    "exclusive": "Эксклюзивная"
+    "limited": "Лимитированная"
 }
 
 probability_by_category: dict = {
     "uncommon": {
         1: 0.30,
-        2: 0.15
+        2: 0.12
     },
     "rare": {
         1: 0.12
@@ -55,12 +56,23 @@ probability_by_category: dict = {
     # "epic": {
     #     1: 0.01
     # },
-    # "legendary": {
-    #     1: 0.01
-    # }
+    "legendary": {
+        1: 0.01
+    }
 }
 
-cards_in_pack: int = 5
+color_by_category = {
+    "common": "⚪️",
+    "uncommon": "🔵",
+    "rare": "🟠",
+    "epic": "🟣",
+    "legendary": "🟡",
+    "limited:": "✨"
+}
 
+cards_in_pack: int = 4
 
-dev_list: list = [352318827]
+garant_list: list = ["c_001", "c_003", "c_401", "c_402", "c_403", "c_404", "c_405", "c_406", "c_407", "c_408",
+                     "c_409", "c_410"]
+
+dev_list: list = [352318827, 889865196]

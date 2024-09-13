@@ -54,6 +54,8 @@ async def generate_collection_keyboard(update: Update, context: ContextTypes.DEF
                                        telegram_user, page: int, in_market: bool):
     """
     Генерация списка карт в просмотре коллекции ( взято с чатгпт, поэтому трогать не советую с: )
+    :param in_market: для маркета
+    :param telegram_user: объект юзера
     :param page: текущая страница
     :return: маркап текущей страницы клавиатуры
     """
@@ -62,8 +64,7 @@ async def generate_collection_keyboard(update: Update, context: ContextTypes.DEF
 
     card_counter = Counter(card['code'] for card in user_cards)
 
-    unique_cards = list(set(card['code'] for card in user_cards)) \
-        if in_market else list(card['code'] for card in user_cards)
+    unique_cards = list(set(card['code'] for card in user_cards))
     unique_cards.sort()
 
     total_pages = math.ceil(len(unique_cards) / CARDS_PER_PAGE)
@@ -84,7 +85,7 @@ async def generate_collection_keyboard(update: Update, context: ContextTypes.DEF
     for card_code in current_page_cards:
         card = next(card for card in user_cards if card['code'] == card_code)
         count = card_counter[card_code]
-        button_text = f"{card['name']} {f'(x{count})' if in_market else ''}"
+        button_text = f"{card['name']} {f'(x{count})'}"
         keyboard.append([InlineKeyboardButton(button_text, callback_data=f"{market}{card['code']}")])
 
     nav_buttons = []
