@@ -6,7 +6,7 @@
   "name": "Max Verstappen",
   "type": "driver",
   "team": "Red Bull",
-  "category": "rare"
+  "category": "gold"
 },
 {
   "_id": {
@@ -16,7 +16,7 @@
   "name": "Sergio Perez",
   "type": "driver",
   "team": "Red Bull",
-  "category": "common"
+  "category": "bronze"
 },
 {
   "_id": {
@@ -26,7 +26,7 @@
   "name": "Lewis Hamilton",
   "type": "driver",
   "team": "Mercedes",
-  "category": "rare"
+  "category": "gold"
 },
 {
   "_id": {
@@ -36,7 +36,7 @@
   "name": "George Russell",
   "type": "driver",
   "team": "Mercedes",
-  "category": "uncommon"
+  "category": "silver"
 },
 {
   "_id": {
@@ -46,7 +46,7 @@
   "name": "Charles Leclerc",
   "type": "driver",
   "team": "Ferrari",
-  "category": "uncommon"
+  "category": "silver"
 },
 {
   "_id": {
@@ -56,7 +56,7 @@
   "name": "Carlos Sainz Jr.",
   "type": "driver",
   "team": "Ferrari",
-  "category": "uncommon"
+  "category": "silver"
 },
 {
   "_id": {
@@ -66,7 +66,7 @@
   "name": "Lando Norris",
   "type": "driver",
   "team": "McLaren",
-  "category": "uncommon"
+  "category": "silver"
 },
 {
   "_id": {
@@ -76,7 +76,7 @@
   "name": "Oscar Piastri",
   "type": "driver",
   "team": "McLaren",
-  "category": "uncommon"
+  "category": "silver"
 },
 {
   "_id": {
@@ -86,7 +86,7 @@
   "name": "Fernando Alonso",
   "type": "driver",
   "team": "Aston Martin",
-  "category": "uncommon"
+  "category": "silver"
 },
 {
   "_id": {
@@ -96,7 +96,7 @@
   "name": "Lance Stroll",
   "type": "driver",
   "team": "Aston Martin",
-  "category": "common"
+  "category": "bronze"
 },
 {
   "_id": {
@@ -106,7 +106,7 @@
   "name": "Pierre Gasly",
   "type": "driver",
   "team": "Alpine",
-  "category": "common"
+  "category": "bronze"
 },
 {
   "_id": {
@@ -116,7 +116,7 @@
   "name": "Esteban Ocon",
   "type": "driver",
   "team": "Alpine",
-  "category": "common"
+  "category": "bronze"
 },
 {
   "_id": {
@@ -126,7 +126,7 @@
   "name": "Alexander Albon",
   "type": "driver",
   "team": "Williams",
-  "category": "common"
+  "category": "bronze"
 },
 {
   "_id": {
@@ -136,7 +136,7 @@
   "name": "Franco Colapinto",
   "type": "driver",
   "team": "Williams",
-  "category": "common"
+  "category": "bronze"
 },
 {
   "_id": {
@@ -146,7 +146,7 @@
   "name": "Daniel Ricciardo",
   "type": "driver",
   "team": "RB",
-  "category": "common"
+  "category": "bronze"
 },
 {
   "_id": {
@@ -156,7 +156,7 @@
   "name": "Yuki Tsunoda",
   "type": "driver",
   "team": "RB",
-  "category": "common"
+  "category": "bronze"
 },
 {
   "_id": {
@@ -166,17 +166,17 @@
   "name": "Valtteri Bottas",
   "type": "driver",
   "team": "Sauber",
-  "category": "common"
+  "category": "bronze"
 },
 {
   "_id": {
     "$oid": "66e3d681e0ee9fa3b0c921e7"
   },
   "code": "c_018",
-  "name": "Zhou Guanyu",
+  "name": "Guanyu Zhou",
   "type": "driver",
   "team": "Sauber",
-  "category": "common"
+  "category": "bronze"
 },
 {
   "_id": {
@@ -186,7 +186,7 @@
   "name": "Kevin Magnussen",
   "type": "driver",
   "team": "Haas",
-  "category": "common"
+  "category": "bronze"
 },
 {
   "_id": {
@@ -196,7 +196,7 @@
   "name": "Nico Hulkenberg",
   "type": "driver",
   "team": "Haas",
-  "category": "common"
+  "category": "bronze"
 },
 {
   "_id": {
@@ -206,7 +206,7 @@
   "name": "Christian Horner",
   "type": "team_principal",
   "team": "Red Bull",
-  "category": "uncommon"
+  "category": "gold"
 },
 {
   "_id": {
@@ -216,7 +216,7 @@
   "name": "Toto Wolff",
   "type": "team_principal",
   "team": "Mercedes",
-  "category": "uncommon"
+  "category": "gold"
 },
 {
   "_id": {
@@ -226,7 +226,7 @@
   "name": "Frederic Vasseur",
   "type": "team_principal",
   "team": "Ferrari",
-  "category": "uncommon"
+  "category": "gold"
 },
 {
   "_id": {
@@ -236,7 +236,7 @@
   "name": "Zak Brown",
   "type": "team_principal",
   "team": "McLaren",
-  "category": "uncommon"
+  "category": "gold"
 },
 {
   "_id": {
@@ -246,7 +246,7 @@
   "name": "Mike Krack",
   "type": "team_principal",
   "team": "Aston Martin",
-  "category": "uncommon"
+  "category": "gold"
 },
 {
   "_id": {
@@ -256,7 +256,7 @@
   "name": "Oliver Oakes",
   "type": "team_principal",
   "team": "Alpine",
-  "category": "uncommon"
+  "category": "gold"
 },
 {
   "_id": {
@@ -266,7 +266,7 @@
   "name": "James Vowles",
   "type": "team_principal",
   "team": "Williams",
-  "category": "uncommon"
+  "category": "gold"
 },
 {
   "_id": {
@@ -276,7 +276,7 @@
   "name": "Laurent Mekies",
   "type": "team_principal",
   "team": "RB",
-  "category": "uncommon"
+  "category": "gold"
 },
 {
   "_id": {
@@ -286,7 +286,7 @@
   "name": "Alessandro Alunni Bravi",
   "type": "team_principal",
   "team": "Sauber",
-  "category": "uncommon"
+  "category": "gold"
 },
 {
   "_id": {
@@ -296,7 +296,7 @@
   "name": "Ayao Komatsu",
   "type": "team_principal",
   "team": "Haas",
-  "category": "uncommon"
+  "category": "gold"
 },
 {
   "_id": {
@@ -306,17 +306,17 @@
   "name": "Verstappen • Perez",
   "type": "duo",
   "team": "Red Bull",
-  "category": "uncommon"
+  "category": "silver"
 },
 {
   "_id": {
     "$oid": "66e3d681e0ee9fa3b0c921f5"
   },
   "code": "c_202",
-  "name": "Hamilton • Russel",
+  "name": "Hamilton • Russell",
   "type": "duo",
   "team": "Mercedes",
-  "category": "uncommon"
+  "category": "silver"
 },
 {
   "_id": {
@@ -326,7 +326,7 @@
   "name": "Leclerc • Sainz",
   "type": "duo",
   "team": "Ferrari",
-  "category": "uncommon"
+  "category": "silver"
 },
 {
   "_id": {
@@ -336,7 +336,7 @@
   "name": "Norris • Piastri",
   "type": "duo",
   "team": "McLaren",
-  "category": "uncommon"
+  "category": "silver"
 },
 {
   "_id": {
@@ -346,7 +346,7 @@
   "name": "Alonso • Stroll",
   "type": "duo",
   "team": "Aston Martin",
-  "category": "uncommon"
+  "category": "silver"
 },
 {
   "_id": {
@@ -356,7 +356,7 @@
   "name": "Gasly • Ocon",
   "type": "duo",
   "team": "Alpine",
-  "category": "uncommon"
+  "category": "silver"
 },
 {
   "_id": {
@@ -366,7 +366,7 @@
   "name": "Albon • Colapinto",
   "type": "duo",
   "team": "Williams",
-  "category": "uncommon"
+  "category": "silver"
 },
 {
   "_id": {
@@ -376,17 +376,17 @@
   "name": "Ricciardo • Tsunoda",
   "type": "duo",
   "team": "RB",
-  "category": "uncommon"
+  "category": "silver"
 },
 {
   "_id": {
     "$oid": "66e3d681e0ee9fa3b0c921fc"
   },
   "code": "c_209",
-  "name": "Bottas • Guanyu",
+  "name": "Bottas • Zhou",
   "type": "duo",
   "team": "Sauber",
-  "category": "uncommon"
+  "category": "silver"
 },
 {
   "_id": {
@@ -396,7 +396,7 @@
   "name": "Magnussen • Hulkenberg",
   "type": "duo",
   "team": "Haas",
-  "category": "uncommon"
+  "category": "silver"
 },
 {
   "_id": {
@@ -406,7 +406,7 @@
   "name": "VER • PER • Horner",
   "type": "team",
   "team": "Red Bull",
-  "category": "uncommon"
+  "category": "gold"
 },
 {
   "_id": {
@@ -416,17 +416,17 @@
   "name": "HAM • RUS • Wolff",
   "type": "team",
   "team": "Mercedes",
-  "category": "uncommon"
+  "category": "gold"
 },
 {
   "_id": {
     "$oid": "66e3d681e0ee9fa3b0c92200"
   },
   "code": "c_303",
-  "name": "LEC • SAI • Vassuer",
+  "name": "LEC • SAI • Vasseur",
   "type": "team",
   "team": "Ferrari",
-  "category": "uncommon"
+  "category": "gold"
 },
 {
   "_id": {
@@ -436,7 +436,7 @@
   "name": "NOR • PIA • Brown",
   "type": "team",
   "team": "McLaren",
-  "category": "uncommon"
+  "category": "gold"
 },
 {
   "_id": {
@@ -446,7 +446,7 @@
   "name": "ALO • STR • Krack",
   "type": "team",
   "team": "Aston Martin",
-  "category": "uncommon"
+  "category": "gold"
 },
 {
   "_id": {
@@ -456,17 +456,17 @@
   "name": "GAS • OCO • Oakes",
   "type": "team",
   "team": "Alpine",
-  "category": "uncommon"
+  "category": "gold"
 },
 {
   "_id": {
     "$oid": "66e3d681e0ee9fa3b0c92204"
   },
   "code": "c_307",
-  "name": "ALB • COL • Vowels",
+  "name": "ALB • COL • Vowles",
   "type": "team",
   "team": "Williams",
-  "category": "uncommon"
+  "category": "gold"
 },
 {
   "_id": {
@@ -476,7 +476,7 @@
   "name": "RIC • TSU • Mekies",
   "type": "team",
   "team": "RB",
-  "category": "uncommon"
+  "category": "gold"
 },
 {
   "_id": {
@@ -486,7 +486,7 @@
   "name": "BOT • ZHO • Bravi",
   "type": "team",
   "team": "Sauber",
-  "category": "uncommon"
+  "category": "gold"
 },
 {
   "_id": {
@@ -496,7 +496,7 @@
   "name": "MAG • HUL • Komatsu",
   "type": "team",
   "team": "Haas",
-  "category": "uncommon"
+  "category": "gold"
 },
 {
   "_id": {
@@ -506,7 +506,7 @@
   "name": "RB20",
   "type": "car",
   "team": "Red Bull",
-  "category": "rare"
+  "category": "gold"
 },
 {
   "_id": {
@@ -516,7 +516,7 @@
   "name": "W15",
   "type": "car",
   "team": "Mercedes",
-  "category": "rare"
+  "category": "gold"
 },
 {
   "_id": {
@@ -526,7 +526,7 @@
   "name": "SF-24",
   "type": "car",
   "team": "Ferrari",
-  "category": "rare"
+  "category": "gold"
 },
 {
   "_id": {
@@ -536,7 +536,7 @@
   "name": "MCL38",
   "type": "car",
   "team": "McLaren",
-  "category": "rare"
+  "category": "gold"
 },
 {
   "_id": {
@@ -546,7 +546,7 @@
   "name": "AMR24",
   "type": "car",
   "team": "Aston Martin",
-  "category": "rare"
+  "category": "gold"
 },
 {
   "_id": {
@@ -556,7 +556,7 @@
   "name": "A524",
   "type": "car",
   "team": "Alpine",
-  "category": "rare"
+  "category": "gold"
 },
 {
   "_id": {
@@ -566,7 +566,7 @@
   "name": "FW46",
   "type": "car",
   "team": "Williams",
-  "category": "rare"
+  "category": "gold"
 },
 {
   "_id": {
@@ -576,7 +576,7 @@
   "name": "VCARB 01",
   "type": "car",
   "team": "RB",
-  "category": "rare"
+  "category": "gold"
 },
 {
   "_id": {
@@ -586,7 +586,7 @@
   "name": "C44",
   "type": "car",
   "team": "Sauber",
-  "category": "rare"
+  "category": "gold"
 },
 {
   "_id": {
@@ -596,7 +596,7 @@
   "name": "VF-24",
   "type": "car",
   "team": "Haas",
-  "category": "rare"
+  "category": "gold"
 },
 {
   "_id": {
@@ -604,17 +604,17 @@
   },
   "code": "c_501",
   "name": "Logan Sargeant",
-  "type": "driver",
+  "type": "limited",
   "team": "Williams",
-  "category": "legendary"
+  "category": "diamond"
 },
 {
   "_id": {
-    "$oid": "66e3f978e0ee9fa3b0c92233"
+    "$oid": "66e87ff2ec90a53262880ab8"
   },
-  "code": "c_501",
-  "name": "Logan Sargeant",
-  "type": "driver",
-  "team": "Williams",
-  "category": "legendary"
+  "code": "c_601",
+  "name": "Monza | Italy",
+  "type": "track",
+  "category": "platinum",
+  "team": ""
 }]

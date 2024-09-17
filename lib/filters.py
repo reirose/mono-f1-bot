@@ -12,14 +12,22 @@ from telegram.ext import filters
 
 from lib.variables import dev_list
 
-DEV_MODE = False  # режим разработки - пользование возможно только пользователям с id в dev_list
-if DEV_MODE:
-    logging.critical("DEBUG MODE")
+
+class DevMode:
+    def __init__(self):
+        self.dev_mode = False
+
+    def change(self):
+        self.dev_mode = not self.dev_mode
+        logging.critical("DEV MODE IS " + ("ON" if self.dev_mode else "OFF"))
+
+
+DEV_MODE = DevMode()
 
 
 class DevMode(filters.MessageFilter):
     def filter(self, message) -> bool:
-        if DEV_MODE:
+        if DEV_MODE.dev_mode:
             return message.from_user.id in dev_list
         else:
             return True
@@ -62,7 +70,7 @@ class FilterShowCardButton(filters.MessageFilter):
 
 class FilterShopButton(filters.MessageFilter):
     def filter(self, message) -> bool:
-        return message.text is not None and re.search("Магазин", message.text) is not None
+        return message.text is not None and re.search("Паки", message.text) is not None
 
 
 class FilterMeButton(filters.MessageFilter):
@@ -75,6 +83,11 @@ class FilterMarketButton(filters.MessageFilter):
         return message.text is not None and re.search("Маркет", message.text) is not None
 
 
+class FilterTradeButton(filters.MessageFilter):
+    def filter(self, message) -> bool:
+        return message.text is not None and re.search("Обмен", message.text) is not None
+
+
 other_button_filter = FilterOtherButton()
 menu_button_filter = FilterMenuButton()
 roll_button_filter = FilterRollButton()
@@ -85,4 +98,5 @@ show_card_button_filter = FilterShowCardButton()
 shop_button_filter = FilterShopButton()
 me_button_filter = FilterMeButton()
 market_button_filter = FilterMarketButton()
+trade_button_filter = FilterTradeButton()
 dev_mode = DevMode()

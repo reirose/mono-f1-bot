@@ -1,3 +1,4 @@
+import datetime
 import re
 
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
@@ -15,15 +16,15 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     telegram_user = query.from_user
     user = User.get(telegram_user)
-    print(query.data)
+    print(f"{datetime.datetime.now().strftime(format="%H:%M:%S")} -- {user.username} -- {query.data}")
 
     if query.data.startswith("page_"):
         page = int(query.data.split("_")[1])
-        await send_card_list(update, context, telegram_user, page, unique_only=True)
+        await send_card_list(update, context, telegram_user, page, in_market=False)
 
     if query.data.startswith("market_page_"):
         page = int(query.data.split("_")[2])
-        await send_card_list(update, context, telegram_user, page, unique_only=False)
+        await send_card_list(update, context, telegram_user, page, in_market=True)
 
     elif query.data.startswith("c_"):
         await show_card(query, context, in_market=False)
@@ -37,7 +38,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif query.data.startswith("market_close_"):
         await context.bot.delete_message(chat_id=query.from_user.id, message_id=query.message.message_id)
-        await send_card_list(update, context, telegram_user, 0, unique_only=False)
+        await send_card_list(update, context, telegram_user, 0, in_market=True)
 
     elif query.data == "noop":
         await query.answer()
@@ -127,7 +128,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                             reply_markup=reply_markup)
 
     elif query.data == "market_sell_card":
-        reply_markup = await generate_collection_keyboard(update, context, telegram_user, page=0, in_market=False)
+        reply_markup = await generate_collection_keyboard(update, context, telegram_user.id, page=0, in_market=True)
         await context.bot.edit_message_text(chat_id=update.effective_user.id,
                                             message_id=query.message.message_id,
                                             text="Выберите карту:",

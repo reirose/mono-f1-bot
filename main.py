@@ -8,7 +8,7 @@ from bin.collection import view_collection_list, collection_menu, list_cards
 from bin.market import market_menu, conv_handler, buy_command
 from bin.menu import menu
 from bin.roll import roll, roll_menu
-from bin.service_commands import start
+from bin.service_commands import start, dev_mode_change, unstuck
 from bin.other import other_menu
 from bin.shop import shop_menu
 
@@ -34,6 +34,8 @@ def main():
 
     # текстовые команды (через "/")
     app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("dm", dev_mode_change))
+    app.add_handler(CommandHandler("unstuck", unstuck))
     app.add_handler(CommandHandler("buy", buy_command, has_args=True))
 
     # обработчики текстовых сообщений (для кнопок)

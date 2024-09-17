@@ -7,11 +7,11 @@ from telegram.ext import ContextTypes
 from lib.classes.user import User
 from lib.keyboard_markup import roll_menu_markup
 from lib.variables import probability_by_category, cards_by_category, cards_in_pack, \
-    category_to_plain_text, garant_list, color_by_category, roll_cards_dict
+    category_to_plain_text, garant_list, roll_cards_dict, category_sort_keys
 
 
 def select_card_weighted(garant: bool = None):
-    categories = ["common"] * cards_in_pack
+    categories = ["bronze"] * cards_in_pack
 
     for category, probabilities in probability_by_category.items():
         slots_for_category = 0
@@ -21,14 +21,15 @@ def select_card_weighted(garant: bool = None):
                 slots_for_category = nof
 
         if slots_for_category > 0:
-            available_indices = [i for i in range(cards_in_pack) if categories[i] == "common"]
+            available_indices = [i for i in range(cards_in_pack) if categories[i] == "bronze"]
             chosen_indices = available_indices[:slots_for_category]
             for index in chosen_indices:
                 categories[index] = category
 
-    if not any(cat in ["rare", "epic", "legendary"] for cat in categories) and garant:
+    if not any(cat in ["gold", "ruby", 'sapphire', 'platinum', "diamond"] for cat in categories) and garant:
         print("garant rolled")
-        categories[categories.index("common")] = random.choices(["rare", "legendary"], [0.9, 0.1])[0]  # , "epic"])
+        categories[categories.index("bronze")] = random.choices(["gold", 'platinum', "diamond"],
+                                                                [0.6, 0.3, 0.1])[0]
 
     rolled_cards = []
     for cat in categories:
@@ -93,13 +94,13 @@ async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     garant = user.garant >= 20
-    rolled_cards = select_card_weighted(garant=garant)
-    rolled_cards.reverse()
+    rolled_cards = sorted(select_card_weighted(garant=garant),
+                          key=lambda x: category_sort_keys.get(x['category'], float('inf')))
 
     print(f"{user.username} rolled: "
           f"{', '.join([card['name'] for card in rolled_cards])}")
 
-    user.garant = 0 if (garant or any(card in garant_list for card in [x["code"] for x in rolled_cards])) else \
+    user.garant = 0 if (garant or any(card in garant_list for card in [x["category"] for x in rolled_cards])) else \
         user.garant + 1
     user.rolls_available -= 1
     user.status = 'rolling'
@@ -116,7 +117,7 @@ async def roll_pre_result(context):
     rolled_cards = job.data[1]
     mes = job.data[2]
 
-    response = (f"Получена карта: {color_by_category[rolled_cards[0]['category']]} "
+    response = (f"Получена карта: "
                 f"{category_to_plain_text[rolled_cards[0]['category']]} "
                 f"<b>{rolled_cards[0]['name']}!</b> "
                 f"{'🆕 ' if rolled_cards[0]['code'] not in user.collection else ''}\n")
@@ -138,7 +139,7 @@ async def update_roll_result(context):
     mes = job.data[2]
     sent = job.data[3]
 
-    response = (f"Получена карта: {color_by_category[rolled_cards[0]['category']]} "
+    response = (f"Получена карта: "
                 f"{category_to_plain_text[rolled_cards[0]['category']]} "
                 f"<b>{rolled_cards[0]['name']}!</b> "
                 f"{'🆕 ' if rolled_cards[0]['code'] not in user.collection else ''}\n")

@@ -1,47 +1,11 @@
 [{
   "_id": {
-    "$oid": "66e3d67be0ee9fa3b0c921cf"
-  },
-  "id": "c87bdd758cb540e4a416",
-  "code": "c_005",
-  "price": 150,
-  "seller": "reirose"
-},
-{
-  "_id": {
     "$oid": "66e3d67be0ee9fa3b0c921d0"
   },
   "id": "9f051e174c0b49f589ee",
   "code": "c_002",
   "price": 10,
   "seller": "stexnem"
-},
-{
-  "_id": {
-    "$oid": "66e3d67be0ee9fa3b0c921d1"
-  },
-  "id": "03c0021abe374b259283",
-  "code": "c_002",
-  "price": 15,
-  "seller": "reirose"
-},
-{
-  "_id": {
-    "$oid": "66e3d67be0ee9fa3b0c921d3"
-  },
-  "id": "dca63221dc64484e90e8",
-  "code": "c_014",
-  "price": 699,
-  "seller": "monof1shik"
-},
-{
-  "_id": {
-    "$oid": "66e3d67be0ee9fa3b0c921d4"
-  },
-  "id": "67f7fc5b827b4266843f",
-  "code": "c_403",
-  "price": 300,
-  "seller": "poppybo"
 },
 {
   "_id": {
@@ -72,15 +36,6 @@
 },
 {
   "_id": {
-    "$oid": "66e3e9b618c09c8703e4cfe4"
-  },
-  "id": "8431ef6c029a4040b885",
-  "code": "c_008",
-  "price": 15,
-  "seller": "reirose"
-},
-{
-  "_id": {
     "$oid": "66e3ea95bcf8d1aa87d0679e"
   },
   "id": "84304aed90da47638ad198b5",
@@ -90,10 +45,32 @@
 },
 {
   "_id": {
-    "$oid": "66e3eb07d6f6bf7658a54a32"
+    "$oid": "66e88a84837dfd3bac9cc2bc"
   },
-  "id": "d02bdc85",
-  "code": "c_012",
-  "price": 169,
+  "id": "098d7524",
+  "code": "c_013",
+  "price": {
+    "$numberLong": "63636737373377"
+  },
+  "seller": "monof1shik"
+},
+{
+  "_id": {
+    "$oid": "66e895a8f719530f98c66aa1"
+  },
+  "id": "92bfee88",
+  "code": "c_002",
+  "price": {
+    "$numberLong": "10000000000000000"
+  },
+  "seller": "F1_Rus1"
+},
+{
+  "_id": {
+    "$oid": "66e89733f719530f98c66aa2"
+  },
+  "id": "66e54b46",
+  "code": "c_010",
+  "price": 15,
   "seller": "reirose"
 }]

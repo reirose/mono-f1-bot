@@ -2,27 +2,33 @@ cards_list: list = []
 cards_dict: dict = {}
 roll_cards_dict: dict = {}
 cards_by_category: dict = {
-    "common": [],
-    "uncommon": [],
-    "rare": [],
-    "epic": [],
-    "legendary": []
+    "bronze": [],
+    "silver": [],
+    "gold": [],
+    "platinum": [],
+    "ruby": [],
+    "sapphire": [],
+    "diamond": []
 }
 
 category_to_plain_text: dict = {
-    "common": "Стандартная",
-    "uncommon": "Необычная",
-    "rare": "Редкая",
-    "epic": "Эпическая",
-    "legendary": "Легендарная"
+    "bronze": "Бронзовая",
+    "silver": "Серебряная",
+    "gold": "Золотая",
+    "platinum": "Платиновая",
+    "ruby": "Рубиновая",
+    "sapphire": "Сапфировая",
+    "diamond": "Алмазная"
 }
 
 category_prices: dict = {
-    "common": 1,
-    "uncommon": 4,
-    "rare": 12,
-    "epic": 24,
-    "legendary": 50
+    "bronze": 1,
+    "silver": 4,
+    "gold": 8,
+    "platinum": 16,
+    "ruby": 26,
+    "sapphire": 38,
+    "diamond": 50
 }
 
 packs_prices: dict = {
@@ -36,43 +42,46 @@ packs_prices: dict = {
 type_to_plain_text: dict = {
     "driver": "Пилот",
     "duo": "Дуо",
-    "team": "Команда",
+    "team": "Балтика-тройка",
     "team_principal": "Руководитель",
     "track": "Трасса",
     "car": "Болид",
-    "event": "Ивент",
-    "unique": "Уникальная",
+    "collab": "Коллаб",
+    "historical": "Историческая",
     "limited": "Лимитированная"
 }
 
 probability_by_category: dict = {
-    "uncommon": {
-        1: 0.30,
-        2: 0.12
+    "silver": {
+        1: 0.30
     },
-    "rare": {
-        1: 0.12
+    "gold": {
+        1: 0.15
     },
-    # "epic": {
-    #     1: 0.01
+    "platinum": {
+        1: 0.075
+    },
+    # "ruby": {
+    #     1: 0.0375
     # },
-    "legendary": {
-        1: 0.01
+    # "sapphire": {
+    #     1: 0.01875
+    # },
+    "diamond": {
+        1: 0.009375
     }
 }
 
-color_by_category = {
-    "common": "⚪️",
-    "uncommon": "🔵",
-    "rare": "🟠",
-    "epic": "🟣",
-    "legendary": "🟡",
-    "limited:": "✨"
-}
+category_sort_keys: dict = {'bronze': 0,
+                            'silver': 1,
+                            'gold': 2,
+                            'platinum': 3,
+                            'ruby': 4,
+                            'sapphire': 5,
+                            'diamond': 6}
 
-cards_in_pack: int = 4
+cards_in_pack: int = 3
 
-garant_list: list = ["c_001", "c_003", "c_401", "c_402", "c_403", "c_404", "c_405", "c_406", "c_407", "c_408",
-                     "c_409", "c_410"]
+garant_list: list = ["gold", "platinum", "ruby", "sapphire", "diamond"]
 
 dev_list: list = [352318827, 889865196]

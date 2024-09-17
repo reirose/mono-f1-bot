@@ -6,7 +6,7 @@ from telegram.ext import ContextTypes
 
 from lib.classes.user import User
 from lib.keyboard_markup import collection_menu_markup, generate_collection_keyboard
-from lib.variables import cards_dict, category_to_plain_text, type_to_plain_text, color_by_category
+from lib.variables import cards_dict, category_to_plain_text, type_to_plain_text
 
 
 async def show_card(query, context, in_market: bool):
@@ -16,13 +16,14 @@ async def show_card(query, context, in_market: bool):
                    "4qJpG9WTW7k8QtAAK0wTEbmxtZUuGYL8YF6ayLAQADAgADeAADNQQ")  # TODO: сделать оформление из файла
     card_name = card["name"]
     card_team = card["team"]
+    card_team = f"Команда: {card_team}\n" if card_team else ""
     card_category = category_to_plain_text[card["category"]]
     card_type = type_to_plain_text[card["type"]]
     card_n = user_collection.count(card["code"])
     response = (f"{card_name}\n\n"
-                f"Команда: {card_team}\n"
+                f"{card_team}"
                 f"Тип карты: {card_type}\n"
-                f"Редкость: {color_by_category[card['category']]} {card_category}\n\n"
+                f"Редкость: {card_category}\n\n"
                 f"{f'<i>Всего: {card_n} шт.</i>' if card_n > 1 else ''}")
 
     market_s = "market_" if in_market else ""
@@ -46,18 +47,18 @@ async def show_card(query, context, in_market: bool):
 async def list_cards(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user = update.effective_user
     page = 0
-    await send_card_list(update, context, user, page, True)
+    await send_card_list(update, context, user, page, False)
 
 
 async def send_card_list(update: Update, context: ContextTypes.DEFAULT_TYPE,
-                         telegram_user, page: int, unique_only: bool) -> None:
+                         telegram_user, page: int, in_market: bool) -> None:
     if not User.get(telegram_user).collection:
         await context.bot.send_message(text="У вас нет карточек. Чтобы получить их - "
                                             "перейдите в раздел Получение карт.",
                                        reply_markup=collection_menu_markup,
                                        chat_id=telegram_user.id)
         return
-    reply_markup = await generate_collection_keyboard(update, context, telegram_user, page, unique_only)
+    reply_markup = await generate_collection_keyboard(update, context, telegram_user.id, page, in_market)
 
     if update.callback_query and (not update.callback_query.data.startswith("sell_confirm_") and
                                   not update.callback_query.data == "close_card" and
@@ -100,7 +101,7 @@ async def view_collection_list(update: Update, _: ContextTypes.DEFAULT_TYPE):
         n_of = f'({n} шт)' if n > 1 else ''
 
         response += (f"{next_type_div}"
-                     f"{color_by_category[card['category']]} {card['name']} | {card['team']} {n_of}\n")
+                     f"{card['name']} {'| '+card['team'] if card['team'] else ''} {n_of}\n")
         prev = card["type"]
 
     await mes.reply_text(response,

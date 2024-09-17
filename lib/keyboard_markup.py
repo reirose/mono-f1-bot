@@ -16,50 +16,19 @@ from lib.variables import cards_dict
 CARDS_PER_PAGE = 7
 
 
-async def generate_market_cards_keyboard(page):
-    """
-    Генерация списка карт в макрете ( взято с чатгпт, поэтому трогать не советую с: )
-    :param page: текущая страница
-    :return: маркап текущей страницы клавиатуры
-    """
-    cards = list(cards_dict.values())
-    cards_codes_names = [{card["code"]: card["name"]} for card in cards]
-
-    total_pages = math.ceil(len(cards_codes_names) / CARDS_PER_PAGE)
-    start = page * CARDS_PER_PAGE
-    end = start + CARDS_PER_PAGE
-    current_page_cards = list(cards_codes_names)[start:end]
-    keyboard = []
-    for card_code in current_page_cards:
-        card = next(card for card in cards_codes_names if card['code'] == card_code)
-        button_text = f"{card['name']}"
-        keyboard.append([InlineKeyboardButton(button_text, callback_data=f"market_list_{card['code']}")])
-
-    nav_buttons = []
-    if page > 0:
-        nav_buttons.append(InlineKeyboardButton("<<", callback_data=f"market_list_page_0"))
-        nav_buttons.append(InlineKeyboardButton("<", callback_data=f"market_list_page_{page - 1}"))
-    nav_buttons.append(InlineKeyboardButton(f"{page + 1}/{total_pages}", callback_data="noop"))
-    if page < total_pages - 1:
-        nav_buttons.append(InlineKeyboardButton(">", callback_data=f"market_list_page_{page + 1}"))
-        nav_buttons.append(InlineKeyboardButton(">>", callback_data=f"market_list_page_{total_pages - 1}"))
-
-    keyboard.append(nav_buttons)
-
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    return reply_markup
-
-
 async def generate_collection_keyboard(update: Update, context: ContextTypes.DEFAULT_TYPE,
-                                       telegram_user, page: int, in_market: bool):
+                                       telegram_user_id, page: int, in_market: bool, trade=None):
     """
     Генерация списка карт в просмотре коллекции ( взято с чатгпт, поэтому трогать не советую с: )
+    :param trade: ~~
+    :param context: ~~
+    :param update: ~~
     :param in_market: для маркета
-    :param telegram_user: объект юзера
+    :param telegram_user_id: id юзера
     :param page: текущая страница
     :return: маркап текущей страницы клавиатуры
     """
-    user_cards = User.get(telegram_user).collection
+    user_cards = User.get(user=None, update=telegram_user_id).collection
     user_cards = [cards_dict[x] for x in user_cards]
 
     card_counter = Counter(card['code'] for card in user_cards)
@@ -79,14 +48,15 @@ async def generate_collection_keyboard(update: Update, context: ContextTypes.DEF
     start = page * CARDS_PER_PAGE
     end = start + CARDS_PER_PAGE
     current_page_cards = unique_cards[start:end]
-    market = "market_" if not in_market else ''
+    market = "market_" if in_market else ''
+    trade = "trade_" if trade else ''
 
     keyboard = []
     for card_code in current_page_cards:
         card = next(card for card in user_cards if card['code'] == card_code)
         count = card_counter[card_code]
         button_text = f"{card['name']} {f'(x{count})'}"
-        keyboard.append([InlineKeyboardButton(button_text, callback_data=f"{market}{card['code']}")])
+        keyboard.append([InlineKeyboardButton(button_text, callback_data=f"{market}{trade}{card['code']}")])
 
     nav_buttons = []
     if page > 0:
@@ -135,16 +105,16 @@ def get_collection_list(user_collection: list) -> list:
         else [KeyboardButton("Меню")]
 
 
-main_menu_buttons = [KeyboardButton("🏳️‍🌈 Получение карт"), KeyboardButton("🏳️‍🌈 Коллекция"),
-                     KeyboardButton("🏳️‍🌈 Обо мне"), KeyboardButton("🏳️‍🌈 Другое")]
+main_menu_buttons = [KeyboardButton("Получение карт"), KeyboardButton("Коллекция"),
+                     KeyboardButton("Обо мне"), KeyboardButton("Другое")]
 
-roll_menu_buttons = [KeyboardButton("🏳️‍🌈 Получить карту"), KeyboardButton("🏳️‍🌈 Меню")]
+roll_menu_buttons = [KeyboardButton("Получить карту"), KeyboardButton("Меню")]
 
-other_menu_buttons = [KeyboardButton("🏳️‍🌈 Магазин"), KeyboardButton("🏳️‍🌈 Маркет"),
-                      KeyboardButton("🏳️‍🌈 MonoF1"), KeyboardButton("🏳️‍🌈 Меню")]
+other_menu_buttons = [KeyboardButton("Паки"), KeyboardButton("Маркет"),
+                      KeyboardButton("MonoF1"), KeyboardButton("Меню")]
 
-collection_menu_buttons = [KeyboardButton("🏳️‍🌈 Список карт"), KeyboardButton("🏳️‍🌈 Посмотреть карту"),
-                           KeyboardButton("🏳️‍🌈 Меню")]
+collection_menu_buttons = [KeyboardButton("Список карт"), KeyboardButton("Посмотреть карту"),
+                           KeyboardButton("Меню")]
 
 main_menu_markup = ReplyKeyboardMarkup(build_menu(main_menu_buttons, n_cols=2), resize_keyboard=True)
 roll_menu_markup = ReplyKeyboardMarkup(build_menu(roll_menu_buttons, n_cols=2), resize_keyboard=True)

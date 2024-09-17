@@ -7,7 +7,7 @@ import logging
 from apscheduler.schedulers.background import BackgroundScheduler
 
 from lib.classes.user import User
-from lib.init import CARDS_COLLECTION, USER_COLLECTION
+from lib.init import CARDS_COLLECTION, USER_COLLECTION, BOT_INFO
 from lib.variables import cards_list, cards_dict, cards_by_category, roll_cards_dict
 
 scheduler = BackgroundScheduler()
@@ -17,13 +17,8 @@ def update_free_roll():
     """
     Добавление крутки пользователям
     """
-    user_ids = [x["id"] for x in list(USER_COLLECTION.find({}, {"_id": 0}))]
-    for user_id in user_ids:
-        user = User.get(None, update=user_id)
-        user.rolls_available += 1
-        user.write()
-
-        logging.log(logging.INFO, f"Updated free roll @ {user.id}")
+    resp = USER_COLLECTION.update_many({}, {"$inc": {"available_rolls": 1}})
+    logging.log(BOT_INFO, f"Updated %i free rolls" % resp.matched_count)
 
 
 def update_cards():
@@ -38,4 +33,12 @@ def update_cards():
         if x["category"] not in ["limited"]:
             roll_cards_dict.update({x["code"]: x})
 
-    logging.log(logging.INFO, f"Updated {len(db_data)} cards.")
+    logging.log(BOT_INFO, f"Updated {len(db_data)} cards.")
+
+
+def restart_status_reset():
+    resp = USER_COLLECTION.update_many({}, {"$set": {"status": "idle"}})
+    logging.log(BOT_INFO, "Status reset successful (%i)" % resp.matched_count)
+
+
+restart_status_reset()
