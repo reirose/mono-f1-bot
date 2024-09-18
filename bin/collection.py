@@ -48,18 +48,20 @@ async def show_card(query, context, in_market: bool):
 async def list_cards(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user = update.effective_user
     page = 0
-    await send_card_list(update, context, user, page, False)
+    await send_card_list(update, context, user, page, False, trade_receiver=0)
 
 
 async def send_card_list(update: Update, context: ContextTypes.DEFAULT_TYPE,
-                         telegram_user, page: int, in_market: bool) -> None:
+                         telegram_user, page: int, in_market: bool,
+                         trade_receiver: int, trade: bool = None) -> None:
     if not User.get(telegram_user).collection:
         await context.bot.send_message(text="У вас нет карточек. Чтобы получить их - "
                                             "перейдите в раздел Получение карт.",
                                        reply_markup=collection_menu_markup,
                                        chat_id=telegram_user.id)
         return
-    reply_markup = await generate_collection_keyboard(update, context, telegram_user.id, page, in_market)
+    reply_markup = await generate_collection_keyboard(update, context, telegram_user.id, page, in_market, trade=trade,
+                                                      trade_receiver=trade_receiver)
 
     if update.callback_query and (not update.callback_query.data.startswith("sell_confirm_") and
                                   not update.callback_query.data == "close_card" and

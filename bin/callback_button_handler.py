@@ -12,19 +12,33 @@ from lib.keyboard_markup import shop_inline_markup, generate_collection_keyboard
 from lib.variables import cards_dict, packs_prices, category_prices, sort_list, sort_keys_by, sort_list_transl
 
 
+def find_noop_index(data):
+    for index, item in enumerate(data):
+        if item.get('callback_data') == 'noop':
+            return index
+
+
 async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     telegram_user = query.from_user
     user = User.get(telegram_user)
-    print(f"{datetime.datetime.now().strftime('%H:%M:%S')} -- {user.username} -- {query.data}")
+    # print(f"{datetime.datetime.now().strftime('%H:%M:%S')} -- {user.username} -- {query.data}")
 
     if query.data.startswith("page_"):
         page = int(query.data.split("_")[1])
-        await send_card_list(update, context, telegram_user, page, in_market=False)
+        await send_card_list(update, context, telegram_user, page, in_market=False, trade_receiver=0)
 
     if query.data.startswith("market_page_"):
         page = int(query.data.split("_")[2])
-        await send_card_list(update, context, telegram_user, page, in_market=True)
+        await send_card_list(update, context, telegram_user, page, in_market=True, trade_receiver=0)
+
+    if query.data.startswith("trade_page_"):
+        page = int(query.data.split("_")[2])
+        inline_keyboard = query.message.to_dict().get('reply_markup').get('inline_keyboard')
+        print(inline_keyboard[-2])
+        receiver = re.search('trade_confirm_(.+)', inline_keyboard[-2][0]['callback_data']).group(1)
+        await send_card_list(update, context, telegram_user, page, in_market=False, trade=True,
+                             trade_receiver=receiver)
 
     elif query.data.startswith("c_"):
         await show_card(query, context, in_market=False)
@@ -38,7 +52,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif query.data.startswith("market_close_"):
         await context.bot.delete_message(chat_id=query.from_user.id, message_id=query.message.message_id)
-        await send_card_list(update, context, telegram_user, 0, in_market=True)
+        await send_card_list(update, context, telegram_user, 0, in_market=True, trade_receiver=0)
 
     elif query.data == "noop":
         await query.answer()
@@ -164,3 +178,54 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                             text=response,
                                             reply_markup=reply_markup,
                                             parse_mode="HTML")
+
+    elif query.data.startswith("trade_c_"):
+        await query.answer()
+        card_code = re.search("trade_(.+)", query.data).group(1)
+        if card_code in user.trade:
+            user.trade.remove(card_code)
+        else:
+            user.trade.append(card_code)
+        user.write()
+
+        inline_keyboard = query.message.to_dict().get('reply_markup').get('inline_keyboard')
+        receiver = re.search('trade_confirm_(.+)', inline_keyboard[-2][0]['callback_data']).group(1)
+        page_index = next((i for i, item in enumerate(inline_keyboard[-3]) if item['callback_data'] == 'noop'))
+        page = int(inline_keyboard[-3][page_index]['text']) - 1
+        keyboard = await generate_collection_keyboard(update, context, user.id, page=page,
+                                                      in_market=False, trade=True, trade_receiver=receiver)
+        await context.bot.edit_message_reply_markup(chat_id=query.message.chat.id,
+                                                    message_id=query.message.message_id,
+                                                    reply_markup=keyboard)
+
+    elif query.data.startswith("trade_confirm_"):
+        receiver_id = int(query.data.split("_")[-1])
+        receiver = User.get(None, receiver_id)
+        receiver.collection += user.trade
+        traded_cards_list = ""
+        for i, c in enumerate(user.trade):
+            card = cards_dict[c]
+            traded_cards_list += f"{card['name']} {'| %s' % card['team'] if card['team'] else ''}\n"
+            user.collection.remove(c)
+
+        user.trade = []
+        user.write()
+        receiver.write()
+
+        await context.bot.send_message(chat_id=user.id,
+                                       text="<b>Передано пользователю %s:</b>\n\n%s" % (
+                                           receiver.username, traded_cards_list),
+                                       parse_mode="HTML")
+
+        await context.bot.send_message(chat_id=receiver_id,
+                                       text="<b>Получено от пользователя %s:</b>\n\n%s" % (
+                                           user.username, traded_cards_list),
+                                       parse_mode="HTML")
+        await context.bot.delete_message(chat_id=user.id,
+                                         message_id=query.message.message_id)
+        await query.answer("Успешно!")
+
+    elif query.data == "trade_cancel":
+        await context.bot.delete_message(chat_id=user.id,
+                                         message_id=query.message.message_id)
+        await query.answer("Отменено")

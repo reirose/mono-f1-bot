@@ -14,9 +14,9 @@ def select_card_weighted(garant: bool = None):
     categories = ["bronze"] * cards_in_pack
 
     for category, probabilities in probability_by_category.items():
+        rand = random.random()
         slots_for_category = 0
         for nof, prob in probabilities.items():
-            rand = random.random()
             if rand < prob:
                 slots_for_category = nof
 
@@ -78,7 +78,7 @@ async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if not user.rolls_available or user.rolls_available <= 0:
         now = datetime.datetime.now()
-        nextday = True if (now.hour > 8 and now.hour >= 20) or (now.hour < 8) else False
+        nextday = (now.hour > 8 and now.hour >= 20) or (now.hour < 8)
         next_free_roll_time = datetime.datetime(hour=8 if nextday else 20,
                                                 minute=0,
                                                 second=0,

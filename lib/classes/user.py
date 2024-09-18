@@ -12,7 +12,7 @@ from lib.init import USER_COLLECTION
 # кастомный тип переменной для более быстрой обработки инфы с БД
 UserData = namedtuple("UserData",
                       ['id', 'username', 'dor', 'collection', 'last_roll', 'rolls_available', 'status',
-                       'coins', 'market', 'garant'])
+                       'coins', 'market', 'garant', 'trade'])
 
 
 class User:
@@ -27,6 +27,7 @@ class User:
         self.coins: int = data.coins
         self.market: str = data.market
         self.garant: int = data.garant
+        self.trade: list = data.trade
 
     @staticmethod
     def user_registered(telegram_id: int) -> bool:
@@ -54,7 +55,8 @@ class User:
                      "status": "idle",
                      "coins": 0,
                      "market": "",
-                     "garant": 0}
+                     "garant": 0,
+                     "trade": []}
         USER_COLLECTION.insert_one(user_data)
         logging.log(logging.INFO, "Registered user %s" % user.username)
 
@@ -67,8 +69,11 @@ class User:
         :return:
         """
         if update:
-            data = USER_COLLECTION.find_one({"id" if type(update) == int else "username": update}, {"_id": 0})
-            return User(UserData(**data))
+            data = USER_COLLECTION.find_one({"id" if isinstance(update, int) else "username": update}, {"_id": 0})
+            try:
+                return User(UserData(**data))
+            except TypeError:
+                return None
 
         if not User.user_registered(user.id):
             User.register(user)
@@ -91,7 +96,8 @@ class User:
                                                            "status": self.status,
                                                            "coins": self.coins,
                                                            "market": self.market,
-                                                           "garant": self.garant
+                                                           "garant": self.garant,
+                                                           "trade": self.trade
                                                        }},
                                                        upsert=False)
         return res.acknowledged

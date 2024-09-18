@@ -4,30 +4,28 @@ from telegram import Update
 from telegram.ext import ContextTypes, ConversationHandler, CallbackQueryHandler, filters, MessageHandler, \
     CommandHandler
 
-from bin.menu import menu
+from bin.collection import collection_menu
 from lib.filters import trade_button_filter
-from lib.init import TRADES_COLLECTION
 from lib.keyboard_markup import generate_collection_keyboard
 
 from lib.classes.user import User
 
 
-async def trade_initialization(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    # user = User.get(telegram_user)
-    # TRADES_COLLECTION.insert_one({"id": uuid4().hex[-8:],
-    #                               "sender": user.id,
-    #                               "receiver: "})
-    # reply_markup = generate_collection_keyboard(update, context, user.id, page=0, in_market=False, trade=True)
-    # await update.message.reply_text("Выберите карты для обмена или нажмите /trade_cancel для отмены:",
-    #                                 reply_markup=reply_markup)  # ERROR-IGNORE
-    await update.message.reply_text("Введите ID пользователя, с которым хотите совершить обмен")
+async def trade_initialization(update: Update, _: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Введите ID пользователя, с которым хотите совершить обмен "
+                                    "(для отмены нажмите /cancel)")
     return "trade_init"
 
 
-async def trade_handle(update: Update, _: ContextTypes.DEFAULT_TYPE):
+async def trade_handle(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    mes = update.message
     try:
         receiver_id = int(update.message.text)
     except ValueError:
+        await update.message.reply_text("Неверный ввод")
+        return "trade_init"
+
+    if receiver_id == str(mes.from_user.id):
         await update.message.reply_text("Неверный ввод")
         return "trade_init"
 
@@ -37,12 +35,17 @@ async def trade_handle(update: Update, _: ContextTypes.DEFAULT_TYPE):
 
     telegram_user = update.effective_user
     user = User.get(telegram_user)
+    keyboard = await generate_collection_keyboard(update, context, telegram_user_id=user.id,
+                                                  page=0, in_market=False, trade=True, trade_receiver=receiver_id)
+    await mes.reply_text("Выберите карты для обмена",
+                         reply_markup=keyboard)
+    return ConversationHandler.END
 
 
 trade_conv_handler = ConversationHandler(
     entry_points=[MessageHandler(trade_button_filter, trade_initialization)],
     states={
-        "trade_init": [MessageHandler(filters.TEXT & ~filters.COMMAND, )],
+        "trade_init": [MessageHandler(filters.TEXT & ~filters.COMMAND, trade_handle)],
     },
-    fallbacks=[CommandHandler("cancel", menu)]
+    fallbacks=[CommandHandler("cancel", collection_menu)]
 )

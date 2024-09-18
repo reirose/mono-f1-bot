@@ -7,15 +7,19 @@
 
 import logging
 import re
+from typing import Optional, Union
 
+from telegram import Message
 from telegram.ext import filters
+from telegram.ext._utils.types import FilterDataDict
 
+from lib.classes.user import User
 from lib.variables import dev_list, admin_list
 
 
 class DevMode:
     def __init__(self):
-        self.dev_mode = False
+        self.dev_mode = True
 
     def change(self):
         self.dev_mode = not self.dev_mode
@@ -93,6 +97,12 @@ class FilterTradeButton(filters.MessageFilter):
         return message.text is not None and re.search("Обмен", message.text) is not None
 
 
+class FilterUserNotBanned(filters.MessageFilter):
+    def filter(self, message: Message) -> Optional[Union[bool, FilterDataDict]]:
+        return User.get(message.from_user).status != "banned"
+
+
+not_banned_filter = FilterUserNotBanned()
 other_button_filter = FilterOtherButton()
 menu_button_filter = FilterMenuButton()
 roll_button_filter = FilterRollButton()

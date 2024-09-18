@@ -2,7 +2,6 @@
 Маркапы всех клавиатур в игре - тестовых и инлайн
 """
 
-
 import math
 from collections import Counter
 
@@ -12,14 +11,15 @@ from telegram.ext import ContextTypes
 from lib.classes.user import User
 from lib.variables import cards_dict
 
-
 CARDS_PER_PAGE = 7
 
 
 async def generate_collection_keyboard(update: Update, context: ContextTypes.DEFAULT_TYPE,
-                                       telegram_user_id, page: int, in_market: bool, trade=None):
+                                       telegram_user_id, page: int, in_market: bool, trade=None,
+                                       trade_receiver: int = None):
     """
     Генерация списка карт в просмотре коллекции ( взято с чатгпт, поэтому трогать не советую с: )
+    :param trade_receiver: ~~
     :param trade: ~~
     :param context: ~~
     :param update: ~~
@@ -30,6 +30,7 @@ async def generate_collection_keyboard(update: Update, context: ContextTypes.DEF
     """
     user_cards = User.get(user=None, update=telegram_user_id).collection
     user_cards = [cards_dict[x] for x in user_cards]
+    user_trade = User.get(user=None, update=telegram_user_id).trade
 
     card_counter = Counter(card['code'] for card in user_cards)
 
@@ -49,25 +50,30 @@ async def generate_collection_keyboard(update: Update, context: ContextTypes.DEF
     end = start + CARDS_PER_PAGE
     current_page_cards = unique_cards[start:end]
     market = "market_" if in_market else ''
-    trade = "trade_" if trade else ''
+    trade_s = "trade_" if trade else ''
 
     keyboard = []
     for card_code in current_page_cards:
         card = next(card for card in user_cards if card['code'] == card_code)
         count = card_counter[card_code]
-        button_text = f"{card['name']} {f'(x{count})'}"
-        keyboard.append([InlineKeyboardButton(button_text, callback_data=f"{market}{trade}{card['code']}")])
+        button_text = f"{card['name']} {f'(x{count})'} {'✅' if card_code in user_trade else ''}"
+        keyboard.append([InlineKeyboardButton(button_text, callback_data=f"{market}{trade_s}{card['code']}")])
 
     nav_buttons = []
     if page > 0:
-        nav_buttons.append(InlineKeyboardButton("<<", callback_data=f"{market}page_0"))
-        nav_buttons.append(InlineKeyboardButton("<", callback_data=f"{market}page_{page - 1}"))
-    nav_buttons.append(InlineKeyboardButton(f"{page + 1}/{total_pages}", callback_data="noop"))
+        nav_buttons.append(InlineKeyboardButton("<<", callback_data=f"{trade_s}{market}page_0"))
+        nav_buttons.append(InlineKeyboardButton("<", callback_data=f"{trade_s}{market}page_{page - 1}"))
+    nav_buttons.append(InlineKeyboardButton(f"{page + 1}", callback_data="noop"))
     if page < total_pages - 1:
-        nav_buttons.append(InlineKeyboardButton(">", callback_data=f"{market}page_{page + 1}"))
-        nav_buttons.append(InlineKeyboardButton(">>", callback_data=f"{market}page_{total_pages - 1}"))
+        nav_buttons.append(InlineKeyboardButton(">", callback_data=f"{trade_s}{market}page_{page + 1}"))
+        nav_buttons.append(InlineKeyboardButton(">>", callback_data=f"{trade_s}{market}page_{total_pages - 1}"))
 
     keyboard.append(nav_buttons)
+    if trade:
+        keyboard += [[InlineKeyboardButton('Подтвердить',
+                                           callback_data=f'trade_confirm'
+                                                         f'_{trade_receiver}')],
+                     [InlineKeyboardButton('Отмена', callback_data="trade_cancel")]]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
     return reply_markup
@@ -114,7 +120,7 @@ other_menu_buttons = [KeyboardButton("Паки"), KeyboardButton("Маркет")
                       KeyboardButton("MonoF1"), KeyboardButton("Меню")]
 
 collection_menu_buttons = [KeyboardButton("Список карт"), KeyboardButton("Посмотреть карту"),
-                           KeyboardButton("Меню")]
+                           KeyboardButton("Обмен"), KeyboardButton("Меню")]
 
 main_menu_markup = ReplyKeyboardMarkup(build_menu(main_menu_buttons, n_cols=2), resize_keyboard=True)
 roll_menu_markup = ReplyKeyboardMarkup(build_menu(roll_menu_buttons, n_cols=2), resize_keyboard=True)

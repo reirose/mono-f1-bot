@@ -19,7 +19,6 @@ async def buy_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = User.get(telegram_user)
 
     offer = MARKET_COLLECTION.find_one({"id": context.args[0]})
-    print(offer)
 
     if not offer:
         await mes.reply_text("Предложения не существует")
@@ -53,7 +52,6 @@ async def market_menu(update: Update, _: ContextTypes.DEFAULT_TYPE):
 
 async def entry(update, _):
     query = update.callback_query
-    print(query.data)
     card_code = re.match("market_sell_(.+)", query.data).group(1)
     user = User.get(query.from_user)
     user.market = card_code
@@ -83,7 +81,6 @@ async def market_place_card(update: Update, _: ContextTypes.DEFAULT_TYPE):
     user.market = ""
     user.write()
     op_id = uuid.uuid4().hex[-8:]
-    print(op_id)
     MARKET_COLLECTION.insert_one({"id": op_id,
                                   "code": card_code,
                                   "price": price,
