@@ -10,7 +10,7 @@ import re
 
 from telegram.ext import filters
 
-from lib.variables import dev_list
+from lib.variables import dev_list, admin_list
 
 
 class DevMode:
@@ -31,6 +31,11 @@ class DevMode(filters.MessageFilter):
             return message.from_user.id in dev_list
         else:
             return True
+
+
+class IsAdminFilter(filters.MessageFilter):
+    def filter(self, message) -> bool:
+        return message.from_user.id in admin_list
 
 
 class FilterOtherButton(filters.MessageFilter):
@@ -99,4 +104,5 @@ shop_button_filter = FilterShopButton()
 me_button_filter = FilterMeButton()
 market_button_filter = FilterMarketButton()
 trade_button_filter = FilterTradeButton()
+is_admin = IsAdminFilter()
 dev_mode = DevMode()

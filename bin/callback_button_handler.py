@@ -4,19 +4,19 @@ import re
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import ContextTypes
 
-from bin.collection import send_card_list, show_card, list_cards
+from bin.collection import send_card_list, show_card, list_cards, get_collection_s
 from bin.market import market_sell_list_menu
 from bin.other import other_menu
 from lib.classes.user import User
 from lib.keyboard_markup import shop_inline_markup, generate_collection_keyboard
-from lib.variables import cards_dict, packs_prices, category_prices
+from lib.variables import cards_dict, packs_prices, category_prices, sort_list, sort_keys_by, sort_list_transl
 
 
 async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     telegram_user = query.from_user
     user = User.get(telegram_user)
-    print(f"{datetime.datetime.now().strftime(format="%H:%M:%S")} -- {user.username} -- {query.data}")
+    print(f"{datetime.datetime.now().strftime('%H:%M:%S')} -- {user.username} -- {query.data}")
 
     if query.data.startswith("page_"):
         page = int(query.data.split("_")[1])
@@ -140,3 +140,27 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif query.data.startswith("market_c"):
         await show_card(query, context, in_market=True)
+
+    elif query.data.startswith("collection_sort_"):
+        sorted_by = re.search("collection_sort_(.+)", query.data).group(1)
+        coll = {}
+        for z in user.collection:
+            coll.update({z: {"card": cards_dict[z], "n": user.collection.count(z)}})
+
+        coll = dict(sorted(coll.items(), key=lambda item: sort_keys_by[sorted_by][item[1]['card'][sorted_by]]))
+
+        try:
+            next_sort_type = sort_list[sort_list.index(sorted_by) + 1]
+        except IndexError:
+            next_sort_type = 'category'
+
+        reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton(sort_list_transl[sorted_by],
+                                                                   callback_data="collection_sort_" + next_sort_type)]])
+
+        response = await get_collection_s(coll, user, context.bot, sorted_by)
+
+        await context.bot.edit_message_text(chat_id=user.id,
+                                            message_id=query.message.message_id,
+                                            text=response,
+                                            reply_markup=reply_markup,
+                                            parse_mode="HTML")

@@ -11,14 +11,14 @@ cards_by_category: dict = {
     "diamond": []
 }
 
-category_to_plain_text: dict = {
-    "bronze": "Бронзовая",
-    "silver": "Серебряная",
-    "gold": "Золотая",
-    "platinum": "Платиновая",
-    "ruby": "Рубиновая",
-    "sapphire": "Сапфировая",
-    "diamond": "Алмазная"
+category_color: dict = {
+    'bronze': '',
+    'silver': '️',
+    'gold': '',
+    'platinum': '',
+    'ruby': '💠 ',
+    'sapphire': '💠 ',
+    'diamond': '💠 '
 }
 
 category_prices: dict = {
@@ -39,16 +39,35 @@ packs_prices: dict = {
     10: 90
 }
 
-type_to_plain_text: dict = {
-    "driver": "Пилот",
-    "duo": "Дуо",
-    "team": "Балтика-тройка",
-    "team_principal": "Руководитель",
-    "track": "Трасса",
-    "car": "Болид",
-    "collab": "Коллаб",
-    "historical": "Историческая",
-    "limited": "Лимитированная"
+translation: dict = {
+    "driver": "Пилот",  # 1
+    "duo": "Дуо",  # 2
+    "team": "Балтика-тройка",  # 3
+    "team_principal": "Руководитель",  # 4
+    "track": "Трасса",  # 5
+    "car": "Болид",  # 6
+    "collab": "Коллаб",  # 7
+    "historical": "Историческая",  # 8
+    "limited": "Лимитированная",  # 9
+    "bronze": "Бронзовая",
+    "silver": "Серебряная",
+    "gold": "Золотая",
+    "platinum": "Платиновая",
+    "ruby": "Рубиновая",
+    "sapphire": "Сапфировая",
+    "diamond": "Алмазная",
+    'Alpine': "Alpine",
+    'Aston Martin': "Aston Martin",
+    'Ferrari': "Ferrari",
+    'Haas': "Haas",
+    'McLaren': "McLaren",
+    'Mercedes': "Mercedes",
+    'Red Bull': "Red Bull",
+    "RB": "RB",
+    "Sauber": "Sauber",
+    "Williams": "Williams",
+    'MonoF1': "MonoF1",
+    '': "Другое"
 }
 
 probability_by_category: dict = {
@@ -56,32 +75,68 @@ probability_by_category: dict = {
         1: 0.30
     },
     "gold": {
-        1: 0.15
+        1: 0.12
     },
     "platinum": {
-        1: 0.075
+        1: 0.06
     },
-    # "ruby": {
-    #     1: 0.0375
-    # },
-    # "sapphire": {
-    #     1: 0.01875
-    # },
+    "ruby": {
+        1: 0.03
+    },
+    "sapphire": {
+        1: 0.015
+    },
     "diamond": {
-        1: 0.009375
+        1: 0.0075
     }
 }
 
-category_sort_keys: dict = {'bronze': 0,
-                            'silver': 1,
-                            'gold': 2,
-                            'platinum': 3,
-                            'ruby': 4,
-                            'sapphire': 5,
-                            'diamond': 6}
+category_sort_keys: dict[str, int] = {'bronze': 0,
+                                      'silver': 1,
+                                      'gold': 2,
+                                      'platinum': 3,
+                                      'ruby': 4,
+                                      'sapphire': 5,
+                                      'diamond': 6}
+
+team_sort_keys: dict[str, int] = {'Alpine': 0,
+                                  'Aston Martin': 1,
+                                  'Ferrari': 2,
+                                  'Haas': 3,
+                                  'McLaren': 4,
+                                  'Mercedes': 5,
+                                  'Red Bull': 6,
+                                  "RB": 7,
+                                  "Sauber": 8,
+                                  "Williams": 9,
+                                  '': 10,
+                                  'MonoF1': 10}
+
+type_sort_keys: dict[str, int] = {"driver": 0,
+                                  "duo": 1,
+                                  "team": 2,
+                                  "team_principal": 3,
+                                  "track": 4,
+                                  "car": 5,
+                                  "collab": 6,
+                                  "historical": 7,
+                                  "limited": 8}
+
+sort_keys_by: dict[str, dict] = {'team': team_sort_keys,
+                                 'category': category_sort_keys,
+                                 'type': type_sort_keys}
+
+sort_list = ["category", "team", "type"]
+sort_list_transl = {'type': 'По типу',
+                    'category': 'По редкости',
+                    'team': 'По команде'}
 
 cards_in_pack: int = 3
 
-garant_list: list = ["gold", "platinum", "ruby", "sapphire", "diamond"]
+garant_value: int = 10
 
-dev_list: list = [352318827, 889865196]
+garant_list: list[str] = ["gold", "platinum", "ruby", "sapphire", "diamond"]
+
+dev_list: list[int] = [352318827, 889865196]
+admin_list: list[int] = [352318827, 400977526, 417603391, 522033389, 776014112, 889865196, 1161121344, 1293045951,
+                         1306616210, 1949641072, 5163281155, 6983627466]

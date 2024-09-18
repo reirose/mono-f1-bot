@@ -7,7 +7,7 @@ from telegram.ext import ContextTypes
 from lib.classes.user import User
 from lib.keyboard_markup import roll_menu_markup
 from lib.variables import probability_by_category, cards_by_category, cards_in_pack, \
-    category_to_plain_text, garant_list, roll_cards_dict, category_sort_keys
+    translation, garant_list, roll_cards_dict, category_sort_keys, garant_value
 
 
 def select_card_weighted(garant: bool = None):
@@ -28,8 +28,8 @@ def select_card_weighted(garant: bool = None):
 
     if not any(cat in ["gold", "ruby", 'sapphire', 'platinum', "diamond"] for cat in categories) and garant:
         print("garant rolled")
-        categories[categories.index("bronze")] = random.choices(["gold", 'platinum', "diamond"],
-                                                                [0.6, 0.3, 0.1])[0]
+        categories[categories.index("bronze")] = random.choices(["gold", "platinum", "ruby", "sapphire", "diamond"],
+                                                                [.4, .25, .15, .12, .08])[0]
 
     rolled_cards = []
     for cat in categories:
@@ -93,7 +93,7 @@ async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await mes.reply_text(f"У вас не осталось доступных круток!\n\nОсталось до бесплатной: {time_left}")
         return
 
-    garant = user.garant >= 20
+    garant = user.garant >= garant_value
     rolled_cards = sorted(select_card_weighted(garant=garant),
                           key=lambda x: category_sort_keys.get(x['category'], float('inf')))
 
@@ -118,7 +118,7 @@ async def roll_pre_result(context):
     mes = job.data[2]
 
     response = (f"Получена карта: "
-                f"{category_to_plain_text[rolled_cards[0]['category']]} "
+                f"{translation[rolled_cards[0]['category']]} "
                 f"<b>{rolled_cards[0]['name']}!</b> "
                 f"{'🆕 ' if rolled_cards[0]['code'] not in user.collection else ''}\n")
 
@@ -140,7 +140,7 @@ async def update_roll_result(context):
     sent = job.data[3]
 
     response = (f"Получена карта: "
-                f"{category_to_plain_text[rolled_cards[0]['category']]} "
+                f"{translation[rolled_cards[0]['category']]} "
                 f"<b>{rolled_cards[0]['name']}!</b> "
                 f"{'🆕 ' if rolled_cards[0]['code'] not in user.collection else ''}\n")
 

@@ -6,7 +6,6 @@ import logging
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from lib.classes.user import User
 from lib.init import CARDS_COLLECTION, USER_COLLECTION, BOT_INFO
 from lib.variables import cards_list, cards_dict, cards_by_category, roll_cards_dict
 

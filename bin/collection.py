@@ -1,12 +1,13 @@
 import re
 
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, Message, Bot
 from telegram.error import BadRequest
 from telegram.ext import ContextTypes
 
 from lib.classes.user import User
 from lib.keyboard_markup import collection_menu_markup, generate_collection_keyboard
-from lib.variables import cards_dict, category_to_plain_text, type_to_plain_text
+from lib.variables import cards_dict, translation, sort_keys_by, sort_list, \
+    sort_list_transl, category_color
 
 
 async def show_card(query, context, in_market: bool):
@@ -17,8 +18,8 @@ async def show_card(query, context, in_market: bool):
     card_name = card["name"]
     card_team = card["team"]
     card_team = f"Команда: {card_team}\n" if card_team else ""
-    card_category = category_to_plain_text[card["category"]]
-    card_type = type_to_plain_text[card["type"]]
+    card_category = translation[card["category"]]
+    card_type = translation[card["type"]]
     card_n = user_collection.count(card["code"])
     response = (f"{card_name}\n\n"
                 f"{card_team}"
@@ -78,32 +79,55 @@ async def collection_menu(update: Update, _: ContextTypes.DEFAULT_TYPE):
                          reply_markup=collection_menu_markup)
 
 
-async def view_collection_list(update: Update, _: ContextTypes.DEFAULT_TYPE):
-    mes = update.message
-    telegram_user = update.effective_user
-    user = User.get(telegram_user)
-    coll = {}
-    for x in user.collection:
-        coll.update({x: {"card": cards_dict[x], "n": user.collection.count(x)}})
-
-    response = "Ваша коллекция:\n\n"
+async def get_collection_s(coll: dict, user: User, bot: Bot, sorted_by: str = 'category'):
+    response = ""
     try:
-        prev = coll[user.collection[0]]["card"]["type"]
+        prev = ''
     except IndexError:
-        await mes.reply_text("У вас нет карточек. Чтобы получить их - перейдите в раздел Получение карт.",
-                             reply_markup=collection_menu_markup)
+        await bot.send_message(text="У вас нет карточек. Чтобы получить их - перейдите в раздел Получение карт.",
+                               chat_id=user.id,
+                               reply_markup=collection_menu_markup)
         return
 
     for x in coll:
         card = coll[x]["card"]
-        next_type_div = '\n' if card['type'] != prev else ''
+        next_type_div = f'<b>\n{translation[card[sorted_by]]}\n</b>' if card[sorted_by] != prev else ''
         n = coll[x]["n"]
         n_of = f'({n} шт)' if n > 1 else ''
 
         response += (f"{next_type_div}"
-                     f"{card['name']} {'| '+card['team'] if card['team'] else ''} {n_of}\n")
-        prev = card["type"]
+                     f"{category_color[card['category']]}{card['name']} "
+                     f"{'| ' + card['team'] if card['team'] else ''} {n_of}\n")
+        prev = card[sorted_by]
 
-    await mes.reply_text(response,
-                         reply_markup=collection_menu_markup,
-                         parse_mode="HTML")
+    return response
+
+
+async def view_collection_list(update: Update, context: ContextTypes.DEFAULT_TYPE, sorted_by: str = "category"):
+    mes = update.message
+    telegram_user = update.effective_user
+    user = User.get(telegram_user)
+    coll = {}
+    for z in user.collection:
+        coll.update({z: {"card": cards_dict[z], "n": user.collection.count(z)}})
+
+    coll = dict(sorted(coll.items(), key=lambda item: sort_keys_by[sorted_by][item[1]['card'][sorted_by]]))
+
+    try:
+        next_sort_type = sort_list[sort_list.index(sorted_by) + 1]
+    except IndexError:
+        next_sort_type = 'category'
+
+    reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton(sort_list_transl[sorted_by],
+                                                               callback_data="collection_sort_" + next_sort_type)]])
+
+    await context.bot.send_message(chat_id=user.id,
+                                   text="Ваша коллекция:\n\n",
+                                   reply_markup=collection_menu_markup)
+
+    response = await get_collection_s(coll, user, mes, sorted_by)
+
+    await context.bot.send_message(chat_id=user.id,
+                                   text=response,
+                                   reply_markup=reply_markup,
+                                   parse_mode="HTML")

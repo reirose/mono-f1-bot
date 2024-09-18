@@ -15,7 +15,7 @@ from bin.shop import shop_menu
 from lib.init import TOKEN, client, BOT_INFO
 from lib.filters import (other_button_filter, menu_button_filter, roll_menu_button_filter, roll_button_filter,
                          collection_menu_button_filter, show_card_button_filter, collection_list_button_filter,
-                         dev_mode, shop_button_filter, me_button_filter, market_button_filter)
+                         dev_mode, shop_button_filter, me_button_filter, market_button_filter, is_admin)
 from lib.routines import update_cards, scheduler, update_free_roll
 
 # Запуск планировщика задач и добаление в него:
