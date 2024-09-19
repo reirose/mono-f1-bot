@@ -199,7 +199,13 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                                     reply_markup=keyboard)
 
     elif query.data.startswith("trade_confirm_"):
-        receiver_id = int(query.data.split("_")[-1])
+        if not user.trade:
+            await query.answer("Ошибка: не выбрано ни одной карты.")
+            return
+        try:
+            receiver_id = int(query.data.split("_")[-1])
+        except ValueError:
+            receiver_id = re.search("trade_confirm_(.+)", query.data).group(1)
         receiver = User.get(None, receiver_id)
         receiver.collection += user.trade
         traded_cards_list = ""
@@ -217,7 +223,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                            receiver.username, traded_cards_list),
                                        parse_mode="HTML")
 
-        await context.bot.send_message(chat_id=receiver_id,
+        await context.bot.send_message(chat_id=receiver.id,
                                        text="<b>Получено от пользователя %s:</b>\n\n%s" % (
                                            user.username, traded_cards_list),
                                        parse_mode="HTML")

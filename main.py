@@ -1,24 +1,23 @@
 import logging
 
 from telegram import Update
-from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler, ConversationHandler, filters
+from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler
 
 from bin.callback_button_handler import button_callback
 from bin.collection import view_collection_list, collection_menu, list_cards
 from bin.market import market_menu, conv_handler, buy_command
 from bin.menu import menu
 from bin.roll import roll, roll_menu
-from bin.service_commands import start, dev_mode_change, unstuck
+from bin.service_commands import start, dev_mode_change, unstuck, give_user
 from bin.other import other_menu
 from bin.shop import shop_menu
 from bin.trade import trade_conv_handler
-from lib.github_update import check_updates
 
 from lib.init import TOKEN, client, BOT_INFO
 from lib.filters import (other_button_filter, menu_button_filter, roll_menu_button_filter, roll_button_filter,
                          collection_menu_button_filter, show_card_button_filter, collection_list_button_filter,
-                         dev_mode, shop_button_filter, me_button_filter, market_button_filter, is_admin,
-                         not_banned_filter)
+                         dev_mode, shop_button_filter, me_button_filter, market_button_filter, not_banned_filter,
+                         is_admin)
 from lib.routines import update_cards, scheduler, update_free_roll
 
 # Запуск планировщика задач и добаление в него:
@@ -38,7 +37,7 @@ def main():
     # текстовые команды (через "/")
     app.add_handler(CommandHandler("start", start, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("dm", dev_mode_change))
-    app.add_handler(CommandHandler(["check_updates", "cu"], check_updates))
+    app.add_handler(CommandHandler("give", give_user, filters=is_admin))
     app.add_handler(CommandHandler("unstuck", unstuck, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("buy", buy_command, has_args=True, filters=dev_mode & not_banned_filter))
 

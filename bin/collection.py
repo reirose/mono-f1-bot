@@ -21,7 +21,10 @@ async def show_card(query, context, in_market: bool):
     card_category = translation[card["category"]]
     card_type = translation[card["type"]]
     card_n = user_collection.count(card["code"])
-    response = (f"{card_name}\n\n"
+    card_description = card["description"]
+    desc_str = f"<i>{card_description}</i>\n" if card_description else ""
+    response = (f"<b>{card_name}</b>\n"
+                f"{desc_str}\n"
                 f"{card_team}"
                 f"Тип карты: {card_type}\n"
                 f"Редкость: {card_category}\n\n"

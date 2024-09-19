@@ -9,7 +9,7 @@ from lib.classes.user import User
 
 
 async def trade_initialization(update: Update, _: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Введите ID пользователя, с которым хотите совершить обмен "
+    await update.message.reply_text("Введите ID или имя пользователя, с которым хотите совершить обмен "
                                     "(для отмены нажмите /cancel)")
     return "trade_init"
 
@@ -19,15 +19,15 @@ async def trade_handle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         receiver_id = int(update.message.text)
     except ValueError:
+        receiver_id = update.message.text
+
+    if receiver_id == mes.from_user.id or receiver_id == mes.from_user.username:
         await update.message.reply_text("Неверный ввод")
         return "trade_init"
 
-    if receiver_id == mes.from_user.id:
-        await update.message.reply_text("Неверный ввод")
-        return "trade_init"
-
-    if not User.get(user=None, update=int(receiver_id)):
-        await update.message.reply_text("Пользователя с таким ID не существует. Проверьте данные и повторите ввод.")
+    if not User.get(user=None, update=receiver_id):
+        await update.message.reply_text("Пользователя с таким ID или именем не существует. "
+                                        "Проверьте данные и повторите ввод.")
         return "trade_init"
 
     telegram_user = update.effective_user
