@@ -1,8 +1,5 @@
-from uuid import uuid4
-
 from telegram import Update
-from telegram.ext import ContextTypes, ConversationHandler, CallbackQueryHandler, filters, MessageHandler, \
-    CommandHandler
+from telegram.ext import ContextTypes, ConversationHandler, filters, MessageHandler, CommandHandler
 
 from bin.collection import collection_menu
 from lib.filters import trade_button_filter
@@ -25,7 +22,7 @@ async def trade_handle(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Неверный ввод")
         return "trade_init"
 
-    if receiver_id == str(mes.from_user.id):
+    if receiver_id == mes.from_user.id:
         await update.message.reply_text("Неверный ввод")
         return "trade_init"
 
