@@ -1,6 +1,7 @@
 import re
+from pathlib import Path
 
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, Message, Bot
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, Bot
 from telegram.error import BadRequest
 from telegram.ext import ContextTypes
 
@@ -15,6 +16,7 @@ async def show_card(query, context, in_market: bool):
     card = cards_dict.get(f"c_{re.search('c_(.{3})', query.data).group(1)}")
     card_pic_id = ("AgACAgQAAxkBAAIMP2bKLDHHQSdb4-"
                    "4qJpG9WTW7k8QtAAK0wTEbmxtZUuGYL8YF6ayLAQADAgADeAADNQQ")  # TODO: сделать оформление из файла
+    # card_pic_id = open(Path(__file__).parent.absolute() / "img" / "card.png")
     card_name = card["name"]
     card_team = card["team"]
     card_team = f"Команда: {card_team}\n" if card_team else ""
@@ -109,7 +111,6 @@ async def get_collection_s(coll: dict, user: User, bot: Bot, sorted_by: str = 'c
 
 
 async def view_collection_list(update: Update, context: ContextTypes.DEFAULT_TYPE, sorted_by: str = "category"):
-    mes = update.message
     telegram_user = update.effective_user
     user = User.get(telegram_user)
     coll = {}
@@ -130,9 +131,25 @@ async def view_collection_list(update: Update, context: ContextTypes.DEFAULT_TYP
                                    text="Ваша коллекция:\n\n",
                                    reply_markup=collection_menu_markup)
 
-    response = await get_collection_s(coll, user, mes, sorted_by)
+    response = await get_collection_s(coll, user, context.bot, sorted_by)
 
     await context.bot.send_message(chat_id=user.id,
                                    text=response,
                                    reply_markup=reply_markup,
                                    parse_mode="HTML")
+
+
+async def collection_completeness(update: Update, _: ContextTypes.DEFAULT_TYPE):
+    mes = update.message
+    user = User.get(mes.from_user)
+    resp = "Список карт в игре:\n"
+    prev = ""
+    for card in cards_dict:
+        card_d = cards_dict[card]
+        if prev != card_d["type"]:
+            resp += "\n<b>" + translation[card_d["type"]] + "</b>\n"
+            prev = card_d["type"]
+        resp += f"{card_d['name']} {'✅' if card in user.collection else ''}\n"
+
+    await mes.reply_text(resp,
+                         parse_mode="HTML")

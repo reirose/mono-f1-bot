@@ -200,106 +200,6 @@
 },
 {
   "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921ea"
-  },
-  "code": "c_401",
-  "name": "Christian Horner",
-  "type": "team_principal",
-  "team": "Red Bull",
-  "category": "gold"
-},
-{
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921eb"
-  },
-  "code": "c_402",
-  "name": "Toto Wolff",
-  "type": "team_principal",
-  "team": "Mercedes",
-  "category": "gold"
-},
-{
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921ec"
-  },
-  "code": "c_403",
-  "name": "Frederic Vasseur",
-  "type": "team_principal",
-  "team": "Ferrari",
-  "category": "gold"
-},
-{
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921ed"
-  },
-  "code": "c_404",
-  "name": "Zak Brown",
-  "type": "team_principal",
-  "team": "McLaren",
-  "category": "gold"
-},
-{
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921ee"
-  },
-  "code": "c_405",
-  "name": "Mike Krack",
-  "type": "team_principal",
-  "team": "Aston Martin",
-  "category": "gold"
-},
-{
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921ef"
-  },
-  "code": "c_406",
-  "name": "Oliver Oakes",
-  "type": "team_principal",
-  "team": "Alpine",
-  "category": "gold"
-},
-{
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921f0"
-  },
-  "code": "c_407",
-  "name": "James Vowles",
-  "type": "team_principal",
-  "team": "Williams",
-  "category": "gold"
-},
-{
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921f1"
-  },
-  "code": "c_408",
-  "name": "Laurent Mekies",
-  "type": "team_principal",
-  "team": "RB",
-  "category": "gold"
-},
-{
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921f2"
-  },
-  "code": "c_409",
-  "name": "Alessandro Alunni Bravi",
-  "type": "team_principal",
-  "team": "Sauber",
-  "category": "gold"
-},
-{
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921f3"
-  },
-  "code": "c_410",
-  "name": "Ayao Komatsu",
-  "type": "team_principal",
-  "team": "Haas",
-  "category": "gold"
-},
-{
-  "_id": {
     "$oid": "66e3d681e0ee9fa3b0c921f4"
   },
   "code": "c_201",
@@ -498,6 +398,291 @@
   "team": "Haas",
   "category": "gold"
 },
+
+{
+  "_id": {
+    "$oid": "66e3d681e0ee9fa3b0c921ea"
+  },
+  "code": "c_401",
+  "name": "Christian Horner",
+  "type": "team_principal",
+  "team": "Red Bull",
+  "category": "gold"
+},
+{
+  "_id": {
+    "$oid": "66e3d681e0ee9fa3b0c921eb"
+  },
+  "code": "c_402",
+  "name": "Toto Wolff",
+  "type": "team_principal",
+  "team": "Mercedes",
+  "category": "gold"
+},
+{
+  "_id": {
+    "$oid": "66e3d681e0ee9fa3b0c921ec"
+  },
+  "code": "c_403",
+  "name": "Frederic Vasseur",
+  "type": "team_principal",
+  "team": "Ferrari",
+  "category": "gold"
+},
+{
+  "_id": {
+    "$oid": "66e3d681e0ee9fa3b0c921ed"
+  },
+  "code": "c_404",
+  "name": "Zak Brown",
+  "type": "team_principal",
+  "team": "McLaren",
+  "category": "gold"
+},
+{
+  "_id": {
+    "$oid": "66e3d681e0ee9fa3b0c921ee"
+  },
+  "code": "c_405",
+  "name": "Mike Krack",
+  "type": "team_principal",
+  "team": "Aston Martin",
+  "category": "gold"
+},
+{
+  "_id": {
+    "$oid": "66e3d681e0ee9fa3b0c921ef"
+  },
+  "code": "c_406",
+  "name": "Oliver Oakes",
+  "type": "team_principal",
+  "team": "Alpine",
+  "category": "gold"
+},
+{
+  "_id": {
+    "$oid": "66e3d681e0ee9fa3b0c921f0"
+  },
+  "code": "c_407",
+  "name": "James Vowles",
+  "type": "team_principal",
+  "team": "Williams",
+  "category": "gold"
+},
+{
+  "_id": {
+    "$oid": "66e3d681e0ee9fa3b0c921f1"
+  },
+  "code": "c_408",
+  "name": "Laurent Mekies",
+  "type": "team_principal",
+  "team": "RB",
+  "category": "gold"
+},
+{
+  "_id": {
+    "$oid": "66e3d681e0ee9fa3b0c921f2"
+  },
+  "code": "c_409",
+  "name": "Alessandro Alunni Bravi",
+  "type": "team_principal",
+  "team": "Sauber",
+  "category": "gold"
+},
+{
+  "_id": {
+    "$oid": "66e3d681e0ee9fa3b0c921f3"
+  },
+  "code": "c_410",
+  "name": "Ayao Komatsu",
+  "type": "team_principal",
+  "team": "Haas",
+  "category": "gold"
+},
+{
+  "code": "c_501",
+  "name": "Bahrain International Circuit | Bahrain",
+  "type": "track",
+  "category": "gold",
+  "team": "",
+  "description": "Открыт в 2004 году. Известен своими длинными прямыми и жарким климатом. Гонка проходит в вечернее время под искусственным освещением."
+},
+{
+  "code": "c_502",
+  "name": "Jeddah Corniche Circuit | Saudi Arabia",
+  "type": "track",
+  "category": "gold",
+  "team": "",
+  "description": "Самая длинная и быстрая городская трасса в календаре F1. Дебютировала в 2021 году. Известна своими скоростными поворотами и ночной гонкой."
+},
+{
+  "code": "c_503",
+  "name": "Albert Park Circuit | Australia",
+  "type": "track",
+  "category": "platinum",
+  "team": "",
+  "description": "Полупостоянная трасса в Мельбурне. Сочетает в себе элементы городской и стационарной трассы. Известна своей живописностью и непредсказуемыми гонками."
+},
+{
+  "code": "c_504",
+  "name": "Suzuka International Racing Course | Japan",
+  "type": "track",
+  "category": "platinum",
+  "team": "",
+  "description": "Одна из самых технически сложных трасс. Уникальная 'восьмерка' в конфигурации. Любима гонщиками за разнообразие поворотов и вызов для навыков пилотирования."
+},
+{
+  "code": "c_505",
+  "name": "Shanghai International Circuit | China",
+  "type": "track",
+  "category": "gold",
+  "team": "",
+  "description": "Известна своим уникальным дизайном, напоминающим китайский иероглиф 'шан'. Включает в себя один из самых длинных прямых участков в календаре F1."
+},
+{
+  "code": "c_506",
+  "name": "Miami International Autodrome | USA",
+  "type": "track",
+  "category": "gold",
+  "team": "",
+  "description": "Новая трасса, дебютировавшая в 2022 году. Расположена вокруг Hard Rock Stadium. Отличается сложными поворотами и длинными прямыми."
+},
+{
+  "code": "c_507",
+  "name": "Autodromo Enzo e Dino Ferrari | Italy",
+  "type": "track",
+  "category": "gold",
+  "team": "",
+  "description": "Также известна как Имола. Историческая трасса с богатыми традициями. Отличается сложным рельефом и техничными поворотами."
+},
+{
+  "code": "c_508",
+  "name": "Circuit de Monaco | Monaco",
+  "type": "track",
+  "category": "platinum",
+  "team": "",
+  "description": "Самая престижная и известная трасса F1. Узкая городская трасса с множеством поворотов. Известна своей сложностью и гламурной атмосферой."
+},
+{
+  "code": "c_509",
+  "name": "Circuit de Barcelona-Catalunya | Spain",
+  "type": "track",
+  "category": "gold",
+  "team": "",
+  "description": "Часто используется для тестов F1. Сочетает в себе быстрые и медленные повороты. Требует хорошего баланса настроек болида."
+},
+{
+  "code": "c_510",
+  "name": "Circuit Gilles Villeneuve | Canada",
+  "type": "track",
+  "category": "platinum",
+  "team": "",
+  "description": "Расположена на искусственном острове. Известна своими длинными прямыми и шиканами. Знаменита 'Стеной чемпионов' - последним поворотом трассы."
+},
+{
+  "code": "c_511",
+  "name": "Red Bull Ring | Austria",
+  "type": "track",
+  "category": "gold",
+  "team": "",
+  "description": "Короткая, но быстрая трасса с живописными видами на Штирийские Альпы. Отличается значительными перепадами высот."
+},
+{
+  "code": "c_512",
+  "name": "Silverstone Circuit | Great Britain",
+  "type": "track",
+  "category": "platinum",
+  "team": "",
+  "description": "Одна из самых быстрых трасс в календаре. Историческое место рождения F1. Знаменита своими скоростными поворотами и британской погодой."
+},
+{
+  "code": "c_513",
+  "name": "Hungaroring | Hungary",
+  "type": "track",
+  "category": "gold",
+  "team": "",
+  "description": "Извилистая трасса, часто сравниваемая с картодромом из-за обилия поворотов. Известна своей жарой и сложностью обгонов."
+},
+{
+  "code": "c_514",
+  "name": "Circuit de Spa-Francorchamps | Belgium",
+  "type": "track",
+  "category": "platinum",
+  "team": "",
+  "description": "Одна из самых длинных и быстрых трасс. Включает легендарный поворот Eau Rouge. Славится непредсказуемой погодой и захватывающими гонками."
+},
+{
+  "code": "c_515",
+  "name": "Circuit Zandvoort | Netherlands",
+  "type": "track",
+  "category": "gold",
+  "team": "",
+  "description": "Историческая трасса, вернувшаяся в календарь F1 в 2021 году. Отличается крутыми виражами и близостью к морю."
+},
+{
+  "code": "c_516",
+  "name": "Autodromo Nazionale Monza | Italy",
+  "type": "track",
+  "category": "platinum",
+  "team": "",
+  "description": "Известна как 'Храм скорости'. Одна из самых быстрых трасс с длинными прямыми. Имеет богатую историю в F1."
+},
+{
+  "code": "c_517",
+  "name": "Marina Bay Street Circuit | Singapore",
+  "type": "track",
+  "category": "gold",
+  "team": "",
+  "description": "Первая ночная гонка в истории F1. Городская трасса с уникальной атмосферой. Известна своей физической сложностью для пилотов."
+},
+{
+  "code": "c_518",
+  "name": "Lusail International Circuit | Qatar",
+  "type": "track",
+  "category": "gold",
+  "team": "",
+  "description": "Новая трасса в календаре F1. Изначально построена для мотогонок. Отличается скоростными поворотами и современной инфраструктурой."
+},
+{
+  "code": "c_519",
+  "name": "Circuit of the Americas | USA",
+  "type": "track",
+  "category": "gold",
+  "team": "",
+  "description": "Современная трасса, вдохновленная лучшими элементами других трасс F1. Известна своим первым сектором и значительным перепадом высот."
+},
+{
+  "code": "c_520",
+  "name": "Autódromo Hermanos Rodríguez | Mexico",
+  "type": "track",
+  "category": "gold",
+  "team": "",
+  "description": "Расположена на большой высоте, что влияет на работу двигателей. Знаменита своим финальным сектором, проходящим через бейсбольный стадион."
+},
+{
+  "code": "c_521",
+  "name": "Autódromo José Carlos Pace | Brazil",
+  "type": "track",
+  "category": "platinum",
+  "team": "",
+  "description": "Также известна как Интерлагос. Одна из немногих трасс, идущих против часовой стрелки. Славится своей непредсказуемостью и страстными болельщиками."
+},
+{
+  "code": "c_522",
+  "name": "Las Vegas Strip Circuit | USA",
+  "type": "track",
+  "category": "gold",
+  "team": "",
+  "description": "Новая ночная гонка на улицах Лас-Вегаса. Проходит мимо известных казино и отелей. Отличается длинными прямыми и скоростными поворотами."
+},
+{
+  "code": "c_523",
+  "name": "Yas Marina Circuit | Abu Dhabi",
+  "type": "track",
+  "category": "gold",
+  "team": "",
+  "description": "Современная трасса, известная своей роскошной инфраструктурой. Гонка начинается днем и заканчивается ночью. Часто является финальным этапом сезона."
+},
 {
   "_id": {
     "$oid": "66e3d681e0ee9fa3b0c92208"
@@ -600,26 +785,6 @@
 },
 {
   "_id": {
-    "$oid": "66e3e3abe0ee9fa3b0c9222a"
-  },
-  "code": "c_901",
-  "name": "Logan Sargeant",
-  "type": "limited",
-  "team": "Williams",
-  "category": "diamond"
-},
-{
-  "_id": {
-    "$oid": "66e87ff2ec90a53262880ab8"
-  },
-  "code": "c_501",
-  "name": "Monza | Italy",
-  "type": "track",
-  "category": "platinum",
-  "team": ""
-},
-{
-  "_id": {
     "$oid": "66ea8e4f1c700e64bac240e4"
   },
   "code": "c_701",
@@ -647,4 +812,15 @@
   "type": "historical",
   "team": "Ferrari",
   "category": "sapphire"
-}]
+},
+{
+  "_id": {
+    "$oid": "66e3e3abe0ee9fa3b0c9222a"
+  },
+  "code": "c_901",
+  "name": "Logan Sargeant",
+  "type": "limited",
+  "team": "Williams",
+  "category": "diamond"
+}
+]

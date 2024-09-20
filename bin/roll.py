@@ -26,7 +26,7 @@ def select_card_weighted(garant: bool = None):
             for index in chosen_indices:
                 categories[index] = category
 
-    if not any(cat in ["gold", "ruby", 'sapphire', 'platinum', "diamond"] for cat in categories) and garant:
+    if not any(cat in ["gold", "ruby", 'sapphire', 'platinum'] for cat in categories) and garant:
         print("garant rolled")
         categories[categories.index("bronze")] = random.choices(["gold", "platinum", "ruby", "sapphire", "diamond"],
                                                                 [.4, .25, .15, .12, .08])[0]

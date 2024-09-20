@@ -120,9 +120,9 @@ other_menu_buttons = [KeyboardButton("Паки"), KeyboardButton("Маркет")
                       KeyboardButton("MonoF1"), KeyboardButton("Меню")]
 
 collection_menu_buttons = [KeyboardButton("Список карт"), KeyboardButton("Посмотреть карту"),
-                           KeyboardButton("Обмен"), KeyboardButton("Меню")]
+                           KeyboardButton("Обмен"), KeyboardButton("Все карты"), KeyboardButton("Меню")]
 
 main_menu_markup = ReplyKeyboardMarkup(build_menu(main_menu_buttons, n_cols=2), resize_keyboard=True)
 roll_menu_markup = ReplyKeyboardMarkup(build_menu(roll_menu_buttons, n_cols=2), resize_keyboard=True)
 other_menu_markup = ReplyKeyboardMarkup(build_menu(other_menu_buttons, n_cols=2), resize_keyboard=True)
-collection_menu_markup = ReplyKeyboardMarkup(build_menu(collection_menu_buttons, n_cols=2), resize_keyboard=True)
+collection_menu_markup = ReplyKeyboardMarkup(build_menu(collection_menu_buttons, n_cols=3), resize_keyboard=True)

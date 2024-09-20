@@ -29,7 +29,7 @@ def update_cards():
         cards_list.append(x)
         cards_dict.update({x["code"]: x})
         cards_by_category[x["category"]].append(x["code"])
-        if x["category"] not in ["limited"]:
+        if x["category"] not in ["diamond"]:
             roll_cards_dict.update({x["code"]: x})
 
     logging.log(BOT_INFO, f"Updated {len(db_data)} cards.")
