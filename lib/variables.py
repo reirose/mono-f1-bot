@@ -140,3 +140,5 @@ garant_list: list[str] = ["gold", "platinum", "ruby", "sapphire", "diamond"]
 dev_list: list[int] = [352318827, 889865196]
 admin_list: list[int] = [352318827, 400977526, 417603391, 522033389, 776014112, 889865196, 1161121344, 1293045951,
                          1306616210, 1949641072, 5163281155, 6983627466]
+
+trades_log_chat_id = -1002401343820

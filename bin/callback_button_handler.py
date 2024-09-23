@@ -1,15 +1,19 @@
 import datetime
+import logging
 import re
 
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram.error import BadRequest
 from telegram.ext import ContextTypes
 
 from bin.collection import send_card_list, show_card, list_cards, get_collection_s
 from bin.market import market_sell_list_menu
 from bin.other import other_menu
 from lib.classes.user import User
+from lib.init import BOT_INFO
 from lib.keyboard_markup import shop_inline_markup, generate_collection_keyboard
-from lib.variables import cards_dict, packs_prices, category_prices, sort_list, sort_keys_by, sort_list_transl
+from lib.variables import cards_dict, packs_prices, category_prices, sort_list, sort_keys_by, sort_list_transl, \
+    trades_log_chat_id
 
 
 def find_noop_index(data):
@@ -22,7 +26,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     telegram_user = query.from_user
     user = User.get(telegram_user)
-    # print(f"{datetime.datetime.now().strftime('%H:%M:%S')} -- {user.username} -- {query.data}")
+    logging.log(BOT_INFO, f"{user.username} {query.data}")
 
     if query.data.startswith("page_"):
         page = int(query.data.split("_")[1])
@@ -44,7 +48,10 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await show_card(query, context, in_market=False)
 
     elif query.data.startswith("close_"):
-        await context.bot.delete_message(chat_id=query.from_user.id, message_id=query.message.message_id)
+        try:
+            await context.bot.delete_message(chat_id=query.from_user.id, message_id=query.message.message_id)
+        except BadRequest:
+            pass
         if "card" in query.data:
             await list_cards(update, context)
         elif "market" in query.data:
@@ -227,6 +234,15 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                        text="<b>Получено от пользователя %s:</b>\n\n%s" % (
                                            user.username, traded_cards_list),
                                        parse_mode="HTML")
+
+        await context.bot.send_message(chat_id=trades_log_chat_id,
+                                       text=f"<code>Trade @ "
+                                            f"{datetime.datetime.now().strftime('%d/%m/%y %H:%M:%S')}\n</code>"
+                                            f"<b>{user.username}</b> ({user.id}) --> "
+                                            f"<b>{receiver.username}</b> ({receiver.id})\n"
+                                            f"<blockquote expandable>{traded_cards_list}</blockquote>",
+                                       parse_mode="HTML")
+
         await context.bot.delete_message(chat_id=user.id,
                                          message_id=query.message.message_id)
         await query.answer("Успешно!")

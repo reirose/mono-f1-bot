@@ -1,10 +1,12 @@
 import datetime
+import logging
 import random
 
 from telegram import Update
 from telegram.ext import ContextTypes
 
 from lib.classes.user import User
+from lib.init import BOT_INFO
 from lib.keyboard_markup import roll_menu_markup
 from lib.variables import probability_by_category, cards_by_category, cards_in_pack, \
     translation, garant_list, roll_cards_dict, category_sort_keys, garant_value
@@ -27,7 +29,7 @@ def select_card_weighted(garant: bool = None):
                 categories[index] = category
 
     if not any(cat in ["gold", "ruby", 'sapphire', 'platinum'] for cat in categories) and garant:
-        print("garant rolled")
+        logging.log(BOT_INFO, "garant rolled")
         categories[categories.index("bronze")] = random.choices(["gold", "platinum", "ruby", "sapphire", "diamond"],
                                                                 [.4, .25, .15, .12, .08])[0]
 
@@ -97,8 +99,8 @@ async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
     rolled_cards = sorted(select_card_weighted(garant=garant),
                           key=lambda x: category_sort_keys.get(x['category'], float('inf')))
 
-    print(f"{user.username} rolled: "
-          f"{', '.join([card['name'] for card in rolled_cards])}")
+    logging.log(BOT_INFO, (f"{user.username} rolled: "
+                           f"{', '.join([card['name'] for card in rolled_cards])}"))
 
     user.garant = 0 if (garant or any(card in garant_list for card in [x["category"] for x in rolled_cards])) else \
         user.garant + 1

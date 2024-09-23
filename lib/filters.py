@@ -31,7 +31,7 @@ DEV_MODE = DevMode()
 
 class DevMode(filters.MessageFilter):
     def filter(self, message) -> bool:
-        if DEV_MODE.dev_mode:
+        if DEV_MODE.dev_mode and message.chat.type == "private":
             return message.from_user.id in dev_list
         else:
             return True

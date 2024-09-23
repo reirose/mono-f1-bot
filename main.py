@@ -20,12 +20,8 @@ from lib.filters import (other_button_filter, menu_button_filter, roll_menu_butt
                          is_admin, all_cards_button_filter)
 from lib.routines import update_cards, scheduler, update_free_roll
 
-# Запуск планировщика задач и добаление в него:
-# - обновление локальной БД карт раз в 15 минут
-# - добавление бесплатных круток в 8 и 20 часов
 scheduler.start()
-
-scheduler.add_job(update_cards, 'interval', hours=0.25)
+scheduler.add_job(update_cards, 'interval', minutes=5)
 scheduler.add_job(update_free_roll, 'cron', hour=20, minute=0, second=0)
 scheduler.add_job(update_free_roll, 'cron', hour=8, minute=0, second=0)
 
@@ -36,7 +32,6 @@ def main():
 
     # текстовые команды (через "/")
     app.add_handler(CommandHandler("start", start, filters=dev_mode & not_banned_filter))
-    app.add_handler(CommandHandler("cl", collection_completeness, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("dm", dev_mode_change))
     app.add_handler(CommandHandler("give", give_user, filters=is_admin))
     app.add_handler(CommandHandler("unstuck", unstuck, filters=dev_mode & not_banned_filter))

@@ -6,7 +6,8 @@ from pymongo import MongoClient
 
 BOT_INFO = 25  # уровень информации для логов, чтобы не выводило лишнюю хуйню
 log.basicConfig(level=BOT_INFO,
-                format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+                format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+                filename="log.log")
 
 TOKEN = "7465141345:AAHkj1SKA-CG9FRGdARz5EbmK_xk2OM9vZA"
 DB_LINK = "mongodb://localhost:27017"

@@ -14,9 +14,13 @@ from lib.variables import cards_dict, translation, sort_keys_by, sort_list, \
 async def show_card(query, context, in_market: bool):
     user_collection = User.get(query.from_user).collection
     card = cards_dict.get(f"c_{re.search('c_(.{3})', query.data).group(1)}")
-    card_pic_id = ("AgACAgQAAxkBAAIMP2bKLDHHQSdb4-"
-                   "4qJpG9WTW7k8QtAAK0wTEbmxtZUuGYL8YF6ayLAQADAgADeAADNQQ")  # TODO: сделать оформление из файла
-    # card_pic_id = open(Path(__file__).parent.absolute() / "img" / "card.png")
+    # card_pic_id = ("AgACAgQAAxkBAAIMP2bKLDHHQSdb4-"
+    #                "4qJpG9WTW7k8QtAAK0wTEbmxtZUuGYL8YF6ayLAQADAgADeAADNQQ")  # TODO: сделать оформление из файла
+    try:
+        card_pic_id = open(f"bin/img/{card['code']}.png", "rb")
+    except FileNotFoundError:
+        card_pic_id = ("AgACAgQAAxkBAAIMP2bKLDHHQSdb4-"
+                       "4qJpG9WTW7k8QtAAK0wTEbmxtZUuGYL8YF6ayLAQADAgADeAADNQQ")
     card_name = card["name"]
     card_team = card["team"]
     card_team = f"Команда: {card_team}\n" if card_team else ""
