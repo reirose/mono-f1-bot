@@ -1,11 +1,11 @@
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import Update
 from telegram.ext import ContextTypes
 
 from lib.classes.user import User
 from lib.keyboard_markup import shop_inline_markup
 
 
-async def shop_menu(update: Update, _: ContextTypes.DEFAULT_TYPE):
+async def packs_shop_menu(update: Update, _: ContextTypes.DEFAULT_TYPE):
     mes = update.message
     telegram_user = update.effective_user
     user = User.get(telegram_user)

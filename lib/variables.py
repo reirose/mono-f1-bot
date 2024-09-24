@@ -86,9 +86,9 @@ probability_by_category: dict = {
     "sapphire": {
         1: 0.015
     },
-    "diamond": {
-        1: 0.0075
-    }
+    # "diamond": {
+    #     1: 0.0075
+    # }
 }
 
 category_sort_keys: dict[str, int] = {'bronze': 0,

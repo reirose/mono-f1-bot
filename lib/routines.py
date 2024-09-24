@@ -16,7 +16,7 @@ def update_free_roll():
     """
     Добавление крутки пользователям
     """
-    resp = USER_COLLECTION.update_many({}, {"$inc": {"available_rolls": 1}})
+    resp = USER_COLLECTION.update_many({}, {"$inc": {"rolls_available": 1}})
     logging.log(BOT_INFO, f"Updated %i free rolls" % resp.matched_count)
 
 

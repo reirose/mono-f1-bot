@@ -1,6 +1,5 @@
 import datetime
 import logging
-import time
 from collections import namedtuple
 from typing import Union
 
@@ -12,7 +11,7 @@ from lib.init import USER_COLLECTION
 # кастомный тип переменной для более быстрой обработки инфы с БД
 UserData = namedtuple("UserData",
                       ['id', 'username', 'dor', 'collection', 'last_roll', 'rolls_available', 'status',
-                       'coins', 'market', 'garant', 'trade'])
+                       'coins', 'market', 'garant', 'trade', 'statistics'])
 
 
 class User:
@@ -20,7 +19,7 @@ class User:
         self.id: str = data.id
         self.username: str = data.username
         self.collection: list = data.collection
-        self.last_roll: int = data.last_roll
+        self.last_roll: list = data.last_roll
         self.rolls_available: int = data.rolls_available
         self.date_of_registration: int = data.dor
         self.status: str = data.status
@@ -28,6 +27,7 @@ class User:
         self.market: str = data.market
         self.garant: int = data.garant
         self.trade: list = data.trade
+        self.statistics: dict = data.statistics
 
     @staticmethod
     def user_registered(telegram_id: int) -> bool:
@@ -49,14 +49,17 @@ class User:
         user_data = {"id": user.id,
                      "username": user.username,
                      "collection": [],
-                     "last_roll": time.time(),
+                     "last_roll": [],
                      "rolls_available": 1,
                      "dor": datetime.datetime.now().timestamp(),
                      "status": "idle",
                      "coins": 0,
                      "market": "",
                      "garant": 0,
-                     "trade": []}
+                     "trade": [],
+                     "statistics": {"packs_opened": 0,
+                                    "coins_spent": 0,
+                                    "trades_complete": 0}}
         USER_COLLECTION.insert_one(user_data)
         logging.log(logging.INFO, "Registered user %s" % user.username)
 
@@ -97,7 +100,8 @@ class User:
                                                            "coins": self.coins,
                                                            "market": self.market,
                                                            "garant": self.garant,
-                                                           "trade": self.trade
+                                                           "trade": self.trade,
+                                                           "statistics": self.statistics
                                                        }},
                                                        upsert=False)
         return res.acknowledged

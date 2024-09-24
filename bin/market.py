@@ -9,7 +9,7 @@ from telegram.ext import ContextTypes, ConversationHandler, CallbackQueryHandler
 from bin.menu import menu
 from lib.classes.user import User
 from lib.init import MARKET_COLLECTION
-from lib.keyboard_markup import other_menu_markup
+from lib.keyboard_markup import other_menu_markup, shop_menu_markup
 from lib.variables import cards_dict
 
 
@@ -30,6 +30,7 @@ async def buy_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     user.coins -= offer["price"]
     user.collection.append(offer["code"])
+    user.statistics["coins_spent"] += offer["price"]
     user.write()
     seller = User.get(user=None, update=offer["seller"])
     seller.coins += offer["price"]
@@ -38,6 +39,12 @@ async def buy_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await mes.reply_text(f"Вы купили карту {cards_dict[offer['code']]['name']} за {offer['price']}")
     await context.bot.send_message(chat_id=seller.id,
                                    text=f"У вас купили карту {cards_dict[offer['code']]['name']} за {offer['price']}!")
+
+
+async def shop_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await context.bot.send_message(text="🛒",
+                                   chat_id=update.message.from_user.id,
+                                   reply_markup=shop_menu_markup)
 
 
 async def market_menu(update: Update, _: ContextTypes.DEFAULT_TYPE):

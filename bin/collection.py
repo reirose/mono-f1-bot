@@ -1,5 +1,4 @@
 import re
-from pathlib import Path
 
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, Bot
 from telegram.error import BadRequest
@@ -15,7 +14,7 @@ async def show_card(query, context, in_market: bool):
     user_collection = User.get(query.from_user).collection
     card = cards_dict.get(f"c_{re.search('c_(.{3})', query.data).group(1)}")
     # card_pic_id = ("AgACAgQAAxkBAAIMP2bKLDHHQSdb4-"
-    #                "4qJpG9WTW7k8QtAAK0wTEbmxtZUuGYL8YF6ayLAQADAgADeAADNQQ")  # TODO: сделать оформление из файла
+    #                "4qJpG9WTW7k8QtAAK0wTEbmxtZUuGYL8YF6ayLAQADAgADeAADNQQ")
     try:
         card_pic_id = open(f"bin/img/{card['code']}.png", "rb")
     except FileNotFoundError:

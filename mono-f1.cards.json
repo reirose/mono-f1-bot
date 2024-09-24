@@ -6,7 +6,8 @@
   "name": "Max Verstappen",
   "type": "driver",
   "team": "Red Bull",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -16,7 +17,8 @@
   "name": "Sergio Perez",
   "type": "driver",
   "team": "Red Bull",
-  "category": "bronze"
+  "category": "bronze",
+  "description": ""
 },
 {
   "_id": {
@@ -26,7 +28,8 @@
   "name": "Lewis Hamilton",
   "type": "driver",
   "team": "Mercedes",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -36,7 +39,8 @@
   "name": "George Russell",
   "type": "driver",
   "team": "Mercedes",
-  "category": "silver"
+  "category": "silver",
+  "description": ""
 },
 {
   "_id": {
@@ -46,7 +50,8 @@
   "name": "Charles Leclerc",
   "type": "driver",
   "team": "Ferrari",
-  "category": "silver"
+  "category": "silver",
+  "description": ""
 },
 {
   "_id": {
@@ -56,7 +61,8 @@
   "name": "Carlos Sainz Jr.",
   "type": "driver",
   "team": "Ferrari",
-  "category": "silver"
+  "category": "silver",
+  "description": ""
 },
 {
   "_id": {
@@ -66,7 +72,8 @@
   "name": "Lando Norris",
   "type": "driver",
   "team": "McLaren",
-  "category": "silver"
+  "category": "silver",
+  "description": ""
 },
 {
   "_id": {
@@ -76,7 +83,8 @@
   "name": "Oscar Piastri",
   "type": "driver",
   "team": "McLaren",
-  "category": "silver"
+  "category": "silver",
+  "description": ""
 },
 {
   "_id": {
@@ -86,7 +94,8 @@
   "name": "Fernando Alonso",
   "type": "driver",
   "team": "Aston Martin",
-  "category": "silver"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -96,7 +105,8 @@
   "name": "Lance Stroll",
   "type": "driver",
   "team": "Aston Martin",
-  "category": "bronze"
+  "category": "bronze",
+  "description": ""
 },
 {
   "_id": {
@@ -106,7 +116,8 @@
   "name": "Pierre Gasly",
   "type": "driver",
   "team": "Alpine",
-  "category": "bronze"
+  "category": "bronze",
+  "description": ""
 },
 {
   "_id": {
@@ -116,7 +127,8 @@
   "name": "Esteban Ocon",
   "type": "driver",
   "team": "Alpine",
-  "category": "bronze"
+  "category": "bronze",
+  "description": ""
 },
 {
   "_id": {
@@ -126,7 +138,8 @@
   "name": "Alexander Albon",
   "type": "driver",
   "team": "Williams",
-  "category": "bronze"
+  "category": "bronze",
+  "description": ""
 },
 {
   "_id": {
@@ -136,7 +149,8 @@
   "name": "Franco Colapinto",
   "type": "driver",
   "team": "Williams",
-  "category": "bronze"
+  "category": "bronze",
+  "description": ""
 },
 {
   "_id": {
@@ -146,7 +160,8 @@
   "name": "Daniel Ricciardo",
   "type": "driver",
   "team": "RB",
-  "category": "bronze"
+  "category": "bronze",
+  "description": ""
 },
 {
   "_id": {
@@ -156,7 +171,8 @@
   "name": "Yuki Tsunoda",
   "type": "driver",
   "team": "RB",
-  "category": "bronze"
+  "category": "bronze",
+  "description": ""
 },
 {
   "_id": {
@@ -166,7 +182,8 @@
   "name": "Valtteri Bottas",
   "type": "driver",
   "team": "Sauber",
-  "category": "bronze"
+  "category": "bronze",
+  "description": ""
 },
 {
   "_id": {
@@ -176,7 +193,8 @@
   "name": "Guanyu Zhou",
   "type": "driver",
   "team": "Sauber",
-  "category": "bronze"
+  "category": "bronze",
+  "description": ""
 },
 {
   "_id": {
@@ -186,7 +204,8 @@
   "name": "Kevin Magnussen",
   "type": "driver",
   "team": "Haas",
-  "category": "bronze"
+  "category": "bronze",
+  "description": ""
 },
 {
   "_id": {
@@ -196,7 +215,8 @@
   "name": "Nico Hulkenberg",
   "type": "driver",
   "team": "Haas",
-  "category": "bronze"
+  "category": "bronze",
+  "description": ""
 },
 {
   "_id": {
@@ -206,7 +226,8 @@
   "name": "Verstappen • Perez",
   "type": "duo",
   "team": "Red Bull",
-  "category": "silver"
+  "category": "silver",
+  "description": ""
 },
 {
   "_id": {
@@ -216,7 +237,8 @@
   "name": "Hamilton • Russell",
   "type": "duo",
   "team": "Mercedes",
-  "category": "silver"
+  "category": "silver",
+  "description": ""
 },
 {
   "_id": {
@@ -226,7 +248,8 @@
   "name": "Leclerc • Sainz",
   "type": "duo",
   "team": "Ferrari",
-  "category": "silver"
+  "category": "silver",
+  "description": ""
 },
 {
   "_id": {
@@ -236,7 +259,8 @@
   "name": "Norris • Piastri",
   "type": "duo",
   "team": "McLaren",
-  "category": "silver"
+  "category": "silver",
+  "description": ""
 },
 {
   "_id": {
@@ -246,7 +270,8 @@
   "name": "Alonso • Stroll",
   "type": "duo",
   "team": "Aston Martin",
-  "category": "silver"
+  "category": "silver",
+  "description": ""
 },
 {
   "_id": {
@@ -256,7 +281,8 @@
   "name": "Gasly • Ocon",
   "type": "duo",
   "team": "Alpine",
-  "category": "silver"
+  "category": "silver",
+  "description": ""
 },
 {
   "_id": {
@@ -266,7 +292,8 @@
   "name": "Albon • Colapinto",
   "type": "duo",
   "team": "Williams",
-  "category": "silver"
+  "category": "silver",
+  "description": ""
 },
 {
   "_id": {
@@ -276,7 +303,8 @@
   "name": "Ricciardo • Tsunoda",
   "type": "duo",
   "team": "RB",
-  "category": "silver"
+  "category": "silver",
+  "description": ""
 },
 {
   "_id": {
@@ -286,7 +314,8 @@
   "name": "Bottas • Zhou",
   "type": "duo",
   "team": "Sauber",
-  "category": "silver"
+  "category": "silver",
+  "description": ""
 },
 {
   "_id": {
@@ -296,7 +325,8 @@
   "name": "Magnussen • Hulkenberg",
   "type": "duo",
   "team": "Haas",
-  "category": "silver"
+  "category": "silver",
+  "description": ""
 },
 {
   "_id": {
@@ -306,7 +336,8 @@
   "name": "VER • PER • Horner",
   "type": "team",
   "team": "Red Bull",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -316,7 +347,8 @@
   "name": "HAM • RUS • Wolff",
   "type": "team",
   "team": "Mercedes",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -326,7 +358,8 @@
   "name": "LEC • SAI • Vasseur",
   "type": "team",
   "team": "Ferrari",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -336,7 +369,8 @@
   "name": "NOR • PIA • Brown",
   "type": "team",
   "team": "McLaren",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -346,7 +380,8 @@
   "name": "ALO • STR • Krack",
   "type": "team",
   "team": "Aston Martin",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -356,7 +391,8 @@
   "name": "GAS • OCO • Oakes",
   "type": "team",
   "team": "Alpine",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -366,7 +402,8 @@
   "name": "ALB • COL • Vowles",
   "type": "team",
   "team": "Williams",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -376,7 +413,8 @@
   "name": "RIC • TSU • Mekies",
   "type": "team",
   "team": "RB",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -386,7 +424,8 @@
   "name": "BOT • ZHO • Bravi",
   "type": "team",
   "team": "Sauber",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -396,9 +435,9 @@
   "name": "MAG • HUL • Komatsu",
   "type": "team",
   "team": "Haas",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
-
 {
   "_id": {
     "$oid": "66e3d681e0ee9fa3b0c921ea"
@@ -407,7 +446,8 @@
   "name": "Christian Horner",
   "type": "team_principal",
   "team": "Red Bull",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -417,7 +457,8 @@
   "name": "Toto Wolff",
   "type": "team_principal",
   "team": "Mercedes",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -427,7 +468,8 @@
   "name": "Frederic Vasseur",
   "type": "team_principal",
   "team": "Ferrari",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -437,7 +479,8 @@
   "name": "Zak Brown",
   "type": "team_principal",
   "team": "McLaren",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -447,7 +490,8 @@
   "name": "Mike Krack",
   "type": "team_principal",
   "team": "Aston Martin",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -457,7 +501,8 @@
   "name": "Oliver Oakes",
   "type": "team_principal",
   "team": "Alpine",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -467,7 +512,8 @@
   "name": "James Vowles",
   "type": "team_principal",
   "team": "Williams",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -477,7 +523,8 @@
   "name": "Laurent Mekies",
   "type": "team_principal",
   "team": "RB",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -487,7 +534,8 @@
   "name": "Alessandro Alunni Bravi",
   "type": "team_principal",
   "team": "Sauber",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -497,9 +545,13 @@
   "name": "Ayao Komatsu",
   "type": "team_principal",
   "team": "Haas",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e69611"
+  },
   "code": "c_501",
   "name": "Bahrain International Circuit | Bahrain",
   "type": "track",
@@ -508,6 +560,9 @@
   "description": "Открыт в 2004 году. Известен своими длинными прямыми и жарким климатом. Гонка проходит в вечернее время под искусственным освещением."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e69612"
+  },
   "code": "c_502",
   "name": "Jeddah Corniche Circuit | Saudi Arabia",
   "type": "track",
@@ -516,6 +571,9 @@
   "description": "Самая длинная и быстрая городская трасса в календаре F1. Дебютировала в 2021 году. Известна своими скоростными поворотами и ночной гонкой."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e69613"
+  },
   "code": "c_503",
   "name": "Albert Park Circuit | Australia",
   "type": "track",
@@ -524,6 +582,9 @@
   "description": "Полупостоянная трасса в Мельбурне. Сочетает в себе элементы городской и стационарной трассы. Известна своей живописностью и непредсказуемыми гонками."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e69614"
+  },
   "code": "c_504",
   "name": "Suzuka International Racing Course | Japan",
   "type": "track",
@@ -532,6 +593,9 @@
   "description": "Одна из самых технически сложных трасс. Уникальная 'восьмерка' в конфигурации. Любима гонщиками за разнообразие поворотов и вызов для навыков пилотирования."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e69615"
+  },
   "code": "c_505",
   "name": "Shanghai International Circuit | China",
   "type": "track",
@@ -540,6 +604,9 @@
   "description": "Известна своим уникальным дизайном, напоминающим китайский иероглиф 'шан'. Включает в себя один из самых длинных прямых участков в календаре F1."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e69616"
+  },
   "code": "c_506",
   "name": "Miami International Autodrome | USA",
   "type": "track",
@@ -548,6 +615,9 @@
   "description": "Новая трасса, дебютировавшая в 2022 году. Расположена вокруг Hard Rock Stadium. Отличается сложными поворотами и длинными прямыми."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e69617"
+  },
   "code": "c_507",
   "name": "Autodromo Enzo e Dino Ferrari | Italy",
   "type": "track",
@@ -556,6 +626,9 @@
   "description": "Также известна как Имола. Историческая трасса с богатыми традициями. Отличается сложным рельефом и техничными поворотами."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e69618"
+  },
   "code": "c_508",
   "name": "Circuit de Monaco | Monaco",
   "type": "track",
@@ -564,6 +637,9 @@
   "description": "Самая престижная и известная трасса F1. Узкая городская трасса с множеством поворотов. Известна своей сложностью и гламурной атмосферой."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e69619"
+  },
   "code": "c_509",
   "name": "Circuit de Barcelona-Catalunya | Spain",
   "type": "track",
@@ -572,6 +648,9 @@
   "description": "Часто используется для тестов F1. Сочетает в себе быстрые и медленные повороты. Требует хорошего баланса настроек болида."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e6961a"
+  },
   "code": "c_510",
   "name": "Circuit Gilles Villeneuve | Canada",
   "type": "track",
@@ -580,6 +659,9 @@
   "description": "Расположена на искусственном острове. Известна своими длинными прямыми и шиканами. Знаменита 'Стеной чемпионов' - последним поворотом трассы."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e6961b"
+  },
   "code": "c_511",
   "name": "Red Bull Ring | Austria",
   "type": "track",
@@ -588,6 +670,9 @@
   "description": "Короткая, но быстрая трасса с живописными видами на Штирийские Альпы. Отличается значительными перепадами высот."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e6961c"
+  },
   "code": "c_512",
   "name": "Silverstone Circuit | Great Britain",
   "type": "track",
@@ -596,6 +681,9 @@
   "description": "Одна из самых быстрых трасс в календаре. Историческое место рождения F1. Знаменита своими скоростными поворотами и британской погодой."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e6961d"
+  },
   "code": "c_513",
   "name": "Hungaroring | Hungary",
   "type": "track",
@@ -604,6 +692,9 @@
   "description": "Извилистая трасса, часто сравниваемая с картодромом из-за обилия поворотов. Известна своей жарой и сложностью обгонов."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e6961e"
+  },
   "code": "c_514",
   "name": "Circuit de Spa-Francorchamps | Belgium",
   "type": "track",
@@ -612,6 +703,9 @@
   "description": "Одна из самых длинных и быстрых трасс. Включает легендарный поворот Eau Rouge. Славится непредсказуемой погодой и захватывающими гонками."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e6961f"
+  },
   "code": "c_515",
   "name": "Circuit Zandvoort | Netherlands",
   "type": "track",
@@ -620,6 +714,9 @@
   "description": "Историческая трасса, вернувшаяся в календарь F1 в 2021 году. Отличается крутыми виражами и близостью к морю."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e69620"
+  },
   "code": "c_516",
   "name": "Autodromo Nazionale Monza | Italy",
   "type": "track",
@@ -628,6 +725,9 @@
   "description": "Известна как 'Храм скорости'. Одна из самых быстрых трасс с длинными прямыми. Имеет богатую историю в F1."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e69621"
+  },
   "code": "c_517",
   "name": "Marina Bay Street Circuit | Singapore",
   "type": "track",
@@ -636,6 +736,9 @@
   "description": "Первая ночная гонка в истории F1. Городская трасса с уникальной атмосферой. Известна своей физической сложностью для пилотов."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e69622"
+  },
   "code": "c_518",
   "name": "Lusail International Circuit | Qatar",
   "type": "track",
@@ -644,6 +747,9 @@
   "description": "Новая трасса в календаре F1. Изначально построена для мотогонок. Отличается скоростными поворотами и современной инфраструктурой."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e69623"
+  },
   "code": "c_519",
   "name": "Circuit of the Americas | USA",
   "type": "track",
@@ -652,6 +758,9 @@
   "description": "Современная трасса, вдохновленная лучшими элементами других трасс F1. Известна своим первым сектором и значительным перепадом высот."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e69624"
+  },
   "code": "c_520",
   "name": "Autódromo Hermanos Rodríguez | Mexico",
   "type": "track",
@@ -660,6 +769,9 @@
   "description": "Расположена на большой высоте, что влияет на работу двигателей. Знаменита своим финальным сектором, проходящим через бейсбольный стадион."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e69625"
+  },
   "code": "c_521",
   "name": "Autódromo José Carlos Pace | Brazil",
   "type": "track",
@@ -668,6 +780,9 @@
   "description": "Также известна как Интерлагос. Одна из немногих трасс, идущих против часовой стрелки. Славится своей непредсказуемостью и страстными болельщиками."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e69626"
+  },
   "code": "c_522",
   "name": "Las Vegas Strip Circuit | USA",
   "type": "track",
@@ -676,6 +791,9 @@
   "description": "Новая ночная гонка на улицах Лас-Вегаса. Проходит мимо известных казино и отелей. Отличается длинными прямыми и скоростными поворотами."
 },
 {
+  "_id": {
+    "$oid": "66ed3a73d7f9dbfa76e69627"
+  },
   "code": "c_523",
   "name": "Yas Marina Circuit | Abu Dhabi",
   "type": "track",
@@ -691,7 +809,8 @@
   "name": "RB20",
   "type": "car",
   "team": "Red Bull",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -701,7 +820,8 @@
   "name": "W15",
   "type": "car",
   "team": "Mercedes",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -711,7 +831,8 @@
   "name": "SF-24",
   "type": "car",
   "team": "Ferrari",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -721,7 +842,8 @@
   "name": "MCL38",
   "type": "car",
   "team": "McLaren",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -731,7 +853,8 @@
   "name": "AMR24",
   "type": "car",
   "team": "Aston Martin",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -741,7 +864,8 @@
   "name": "A524",
   "type": "car",
   "team": "Alpine",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -751,7 +875,8 @@
   "name": "FW46",
   "type": "car",
   "team": "Williams",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -761,7 +886,8 @@
   "name": "VCARB 01",
   "type": "car",
   "team": "RB",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -771,7 +897,8 @@
   "name": "C44",
   "type": "car",
   "team": "Sauber",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -781,7 +908,8 @@
   "name": "VF-24",
   "type": "car",
   "team": "Haas",
-  "category": "gold"
+  "category": "gold",
+  "description": ""
 },
 {
   "_id": {
@@ -791,7 +919,8 @@
   "name": "@reirose",
   "type": "collab",
   "team": "MonoF1",
-  "category": "ruby"
+  "category": "ruby",
+  "description": ""
 },
 {
   "_id": {
@@ -801,7 +930,8 @@
   "name": "@poppybo",
   "type": "collab",
   "team": "MonoF1",
-  "category": "ruby"
+  "category": "ruby",
+  "description": ""
 },
 {
   "_id": {
@@ -811,7 +941,8 @@
   "name": "Kimi Raikkonen",
   "type": "historical",
   "team": "Ferrari",
-  "category": "sapphire"
+  "category": "sapphire",
+  "description": ""
 },
 {
   "_id": {
@@ -821,6 +952,17 @@
   "name": "Logan Sargeant",
   "type": "limited",
   "team": "Williams",
-  "category": "diamond"
-}
-]
+  "category": "diamond",
+  "description": ""
+},
+{
+  "_id": {
+    "$oid": "66f1c27e16a6561280f19105"
+  },
+  "code": "c_703",
+  "type": "collab",
+  "team": "MonoF1",
+  "category": "ruby",
+  "description": "Ноет, что никто ничего не делает, а сам делать не хочет. Вот так вот :)",
+  "name": "@ma14sss"
+}]

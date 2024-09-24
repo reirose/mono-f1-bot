@@ -7,8 +7,7 @@ from telegram.error import BadRequest
 from telegram.ext import ContextTypes
 
 from bin.collection import send_card_list, show_card, list_cards, get_collection_s
-from bin.market import market_sell_list_menu
-from bin.other import other_menu
+from bin.market import market_sell_list_menu, shop_menu
 from lib.classes.user import User
 from lib.init import BOT_INFO
 from lib.keyboard_markup import shop_inline_markup, generate_collection_keyboard
@@ -39,7 +38,6 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if query.data.startswith("trade_page_"):
         page = int(query.data.split("_")[2])
         inline_keyboard = query.message.to_dict().get('reply_markup').get('inline_keyboard')
-        print(inline_keyboard[-2])
         receiver = re.search('trade_confirm_(.+)', inline_keyboard[-2][0]['callback_data']).group(1)
         await send_card_list(update, context, telegram_user, page, in_market=False, trade=True,
                              trade_receiver=receiver)
@@ -55,7 +53,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         if "card" in query.data:
             await list_cards(update, context)
         elif "market" in query.data:
-            await other_menu(update, context)
+            await shop_menu(update, context)
 
     elif query.data.startswith("market_close_"):
         await context.bot.delete_message(chat_id=query.from_user.id, message_id=query.message.message_id)
@@ -94,6 +92,9 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif query.data.startswith("sell_confirm_"):
         card_code = re.search("sell_confirm_(.+)", query.data).group(1)
+        if card_code not in user.collection:
+            context.bot.delete_message(chat_id=user.id,
+                                       message_id=query.message.message_id)
         card_category = cards_dict.get(card_code).get("category")
         card_name = cards_dict.get(card_code).get("name")
         card_price = category_prices.get(card_category)
@@ -135,6 +136,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             return
 
         user.coins -= price
+        user.statistics["coins_spent"] += price
         user.rolls_available += quant
         user.write()
         await query.answer("Успешно!")
@@ -222,7 +224,9 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             user.collection.remove(c)
 
         user.trade = []
+        user.statistics["trades_complete"] += 1
         user.write()
+        receiver.statistics["trades_complete"] += 1
         receiver.write()
 
         await context.bot.send_message(chat_id=user.id,

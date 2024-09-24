@@ -7,11 +7,9 @@
 
 import logging
 import re
-from typing import Optional, Union
 
 from telegram import Message
 from telegram.ext import filters
-from telegram.ext._utils.types import FilterDataDict
 
 from lib.classes.user import User
 from lib.variables import dev_list, admin_list
@@ -77,9 +75,14 @@ class FilterShowCardButton(filters.MessageFilter):
         return message.text is not None and re.search("Посмотреть карту", message.text) is not None
 
 
-class FilterShopButton(filters.MessageFilter):
+class FilterPacksShopButton(filters.MessageFilter):
     def filter(self, message) -> bool:
         return message.text is not None and re.search("Паки", message.text) is not None
+
+
+class FilterShopButton(filters.MessageFilter):
+    def filter(self, message) -> bool:
+        return message.text is not None and re.search("Магазин", message.text) is not None
 
 
 class FilterMeButton(filters.MessageFilter):
@@ -103,7 +106,7 @@ class FilterAllCardsButton(filters.MessageFilter):
 
 
 class FilterUserNotBanned(filters.MessageFilter):
-    def filter(self, message: Message) -> Optional[Union[bool, FilterDataDict]]:
+    def filter(self, message: Message) -> bool:
         return User.get(message.from_user).status != "banned"
 
 
@@ -115,6 +118,7 @@ roll_menu_button_filter = FilterRollMenuButton()
 collection_menu_button_filter = FilterCollectionMenuButton()
 collection_list_button_filter = FilterCollectionListButton()
 show_card_button_filter = FilterShowCardButton()
+packs_shop_button_filter = FilterPacksShopButton()
 shop_button_filter = FilterShopButton()
 me_button_filter = FilterMeButton()
 market_button_filter = FilterMarketButton()

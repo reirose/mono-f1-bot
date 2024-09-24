@@ -12,7 +12,7 @@ from lib.variables import probability_by_category, cards_by_category, cards_in_p
     translation, garant_list, roll_cards_dict, category_sort_keys, garant_value
 
 
-def select_card_weighted(garant: bool = None):
+def select_card_weighted(garant: bool = None, user: User = None):
     categories = ["bronze"] * cards_in_pack
 
     for category, probabilities in probability_by_category.items():
@@ -30,15 +30,18 @@ def select_card_weighted(garant: bool = None):
 
     if not any(cat in ["gold", "ruby", 'sapphire', 'platinum'] for cat in categories) and garant:
         logging.log(BOT_INFO, "garant rolled")
-        categories[categories.index("bronze")] = random.choices(["gold", "platinum", "ruby", "sapphire", "diamond"],
-                                                                [.4, .25, .15, .12, .08])[0]
+        categories[categories.index("bronze")] = random.choices(["gold", "platinum", "ruby", "sapphire"],
+                                                                [.42, .27, .17, .16])[0]
 
     rolled_cards = []
     for cat in categories:
         card = roll_cards_dict[random.choice(cards_by_category[cat])]
-        if card in rolled_cards:
+        while card in rolled_cards or card["code"] in user.last_roll:
             card = roll_cards_dict[random.choice(cards_by_category[cat])]
         rolled_cards.append(card)
+
+    user.last_roll = [x["code"] for x in rolled_cards]
+    user.write()
     return rolled_cards
 
 
@@ -96,7 +99,7 @@ async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     garant = user.garant >= garant_value
-    rolled_cards = sorted(select_card_weighted(garant=garant),
+    rolled_cards = sorted(select_card_weighted(garant=garant, user=user),
                           key=lambda x: category_sort_keys.get(x['category'], float('inf')))
 
     logging.log(BOT_INFO, (f"{user.username} rolled: "
@@ -106,6 +109,7 @@ async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user.garant + 1
     user.rolls_available -= 1
     user.status = 'rolling'
+    user.statistics["packs_opened"] += 1
     user.write()
 
     ROLL_DELAY = 1
