@@ -935,6 +935,17 @@
 },
 {
   "_id": {
+    "$oid": "66f1c27e16a6561280f19105"
+  },
+  "code": "c_703",
+  "type": "collab",
+  "team": "MonoF1",
+  "category": "ruby",
+  "description": "Ноет, что никто ничего не делает, а сам делать не хочет. Вот так вот :)",
+  "name": "@ma14sss"
+},
+{
+  "_id": {
     "$oid": "66ea8f021c700e64bac240e5"
   },
   "code": "c_801",
@@ -954,15 +965,4 @@
   "team": "Williams",
   "category": "diamond",
   "description": ""
-},
-{
-  "_id": {
-    "$oid": "66f1c27e16a6561280f19105"
-  },
-  "code": "c_703",
-  "type": "collab",
-  "team": "MonoF1",
-  "category": "ruby",
-  "description": "Ноет, что никто ничего не делает, а сам делать не хочет. Вот так вот :)",
-  "name": "@ma14sss"
 }]
