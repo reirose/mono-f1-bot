@@ -119,7 +119,9 @@ roll_menu_buttons = [[KeyboardButton("Получить карту")], [KeyboardB
 shop_menu_buttons = [[KeyboardButton("Паки"), KeyboardButton("Маркет")],
                      [KeyboardButton("Получение карт"), KeyboardButton("Меню")]]
 
-other_menu_buttons = [[KeyboardButton("MonoF1")], [KeyboardButton("Меню")]]
+other_menu_buttons = [[KeyboardButton("Монетка")], [KeyboardButton("MonoF1"), KeyboardButton("Меню")]]
+
+coinflip_menu_buttons = [[KeyboardButton("С игроком"), KeyboardButton("С ботом")], [KeyboardButton("Меню")]]
 
 collection_menu_buttons = [KeyboardButton("Список карт"), KeyboardButton("Посмотреть карту"),
                            KeyboardButton("Обмен"), KeyboardButton("Все карты"), KeyboardButton("Меню")]
@@ -128,4 +130,5 @@ main_menu_markup = ReplyKeyboardMarkup(build_menu(main_menu_buttons, n_cols=2), 
 roll_menu_markup = ReplyKeyboardMarkup(roll_menu_buttons, resize_keyboard=True)
 other_menu_markup = ReplyKeyboardMarkup(other_menu_buttons, resize_keyboard=True)
 shop_menu_markup = ReplyKeyboardMarkup(shop_menu_buttons, resize_keyboard=True)
+coinflip_menu_markup = ReplyKeyboardMarkup(coinflip_menu_buttons, resize_keyboard=True)
 collection_menu_markup = ReplyKeyboardMarkup(build_menu(collection_menu_buttons, n_cols=3), resize_keyboard=True)

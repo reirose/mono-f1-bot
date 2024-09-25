@@ -139,11 +139,11 @@ async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user.write()
 
     ROLL_DELAY = 1
-    context.job_queue.run_once(roll_pre_result, ROLL_DELAY, data=[user, rolled_cards, mes])
+    context.job_queue.run_once(roll_result, ROLL_DELAY, data=[user, rolled_cards, mes])
     await update.message.reply_text(text="крутим-вертим")
 
 
-async def roll_pre_result(context):
+async def roll_result(context):
     job = context.job
     user = job.data[0]
     rolled_cards = job.data[1]

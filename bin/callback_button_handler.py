@@ -1,12 +1,12 @@
 import datetime
 import logging
-import random
 import re
 
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.error import BadRequest
 from telegram.ext import ContextTypes
 
+from bin.coinflip import coinflip_result
 from bin.collection import send_card_list, show_card, list_cards, get_collection_s
 from bin.market import market_sell_list_menu, shop_menu
 from lib.classes.user import User
@@ -257,44 +257,57 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                          message_id=query.message.message_id)
         await query.answer("Отменено")
 
-    elif query.data.startswith("coinflip_cancel"):
-        p1 = User.get(None, re.search("coinflip_cancel_(.+)", query.data)).group(1)
+    elif query.data.startswith("coinflip_decline"):
+        opp = User.get(None, re.search("coinflip_decline_(.+)", query.data)).group(1)
         resp_p1 = f"Пользователь {user.username} отклонил предложение игры."
-        p1.coinflip = 0
+        opp.coinflip = 0
+        opp.write()
 
-        await context.bot.send_message(chat_id=p1.id,
+        try:
+            await context.bot.delete_message(chat_id=user.id,
+                                             message_id=query.message.message_id)
+        except BadRequest:
+            await query.answer("Игра не существует или уже завершена!")
+        await context.bot.send_message(chat_id=opp.id,
                                        text=resp_p1)
         await query.answer("Отклонено")
 
     elif query.data.startswith("coinflip_accept"):
         await query.answer()
-        p1 = int(re.search("coinflip_accept_(.+)", query.data).group(1))
-        p2 = user.id
 
-        winner = User.get(None, random.choice([p1, p2]))
-        loser = p1 if winner.id == p2 else p2
-        loser = User.get(None, loser)
+        await context.bot.send_message(chat_id=int(re.search("coinflip_accept_(.+)_(.+)", query.data).group(1)),
+                                       text="🪙")
 
-        bet = max([winner.coinflip, loser.coinflip])
+        await context.bot.send_message(chat_id=user.id,
+                                       text="🪙")
 
-        resp_winner = f"Вы подебили!\nБаланс пополнен на {bet} 🪙"
-        resp_loser = f"{winner.username} подебил!\nСписано {bet} 🪙"
+        context.job_queue.run_once(coinflip_result, 3.5,
+                                   data=[{"query_data": query.data,
+                                          "user_id": user.id}])
 
-        winner.coins += bet
-        winner.coinflip = 0
-        loser.coins -= bet
-        if loser.coins < 0:
-            loser.coins = 0
-        loser.coinflip = 0
+        try:
+            await context.bot.delete_message(chat_id=user.id,
+                                             message_id=query.message.message_id)
+        except BadRequest:
+            pass
 
-        winner.write()
-        loser.write()
+    elif query.data.startswith("coinflip_cancel"):
+        pattern = re.compile("coinflip_cancel_(.+)_(.+)")
+        opp_id = pattern.search(query.data).group(1)
+        opp_mes_id = pattern.search(query.data).group(2)
+        try:
+            await context.bot.delete_message(chat_id=opp_id,
+                                             message_id=opp_mes_id)
+        except BadRequest:
+            await query.answer("Игра не существует или уже завершена!")
+        user.coinflip = 0
+        user.write()
 
-        await context.bot.send_message(chat_id=winner.id,
-                                       text=resp_winner)
+        await context.bot.send_message(text="Успешно!",
+                                       chat_id=user.id)
 
-        await context.bot.send_message(chat_id=loser.id,
-                                       text=resp_loser)
-
-        await context.bot.delete_message(chat_id=user.id,
-                                         message_id=query.message.message_id)
+        try:
+            await context.bot.delete_message(chat_id=user.id,
+                                             message_id=query.message.message_id)
+        except BadRequest:
+            pass

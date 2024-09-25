@@ -4,7 +4,8 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler
 
 from bin.callback_button_handler import button_callback
-from bin.coinflip import coinflip_conv_handler
+from bin.coinflip import coinflip_conv_handler, abort, coinflip_menu
+from bin.coinflip_pve import bot_coinflip_conv_handler
 from bin.collection import view_collection_list, collection_menu, list_cards, collection_completeness
 from bin.market import market_menu, conv_handler, buy_command, shop_menu
 from bin.menu import menu, about_me
@@ -18,7 +19,7 @@ from lib.init import TOKEN, client, BOT_INFO
 from lib.filters import (other_button_filter, menu_button_filter, roll_menu_button_filter, roll_button_filter,
                          collection_menu_button_filter, show_card_button_filter, collection_list_button_filter,
                          dev_mode, packs_shop_button_filter, me_button_filter, market_button_filter, not_banned_filter,
-                         is_admin, all_cards_button_filter, shop_button_filter)
+                         is_admin, all_cards_button_filter, shop_button_filter, coinflip_menu_button_filter)
 from lib.routines import update_cards, scheduler, update_free_roll
 
 scheduler.start()
@@ -37,6 +38,7 @@ def main():
     app.add_handler(CommandHandler("give", give_user, filters=is_admin))
     app.add_handler(CommandHandler("unstuck", unstuck, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("buy", buy_command, has_args=True, filters=dev_mode & not_banned_filter))
+    app.add_handler(CommandHandler("coinflip_cancel", abort, filters=dev_mode & not_banned_filter))
 
     # обработчики текстовых сообщений (для кнопок)
     app.add_handler(MessageHandler(dev_mode & other_button_filter & not_banned_filter, other_menu))
@@ -51,11 +53,13 @@ def main():
     app.add_handler(MessageHandler(dev_mode & shop_button_filter & not_banned_filter, shop_menu))
     app.add_handler(MessageHandler(dev_mode & market_button_filter & not_banned_filter, market_menu))
     app.add_handler(MessageHandler(dev_mode & all_cards_button_filter & not_banned_filter, collection_completeness))
+    app.add_handler(MessageHandler(dev_mode & coinflip_menu_button_filter & not_banned_filter, coinflip_menu))
 
     # обработчик беседы (для продажи)
     app.add_handler(conv_handler)
     app.add_handler(trade_conv_handler)
     app.add_handler(coinflip_conv_handler)
+    app.add_handler(bot_coinflip_conv_handler)
     # обработчик инлайн кнопок
     app.add_handler(CallbackQueryHandler(button_callback))
 
