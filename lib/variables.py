@@ -71,25 +71,21 @@ translation: dict = {
 }
 
 probability_by_category: dict = {
-    "silver": {
-        1: 0.30
-    },
-    "gold": {
-        1: 0.12
-    },
-    "platinum": {
-        1: 0.06
-    },
-    "ruby": {
-        1: 0.03
-    },
-    "sapphire": {
-        1: 0.015
-    },
-    # "diamond": {
-    #     1: 0.0075
-    # }
-}
+        "silver": 0.30,
+        "gold": 0.12,
+        "platinum": 0.06,
+        "ruby": 0.03,
+        "sapphire": 0.015
+    }
+
+category_distribution = {
+        "bronze": 2,
+        "silver": 0,
+        "gold": 0,
+        "platinum": 0,
+        "ruby": 0,
+        "sapphire": 0
+    }
 
 category_sort_keys: dict[str, int] = {'bronze': 0,
                                       'silver': 1,
@@ -131,7 +127,7 @@ sort_list_transl = {'type': 'По типу',
                     'category': 'По редкости',
                     'team': 'По команде'}
 
-cards_in_pack: int = 3
+cards_in_pack: int = 2
 
 garant_value: int = 10
 

@@ -8,30 +8,56 @@ from telegram.ext import ContextTypes
 from lib.classes.user import User
 from lib.init import BOT_INFO
 from lib.keyboard_markup import roll_menu_markup
-from lib.variables import probability_by_category, cards_by_category, cards_in_pack, \
-    translation, garant_list, roll_cards_dict, category_sort_keys, garant_value
+from lib.variables import probability_by_category, cards_by_category, translation, garant_list, \
+    roll_cards_dict, category_sort_keys, garant_value, category_distribution
+
+
+# def select_card_weighted(garant: bool = None, user: User = None):
+#     categories = ["bronze"] * cards_in_pack
+#
+#     for category, probabilities in probability_by_category.items():
+#         rand = random.random()
+#         slots_for_category = 0
+#         for nof, prob in probabilities.items():
+#             if rand < prob:
+#                 slots_for_category = nof
+#
+#         if slots_for_category > 0:
+#             available_indices = [i for i in range(cards_in_pack) if categories[i] == "bronze"]
+#             chosen_indices = available_indices[:slots_for_category]
+#             for index in chosen_indices:
+#                 categories[index] = category
+#
+#     if not any(cat in ["gold", "ruby", 'sapphire', 'platinum'] for cat in categories) and garant:
+#         logging.log(BOT_INFO, "garant rolled")
+#         categories[categories.index("bronze")] = random.choices(["gold", "platinum", "ruby", "sapphire"],
+#                                                                 [.42, .27, .17, .16])[0]
+#
+#     rolled_cards = []
+#     for cat in categories:
+#         card = roll_cards_dict[random.choice(cards_by_category[cat])]
+#         while card in rolled_cards or card["code"] in user.last_roll:
+#             card = roll_cards_dict[random.choice(cards_by_category[cat])]
+#         rolled_cards.append(card)
+#
+#     user.last_roll = [x["code"] for x in rolled_cards]
+#     user.write()
+#     return rolled_cards
 
 
 def select_card_weighted(garant: bool = None, user: User = None):
-    categories = ["bronze"] * cards_in_pack
+    categories = []
+    for category, count in category_distribution.items():
+        for _ in range(count):
+            categories.append(category)
 
-    for category, probabilities in probability_by_category.items():
-        rand = random.random()
-        slots_for_category = 0
-        for nof, prob in probabilities.items():
-            if rand < prob:
-                slots_for_category = nof
-
-        if slots_for_category > 0:
-            available_indices = [i for i in range(cards_in_pack) if categories[i] == "bronze"]
-            chosen_indices = available_indices[:slots_for_category]
-            for index in chosen_indices:
-                categories[index] = category
+    for category, prob in probability_by_category.items():
+        if random.random() < prob:
+            categories.append(category)
 
     if not any(cat in ["gold", "ruby", 'sapphire', 'platinum'] for cat in categories) and garant:
         logging.log(BOT_INFO, "garant rolled")
-        categories[categories.index("bronze")] = random.choices(["gold", "platinum", "ruby", "sapphire"],
-                                                                [.42, .27, .17, .16])[0]
+        categories.append(random.choices(["gold", "platinum", "ruby", "sapphire"], [.42, .27, .17, .16])[0])
 
     rolled_cards = []
     for cat in categories:
@@ -123,42 +149,18 @@ async def roll_pre_result(context):
     rolled_cards = job.data[1]
     mes = job.data[2]
 
-    response = (f"Получена карта: "
-                f"{translation[rolled_cards[0]['category']]} "
-                f"<b>{rolled_cards[0]['name']}!</b> "
-                f"{'🆕 ' if rolled_cards[0]['code'] not in user.collection else ''}\n")
+    response = f"Получены карты: \n\n"
 
-    user.collection.append(rolled_cards[0]["code"])
-    user.write()
-    rolled_cards.pop(0)
+    for card in rolled_cards:
+        response += (f"{translation[card['category']]} "
+                     f"<b>{card['name']}!</b> "
+                     f"{'🆕 ' if card['code'] not in user.collection else ''}\n")
 
-    sent = await mes.reply_text(text=response,
-                                reply_markup=roll_menu_markup,
-                                parse_mode="HTML")
-    context.job_queue.run_once(update_roll_result, 1, data=[user, rolled_cards, mes, sent])
+        user.collection.append(card["code"])
 
-
-async def update_roll_result(context):
-    job = context.job
-    user = job.data[0]
-    rolled_cards = job.data[1]
-    mes = job.data[2]
-    sent = job.data[3]
-
-    response = (f"Получена карта: "
-                f"{translation[rolled_cards[0]['category']]} "
-                f"<b>{rolled_cards[0]['name']}!</b> "
-                f"{'🆕 ' if rolled_cards[0]['code'] not in user.collection else ''}\n")
-
-    user.collection.append(rolled_cards[0]["code"])
-    user.write()
-    rolled_cards.pop(0)
     await mes.reply_text(text=response,
                          reply_markup=roll_menu_markup,
                          parse_mode="HTML")
 
-    if not rolled_cards:
-        user.status = "idle"
-        user.write()
-        return
-    context.job_queue.run_once(update_roll_result, 1, data=[user, rolled_cards, mes, sent])
+    user.status = "idle"
+    user.write()

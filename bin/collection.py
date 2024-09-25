@@ -18,8 +18,7 @@ async def show_card(query, context, in_market: bool):
     try:
         card_pic_id = open(f"bin/img/{card['code']}.png", "rb")
     except FileNotFoundError:
-        card_pic_id = ("AgACAgQAAxkBAAIMP2bKLDHHQSdb4-"
-                       "4qJpG9WTW7k8QtAAK0wTEbmxtZUuGYL8YF6ayLAQADAgADeAADNQQ")
+        card_pic_id = open(f"bin/img/card.png", "rb")
     card_name = card["name"]
     card_team = card["team"]
     card_team = f"Команда: {card_team}\n" if card_team else ""
