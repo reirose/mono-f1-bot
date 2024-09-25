@@ -4,6 +4,7 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler
 
 from bin.callback_button_handler import button_callback
+from bin.coinflip import coinflip_conv_handler
 from bin.collection import view_collection_list, collection_menu, list_cards, collection_completeness
 from bin.market import market_menu, conv_handler, buy_command, shop_menu
 from bin.menu import menu, about_me
@@ -54,6 +55,7 @@ def main():
     # обработчик беседы (для продажи)
     app.add_handler(conv_handler)
     app.add_handler(trade_conv_handler)
+    app.add_handler(coinflip_conv_handler)
     # обработчик инлайн кнопок
     app.add_handler(CallbackQueryHandler(button_callback))
 

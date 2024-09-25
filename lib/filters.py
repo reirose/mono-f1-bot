@@ -105,6 +105,11 @@ class FilterAllCardsButton(filters.MessageFilter):
         return message.text is not None and re.search("Все карты", message.text) is not None
 
 
+class FilterCoinflipButton(filters.MessageFilter):
+    def filter(self, message) -> bool:
+        return message.text is not None and re.search("\"Монетка\"", message.text) is not None
+
+
 class FilterUserNotBanned(filters.MessageFilter):
     def filter(self, message: Message) -> bool:
         return User.get(message.from_user).status != "banned"
@@ -124,5 +129,6 @@ me_button_filter = FilterMeButton()
 market_button_filter = FilterMarketButton()
 trade_button_filter = FilterTradeButton()
 all_cards_button_filter = FilterAllCardsButton()
+coinflip_button_filter = FilterCoinflipButton()
 is_admin = IsAdminFilter()
 dev_mode = DevMode()

@@ -9,7 +9,7 @@ from telegram.ext import ContextTypes, ConversationHandler, CallbackQueryHandler
 from bin.menu import menu
 from lib.classes.user import User
 from lib.init import MARKET_COLLECTION
-from lib.keyboard_markup import other_menu_markup, shop_menu_markup
+from lib.keyboard_markup import shop_menu_markup
 from lib.variables import cards_dict
 
 
@@ -95,7 +95,7 @@ async def market_place_card(update: Update, _: ContextTypes.DEFAULT_TYPE):
 
     response = f"Удачно! Код операции: {op_id}"
     await mes.reply_text(response,
-                         reply_markup=other_menu_markup)
+                         reply_markup=shop_menu_markup)
     return ConversationHandler.END
 
 
@@ -118,7 +118,7 @@ async def market_sell_list_menu(update: Update, context: ContextTypes.DEFAULT_TY
 
     await context.bot.send_message(text=response,
                                    chat_id=update.effective_user.id,
-                                   reply_markup=other_menu_markup,
+                                   reply_markup=shop_menu_markup,
                                    parse_mode="HTML")
 
 

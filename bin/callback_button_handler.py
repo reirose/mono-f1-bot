@@ -1,5 +1,6 @@
 import datetime
 import logging
+import random
 import re
 
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
@@ -255,3 +256,45 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.delete_message(chat_id=user.id,
                                          message_id=query.message.message_id)
         await query.answer("Отменено")
+
+    elif query.data.startswith("coinflip_cancel"):
+        p1 = User.get(None, re.search("coinflip_cancel_(.+)", query.data)).group(1)
+        resp_p1 = f"Пользователь {user.username} отклонил предложение игры."
+        p1.coinflip = 0
+
+        await context.bot.send_message(chat_id=p1.id,
+                                       text=resp_p1)
+        await query.answer("Отклонено")
+
+    elif query.data.startswith("coinflip_accept"):
+        await query.answer()
+        p1 = int(re.search("coinflip_accept_(.+)", query.data).group(1))
+        p2 = user.id
+
+        winner = User.get(None, random.choice([p1, p2]))
+        loser = p1 if winner.id == p2 else p2
+        loser = User.get(None, loser)
+
+        bet = max([winner.coinflip, loser.coinflip])
+
+        resp_winner = f"Вы подебили!\nБаланс пополнен на {bet} 🪙"
+        resp_loser = f"{winner.username} подебил!\nСписано {bet} 🪙"
+
+        winner.coins += bet
+        winner.coinflip = 0
+        loser.coins -= bet
+        if loser.coins < 0:
+            loser.coins = 0
+        loser.coinflip = 0
+
+        winner.write()
+        loser.write()
+
+        await context.bot.send_message(chat_id=winner.id,
+                                       text=resp_winner)
+
+        await context.bot.send_message(chat_id=loser.id,
+                                       text=resp_loser)
+
+        await context.bot.delete_message(chat_id=user.id,
+                                         message_id=query.message.message_id)
