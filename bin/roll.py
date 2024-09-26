@@ -5,44 +5,12 @@ import random
 from telegram import Update
 from telegram.ext import ContextTypes
 
+from bin.achievements import bot_check_achievements
 from lib.classes.user import User
 from lib.init import BOT_INFO
 from lib.keyboard_markup import roll_menu_markup
 from lib.variables import probability_by_category, cards_by_category, translation, garant_list, \
     roll_cards_dict, category_sort_keys, garant_value, category_distribution
-
-
-# def select_card_weighted(garant: bool = None, user: User = None):
-#     categories = ["bronze"] * cards_in_pack
-#
-#     for category, probabilities in probability_by_category.items():
-#         rand = random.random()
-#         slots_for_category = 0
-#         for nof, prob in probabilities.items():
-#             if rand < prob:
-#                 slots_for_category = nof
-#
-#         if slots_for_category > 0:
-#             available_indices = [i for i in range(cards_in_pack) if categories[i] == "bronze"]
-#             chosen_indices = available_indices[:slots_for_category]
-#             for index in chosen_indices:
-#                 categories[index] = category
-#
-#     if not any(cat in ["gold", "ruby", 'sapphire', 'platinum'] for cat in categories) and garant:
-#         logging.log(BOT_INFO, "garant rolled")
-#         categories[categories.index("bronze")] = random.choices(["gold", "platinum", "ruby", "sapphire"],
-#                                                                 [.42, .27, .17, .16])[0]
-#
-#     rolled_cards = []
-#     for cat in categories:
-#         card = roll_cards_dict[random.choice(cards_by_category[cat])]
-#         while card in rolled_cards or card["code"] in user.last_roll:
-#             card = roll_cards_dict[random.choice(cards_by_category[cat])]
-#         rolled_cards.append(card)
-#
-#     user.last_roll = [x["code"] for x in rolled_cards]
-#     user.write()
-#     return rolled_cards
 
 
 def select_card_weighted(garant: bool = None, user: User = None):
@@ -54,6 +22,7 @@ def select_card_weighted(garant: bool = None, user: User = None):
     for category, prob in probability_by_category.items():
         if random.random() < prob:
             categories.append(category)
+            break
 
     if not any(cat in ["gold", "ruby", 'sapphire', 'platinum'] for cat in categories) and garant:
         logging.log(BOT_INFO, "garant rolled")
@@ -139,7 +108,7 @@ async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user.write()
 
     ROLL_DELAY = 1
-    context.job_queue.run_once(roll_result, ROLL_DELAY, data=[user, rolled_cards, mes])
+    context.job_queue.run_once(roll_result, ROLL_DELAY, data=[user, rolled_cards, mes, update])
     await update.message.reply_text(text="крутим-вертим")
 
 
@@ -164,3 +133,5 @@ async def roll_result(context):
 
     user.status = "idle"
     user.write()
+
+    await bot_check_achievements(job.data[3], context)

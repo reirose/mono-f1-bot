@@ -1,3 +1,5 @@
+import datetime
+
 cards_list: list = []
 cards_dict: dict = {}
 roll_cards_dict: dict = {}
@@ -71,11 +73,11 @@ translation: dict = {
 }
 
 probability_by_category: dict = {
-        "silver": 0.30,
-        "gold": 0.12,
-        "platinum": 0.06,
-        "ruby": 0.03,
-        "sapphire": 0.015
+        "silver": .12,
+        "gold": .06,
+        "platinum": .03,
+        "ruby": .015,
+        "sapphire": .0075
     }
 
 category_distribution = {
@@ -138,3 +140,61 @@ admin_list: list[int] = [352318827, 400977526, 417603391, 522033389, 776014112, 
                          1306616210, 1949641072, 5163281155, 6983627466]
 
 trades_log_chat_id = -1002401343820
+
+
+achievements_sort_order = {
+    "collector_bronze": 0,
+    "collector_silver": 1,
+    "collector_gold": 2,
+    "packs_opener_bronze": 3,
+    "packs_opener_silver": 4,
+    "packs_opener_gold": 5,
+    "trader_bronze": 6,
+    "trader_silver": 7,
+    "trader_gold": 8,
+    "spender": 9,
+    "oldschool": 10,
+    "rockefeller": 11
+}
+
+
+achievements_dict = {
+    "collector_bronze":
+        {"name": "Собрал 🤏 чу-чуть 🤏 совсем", "requirement": lambda user: len(user.collection) >= 10,
+         "desc": "За сбор 10 карт в коллекции"},
+    "collector_silver":
+        {"name": "Солидный склад", "requirement": lambda user: len(user.collection) >= 50,
+         "desc": "За сбор 50 карт в коллекции"},
+    "collector_gold":
+        {"name": "Типа коллекционер", "requirement": lambda user: len(user.collection) >= 100,
+         "desc": "За сбор 100 карт в коллекции"},
+    "packs_opener_bronze":
+        {"name": "Начинающий вскрыватель паков", "requirement": lambda user: user.statistics["packs_opened"] >= 10,
+         "desc": "За открытие 10 паков"},
+    "packs_opener_silver":
+        {"name": "Знаток картонок", "requirement": lambda user: user.statistics["packs_opened"] >= 50,
+         "desc": "За открытие 50 паков"},
+    "packs_opener_gold":
+        {"name": "Паковый император", "requirement": lambda user: user.statistics["packs_opened"] >= 100,
+         "desc": "За открытие 100 паков"},
+    "trader_bronze":
+        {"name": "Мелкий барыга", "requirement": lambda user: user.statistics["trades_complete"] >= 5,
+         "desc": "5 завершённых обменов"},
+    "trader_silver":
+        {"name": "Опытный перекупщик", "requirement": lambda user: user.statistics["trades_complete"] >= 20,
+         "desc": "20 завершённых обменов"},
+    "trader_gold":
+        {"name": "Торговый магнат", "requirement": lambda user: user.statistics["trades_complete"] >= 50,
+         "desc": "50 завершённых обменов"},
+    "spender":
+        {"name": "Куда деньги дел?", "requirement": lambda user: user.statistics["coins_spent"] >= 1000,
+         "desc": "Потрачено 1000 монет. Оно того стоило?"},
+    "rockefeller":
+        {"name": "Рокфеллер", "requirement": lambda user: user.coins >= 10000,
+         "desc": "Накопил 10000 монет. А зачем, можно вопрос?"},
+    "oldschool":
+        {"name": "Старожил",
+         "requirement": lambda user:
+         int((datetime.datetime.now().timestamp() - user.date_of_registration) // 86400) + 1 > 2592000,
+         "desc": "30 дней в игре. Неплохо для новичка"}
+}

@@ -8,7 +8,7 @@ from bin.coinflip import coinflip_conv_handler, abort, coinflip_menu
 from bin.coinflip_pve import bot_coinflip_conv_handler
 from bin.collection import view_collection_list, collection_menu, list_cards, collection_completeness
 from bin.market import market_menu, conv_handler, buy_command, shop_menu
-from bin.menu import menu, about_me
+from bin.menu import menu, about_me, achievements
 from bin.roll import roll, roll_menu
 from bin.service_commands import start, dev_mode_change, unstuck, give_user
 from bin.other import other_menu
@@ -37,6 +37,7 @@ def main():
     app.add_handler(CommandHandler("dm", dev_mode_change))
     app.add_handler(CommandHandler("give", give_user, filters=is_admin))
     app.add_handler(CommandHandler("unstuck", unstuck, filters=dev_mode & not_banned_filter))
+    app.add_handler(CommandHandler("achievements", achievements, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("buy", buy_command, has_args=True, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("coinflip_cancel", abort, filters=dev_mode & not_banned_filter))
 

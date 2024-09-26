@@ -226,7 +226,7 @@
   "name": "Verstappen • Perez",
   "type": "duo",
   "team": "Red Bull",
-  "category": "silver",
+  "category": "gold",
   "description": ""
 },
 {
@@ -237,7 +237,7 @@
   "name": "Hamilton • Russell",
   "type": "duo",
   "team": "Mercedes",
-  "category": "silver",
+  "category": "gold",
   "description": ""
 },
 {
@@ -248,7 +248,7 @@
   "name": "Leclerc • Sainz",
   "type": "duo",
   "team": "Ferrari",
-  "category": "silver",
+  "category": "gold",
   "description": ""
 },
 {
@@ -292,7 +292,7 @@
   "name": "Albon • Colapinto",
   "type": "duo",
   "team": "Williams",
-  "category": "silver",
+  "category": "bronze",
   "description": ""
 },
 {
@@ -303,7 +303,7 @@
   "name": "Ricciardo • Tsunoda",
   "type": "duo",
   "team": "RB",
-  "category": "silver",
+  "category": "bronze",
   "description": ""
 },
 {
@@ -314,7 +314,7 @@
   "name": "Bottas • Zhou",
   "type": "duo",
   "team": "Sauber",
-  "category": "silver",
+  "category": "bronze",
   "description": ""
 },
 {
@@ -325,7 +325,7 @@
   "name": "Magnussen • Hulkenberg",
   "type": "duo",
   "team": "Haas",
-  "category": "silver",
+  "category": "bronze",
   "description": ""
 },
 {
@@ -369,7 +369,7 @@
   "name": "NOR • PIA • Brown",
   "type": "team",
   "team": "McLaren",
-  "category": "gold",
+  "category": "silver",
   "description": ""
 },
 {
@@ -380,7 +380,7 @@
   "name": "ALO • STR • Krack",
   "type": "team",
   "team": "Aston Martin",
-  "category": "gold",
+  "category": "silver",
   "description": ""
 },
 {
@@ -391,7 +391,7 @@
   "name": "GAS • OCO • Oakes",
   "type": "team",
   "team": "Alpine",
-  "category": "gold",
+  "category": "silver",
   "description": ""
 },
 {
@@ -402,7 +402,7 @@
   "name": "ALB • COL • Vowles",
   "type": "team",
   "team": "Williams",
-  "category": "gold",
+  "category": "bronze",
   "description": ""
 },
 {
@@ -413,7 +413,7 @@
   "name": "RIC • TSU • Mekies",
   "type": "team",
   "team": "RB",
-  "category": "gold",
+  "category": "bronze",
   "description": ""
 },
 {
@@ -424,7 +424,7 @@
   "name": "BOT • ZHO • Bravi",
   "type": "team",
   "team": "Sauber",
-  "category": "gold",
+  "category": "bronze",
   "description": ""
 },
 {
@@ -435,7 +435,7 @@
   "name": "MAG • HUL • Komatsu",
   "type": "team",
   "team": "Haas",
-  "category": "gold",
+  "category": "bronze",
   "description": ""
 },
 {

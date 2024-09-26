@@ -6,6 +6,7 @@ from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.error import BadRequest
 from telegram.ext import ContextTypes
 
+from bin.achievements import bot_check_achievements
 from bin.coinflip import coinflip_result
 from bin.collection import send_card_list, show_card, list_cards, get_collection_s
 from bin.market import market_sell_list_menu, shop_menu
@@ -140,6 +141,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user.statistics["coins_spent"] += price
         user.rolls_available += quant
         user.write()
+        await bot_check_achievements(update, context)
         await query.answer("Успешно!")
 
         response = ("Тут можно приобрести дополнительные паки для открытия.\n\n"
@@ -227,6 +229,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user.trade = []
         user.statistics["trades_complete"] += 1
         user.write()
+        await bot_check_achievements(update, context)
         receiver.statistics["trades_complete"] += 1
         receiver.write()
 

@@ -7,11 +7,12 @@ from pymongo.results import UpdateResult
 from telegram import User as TelegramUser
 
 from lib.init import USER_COLLECTION
+from lib.variables import achievements_sort_order
 
 # кастомный тип переменной для более быстрой обработки инфы с БД
 UserData = namedtuple("UserData",
                       ['id', 'username', 'dor', 'collection', 'last_roll', 'rolls_available', 'status',
-                       'coins', 'market', 'garant', 'trade', 'statistics', 'coinflip'])
+                       'coins', 'market', 'garant', 'trade', 'statistics', 'coinflip', 'achievements'])
 
 
 class User:
@@ -29,6 +30,7 @@ class User:
         self.trade: list = data.trade
         self.statistics: dict = data.statistics
         self.coinflip: int = data.coinflip
+        self.achievements: list = data.achievements
 
     @staticmethod
     def user_registered(telegram_id: int) -> bool:
@@ -61,7 +63,8 @@ class User:
                      "statistics": {"packs_opened": 0,
                                     "coins_spent": 0,
                                     "trades_complete": 0},
-                     "coinflip": 0}
+                     "coinflip": 0,
+                     "achievements": []}
         USER_COLLECTION.insert_one(user_data)
         logging.log(logging.INFO, "Registered user %s" % user.username)
 
@@ -91,6 +94,8 @@ class User:
         Запись пользователя в БД
         :return: true, если всё ок
         """
+        self.achievements = sorted(self.achievements,
+                                   key=lambda x: achievements_sort_order.get(x, float('inf')))
         self.collection.sort()  # сортировка карт для более красивого отображения
         res: UpdateResult = USER_COLLECTION.update_one({"id": self.id},
                                                        {"$set": {
@@ -104,7 +109,8 @@ class User:
                                                            "garant": self.garant,
                                                            "trade": self.trade,
                                                            "statistics": self.statistics,
-                                                           "coinflip": self.coinflip
+                                                           "coinflip": self.coinflip,
+                                                           "achievements": self.achievements
                                                        }},
                                                        upsert=False)
         return res.acknowledged

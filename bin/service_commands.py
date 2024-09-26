@@ -29,7 +29,7 @@ async def update_user(user: 'User', update_type: str,
         user.rolls_available += int(value)
         await context.bot.send_message(user.id,
                                        "<b>Получено</b>:\n"
-                                       f"Круки: {value}",
+                                       f"Крутки: {value}",
                                        parse_mode="HTML")
     elif update_type == "card":
         user.collection.append(value)
@@ -58,13 +58,15 @@ async def give_user(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             except Exception as e:
                 raise UpdateError(f"Ошибка при получении ID пользователей: {str(e)}")
 
+            errors = ""
             for uid in ids:
                 try:
                     user = User.get(None, uid)
                     await update_user(user, update_type, value, context)
                 except Exception as e:
-                    await update.message.reply_text(f"Ошибка обновления пользователя {uid}: {str(e)}")
-            await update.message.reply_text("Все пользователи успешно обновлены")
+                    errors += f"Ошибка обновления пользователя {uid}: {str(e)}\n"
+            await update.message.reply_text(errors)
+            await update.message.reply_text("Пользователи успешно обновлены")
         else:
             try:
                 user = User.get(None, int(target))
