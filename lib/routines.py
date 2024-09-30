@@ -5,11 +5,19 @@
 import logging
 
 from apscheduler.schedulers.background import BackgroundScheduler
+from telegram import Update
+from telegram.ext import ContextTypes
 
 from lib.init import CARDS_COLLECTION, USER_COLLECTION, BOT_INFO
 from lib.variables import cards_list, cards_dict, cards_by_category, roll_cards_dict
 
 scheduler = BackgroundScheduler()
+
+
+async def notify_new_pack(_: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_ids = [x["id"] for x in USER_COLLECTION.find({}, {'_id': 0})]
+    for _ in user_ids:
+        await context.bot.send_message("Начислен бесплатный пак!")
 
 
 def update_free_roll():

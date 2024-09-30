@@ -20,12 +20,14 @@ from lib.filters import (other_button_filter, menu_button_filter, roll_menu_butt
                          collection_menu_button_filter, show_card_button_filter, collection_list_button_filter,
                          dev_mode, packs_shop_button_filter, me_button_filter, market_button_filter, not_banned_filter,
                          is_admin, all_cards_button_filter, shop_button_filter, coinflip_menu_button_filter)
-from lib.routines import update_cards, scheduler, update_free_roll
+from lib.routines import update_cards, scheduler, update_free_roll, notify_new_pack
 
 scheduler.start()
 scheduler.add_job(update_cards, 'interval', minutes=5)
-scheduler.add_job(update_free_roll, 'cron', hour=20, minute=0, second=0)
 scheduler.add_job(update_free_roll, 'cron', hour=8, minute=0, second=0)
+scheduler.add_job(notify_new_pack, 'cron', hour=8, minute=0, second=0)
+scheduler.add_job(update_free_roll, 'cron', hour=20, minute=0, second=0)
+scheduler.add_job(notify_new_pack, 'cron', hour=20, minute=0, second=0)
 
 
 def main():
