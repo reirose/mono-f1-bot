@@ -11,8 +11,9 @@ from lib.variables import cards_dict, translation, sort_keys_by, sort_list, \
 
 
 async def show_card(query, context, in_market: bool, page: int = 0):
-    user_collection = User.get(query.from_user).collection
-    card = cards_dict.get(f"c_{re.search('c_(.{3})', query.data).group(1)}")
+    user = User.get(query.from_user)
+    card_code = f"c_{re.search('c_(.{3})', query.data).group(1)}"
+    card = cards_dict.get(card_code)
     limited = card["type"] == "limited"
     # card_pic_id = ("AgACAgQAAxkBAAIMP2bKLDHHQSdb4-"
     #                "4qJpG9WTW7k8QtAAK0wTEbmxtZUuGYL8YF6ayLAQADAgADeAADNQQ")
@@ -26,21 +27,33 @@ async def show_card(query, context, in_market: bool, page: int = 0):
     card_team = f"Команда: {card_team}\n" if card_team else ""
     card_category = translation[card["category"]]
     card_type = translation[card["type"]]
-    card_n = user_collection.count(card["code"])
+    card_n = user.collection.count(card["code"])
     card_description = card["description"]
     desc_str = f"<i>{card_description}</i>\n" if card_description else ""
+    wts = "\n<i>🕒 Выставлена для трейда</i>" if card_code in user.anon_trade["wts"] else ""
     response = (f"<b>{card_name}</b>\n"
                 f"{desc_str}\n"
                 f"{card_team}"
                 f"Тип карты: {card_type}\n"
                 f"Редкость: {card_category}\n\n"
-                f"{f'<i>Всего: {card_n} шт.</i>' if card_n > 1 else ''}")
+                f"{f'<i>Всего: {card_n} шт.</i>' if card_n > 1 else ''}"
+                f"{wts}")
 
     market_s = "market_" if in_market else ""
-    reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Продать",
-                                                               callback_data=market_s + "sell_" + card["code"])],
-                                         [InlineKeyboardButton("Закрыть",
-                                                               callback_data=market_s + "close_card" + f"_{page}")]])
+    reply_markup_buttons = [[InlineKeyboardButton("Продать",
+                                                  callback_data=market_s + "sell_" + card["code"])],
+                            [InlineKeyboardButton("Закрыть",
+                                                  callback_data=market_s + "close_card" + f"_{page}")]]
+
+    if wts:
+        reply_markup_buttons.insert(1, [InlineKeyboardButton("Убрать из трейда",
+                                                             callback_data=f"anon_trade_remove_{card_code}_{page}")])
+    else:
+        reply_markup_buttons.insert(1, [InlineKeyboardButton("Выбрать для трейда",
+                                                             callback_data=f"anon_trade_add_{card_code}_{page}")])
+
+    reply_markup = InlineKeyboardMarkup(reply_markup_buttons)
+
     if limited:
         await context.bot.send_animation(chat_id=query.message.chat.id,
                                          animation=card_pic_id,

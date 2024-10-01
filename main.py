@@ -3,6 +3,7 @@ import logging
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler
 
+from bin.anon_trade import anon_trade_choose_menu
 from bin.callback_button_handler import button_callback
 from bin.coinflip import coinflip_conv_handler, abort, coinflip_menu
 from bin.coinflip_pve import bot_coinflip_conv_handler
@@ -20,14 +21,13 @@ from lib.filters import (other_button_filter, menu_button_filter, roll_menu_butt
                          collection_menu_button_filter, show_card_button_filter, collection_list_button_filter,
                          dev_mode, packs_shop_button_filter, me_button_filter, market_button_filter, not_banned_filter,
                          is_admin, all_cards_button_filter, shop_button_filter, coinflip_menu_button_filter)
-from lib.routines import update_cards, scheduler, update_free_roll, notify_free_pack
+from lib.routines import update_cards, scheduler, update_free_roll, clear_logs
 
 scheduler.start()
 scheduler.add_job(update_cards, 'interval', minutes=5)
 scheduler.add_job(update_free_roll, 'cron', hour=8, minute=0, second=0)
 scheduler.add_job(update_free_roll, 'cron', hour=20, minute=0, second=0)
-scheduler.add_job(notify_free_pack, 'cron', hour=8, minute=0, second=0)
-scheduler.add_job(notify_free_pack, 'cron', hour=20, minute=0, second=0)
+scheduler.add_job(clear_logs, 'interval', hours=1)
 
 
 def main():
@@ -36,6 +36,7 @@ def main():
 
     # текстовые команды (через "/")
     app.add_handler(CommandHandler("start", start, filters=dev_mode & not_banned_filter))
+    app.add_handler(CommandHandler("anon_trade", anon_trade_choose_menu, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("dm", dev_mode_change))
     app.add_handler(CommandHandler("give", give_user, filters=is_admin))
     app.add_handler(CommandHandler("get_logs", get_logs, filters=is_admin, has_args=True))

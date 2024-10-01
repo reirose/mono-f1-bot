@@ -133,7 +133,7 @@ async def start(update: Update, _: ContextTypes.DEFAULT_TYPE):
 async def get_logs(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mes = update.message
     with open("log.log", "rt") as logfile:
-        lines = logfile.readlines()[-int(context.args[0]):]
+        lines = logfile.readlines()[-int(context.args[0] if context.args else 10):]
         response = ""
         for line in lines:
             response += line

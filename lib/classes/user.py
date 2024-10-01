@@ -12,7 +12,8 @@ from lib.variables import achievements_sort_order
 # кастомный тип переменной для более быстрой обработки инфы с БД
 UserData = namedtuple("UserData",
                       ['id', 'username', 'dor', 'collection', 'last_roll', 'rolls_available', 'status',
-                       'coins', 'market', 'garant', 'trade', 'statistics', 'coinflip', 'achievements'])
+                       'coins', 'market', 'garant', 'trade', 'statistics', 'coinflip', 'achievements',
+                       'anon_trade'])
 
 
 class User:
@@ -31,6 +32,7 @@ class User:
         self.statistics: dict = data.statistics
         self.coinflip: int = data.coinflip
         self.achievements: list = data.achievements
+        self.anon_trade: list = data.anon_trade
 
     @staticmethod
     def user_registered(telegram_id: int) -> bool:
@@ -65,7 +67,8 @@ class User:
                                     "trades_complete": 0,
                                     "collectors_badge": 0},
                      "coinflip": 0,
-                     "achievements": []}
+                     "achievements": [],
+                     "anon_trade": []}
         USER_COLLECTION.insert_one(user_data)
         logging.log(logging.INFO, "Registered user %s" % user.username)
 
@@ -111,7 +114,8 @@ class User:
                                                            "trade": self.trade,
                                                            "statistics": self.statistics,
                                                            "coinflip": self.coinflip,
-                                                           "achievements": self.achievements
+                                                           "achievements": self.achievements,
+                                                           "anon_trade": self.anon_trade
                                                        }},
                                                        upsert=False)
         return res.acknowledged

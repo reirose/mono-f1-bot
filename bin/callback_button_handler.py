@@ -7,6 +7,7 @@ from telegram.error import BadRequest
 from telegram.ext import ContextTypes
 
 from bin.achievements import bot_check_achievements
+from bin.anon_trade import generate_trade_keyboard
 from bin.coinflip import coinflip_result
 from bin.collection import send_card_list, show_card, list_cards, get_collection_s
 from bin.market import market_sell_list_menu, shop_menu
@@ -43,6 +44,12 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         receiver = re.search('trade_confirm_(.+)', inline_keyboard[-2][0]['callback_data']).group(1)
         await send_card_list(update, context, telegram_user, page, in_market=False, trade=True,
                              trade_receiver=receiver)
+
+    if query.data.startswith("anon_trade_page_"):
+        page = int(query.data.split("_")[-1])
+        context.user_data["page"] = page
+        keyboard = generate_trade_keyboard(context)
+        await query.edit_message_reply_markup(reply_markup=keyboard)
 
     elif query.data.startswith("c_"):
         inline_keyboard = query.message.to_dict().get('reply_markup').get('inline_keyboard')
@@ -341,3 +348,25 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                        text="Поздравляем! Лента получена и отображается в вашем, а карточки списаны. "
                                             "Может, ещё одну?")
         await query.answer()
+
+    elif query.data.startswith("anon_trade_add_"):
+        card_code = "c_" + re.search("anon_trade_add_c_(.+)_(.+)", query.data).group(1)
+        page = int(re.search("anon_trade_add_c_(.+)_(.+)", query.data).group(2))
+        if card_code in user.anon_trade["wts"]:
+            await query.answer("Ошибка")
+            return
+
+        user.anon_trade["wts"].append(card_code)
+        user.write()
+        await show_card(query, context, in_market=False, page=page)
+
+    elif query.data.startswith("anon_trade_remove_"):
+        card_code = "c_" + re.search("anon_trade_remove_c_(.+)_(.+)", query.data).group(1)
+        page = int(re.search("anon_trade_remove_c_(.+)_(.+)", query.data).group(2))
+        if card_code not in user.anon_trade["wts"]:
+            await query.answer("Ошибка")
+            return
+
+        user.anon_trade["wts"].remove(card_code)
+        user.write()
+        await show_card(query, context, in_market=False, page=page)

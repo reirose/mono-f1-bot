@@ -4,6 +4,7 @@
 
 import logging
 
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 from telegram import Update
 from telegram.error import BadRequest
@@ -13,6 +14,7 @@ from lib.init import CARDS_COLLECTION, USER_COLLECTION, BOT_INFO
 from lib.variables import cards_list, cards_dict, cards_by_category, roll_cards_dict, type_sort_keys
 
 scheduler = BackgroundScheduler()
+async_scheduler = AsyncIOScheduler()
 
 
 def update_free_roll():
@@ -45,6 +47,7 @@ def restart_status_reset():
 
 
 async def notify_free_pack(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print(1)
     users = USER_COLLECTION.find({}, {"_id": 0})
     for user in users:
         try:
@@ -53,4 +56,12 @@ async def notify_free_pack(update: Update, context: ContextTypes.DEFAULT_TYPE):
         except BadRequest:
             pass
 
+
+def clear_logs():
+    with open("log.log", "wt") as f:
+        f.write("")
+    logging.log(BOT_INFO, "cleared logs successfully")
+
+
+clear_logs()
 restart_status_reset()
