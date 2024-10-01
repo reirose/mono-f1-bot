@@ -62,7 +62,8 @@ class User:
                      "trade": [],
                      "statistics": {"packs_opened": 0,
                                     "coins_spent": 0,
-                                    "trades_complete": 0},
+                                    "trades_complete": 0,
+                                    "collectors_badge": 0},
                      "coinflip": 0,
                      "achievements": []}
         USER_COLLECTION.insert_one(user_data)

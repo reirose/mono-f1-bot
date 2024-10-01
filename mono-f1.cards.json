@@ -156,11 +156,11 @@
   "_id": {
     "$oid": "66e3d681e0ee9fa3b0c921e4"
   },
-  "code": "c_115",
+  "code": "c_902",
   "name": "Daniel Ricciardo",
-  "type": "driver",
+  "type": "limited",
   "team": "RB",
-  "category": "bronze",
+  "category": "diamond",
   "description": ""
 },
 {
@@ -300,10 +300,10 @@
     "$oid": "66e3d681e0ee9fa3b0c921fb"
   },
   "code": "c_208",
-  "name": "Ricciardo • Tsunoda",
+  "name": "Lawson • Tsunoda",
   "type": "duo",
   "team": "RB",
-  "category": "bronze",
+  "category": "silver",
   "description": ""
 },
 {
@@ -410,10 +410,10 @@
     "$oid": "66e3d681e0ee9fa3b0c92205"
   },
   "code": "c_308",
-  "name": "RIC • TSU • Mekies",
+  "name": "LAW • TSU • Mekies",
   "type": "team",
   "team": "RB",
-  "category": "bronze",
+  "category": "silver",
   "description": ""
 },
 {
@@ -820,7 +820,7 @@
   "name": "W15",
   "type": "car",
   "team": "Mercedes",
-  "category": "gold",
+  "category": "silver",
   "description": ""
 },
 {
@@ -853,7 +853,7 @@
   "name": "AMR24",
   "type": "car",
   "team": "Aston Martin",
-  "category": "gold",
+  "category": "silver",
   "description": ""
 },
 {
@@ -864,7 +864,7 @@
   "name": "A524",
   "type": "car",
   "team": "Alpine",
-  "category": "gold",
+  "category": "bronze",
   "description": ""
 },
 {
@@ -875,7 +875,7 @@
   "name": "FW46",
   "type": "car",
   "team": "Williams",
-  "category": "gold",
+  "category": "bronze",
   "description": ""
 },
 {
@@ -886,7 +886,7 @@
   "name": "VCARB 01",
   "type": "car",
   "team": "RB",
-  "category": "gold",
+  "category": "bronze",
   "description": ""
 },
 {
@@ -897,7 +897,7 @@
   "name": "C44",
   "type": "car",
   "team": "Sauber",
-  "category": "gold",
+  "category": "bronze",
   "description": ""
 },
 {
@@ -908,7 +908,7 @@
   "name": "VF-24",
   "type": "car",
   "team": "Haas",
-  "category": "gold",
+  "category": "bronze",
   "description": ""
 },
 {
@@ -964,5 +964,16 @@
   "type": "limited",
   "team": "Williams",
   "category": "diamond",
+  "description": ""
+},
+{
+  "_id": {
+    "$oid": "66f979103aec60cc148e4043"
+  },
+  "code": "c_115",
+  "name": "Liam Lawson",
+  "type": "driver",
+  "team": "RB",
+  "category": "bronze",
   "description": ""
 }]

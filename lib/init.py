@@ -9,8 +9,8 @@ log.basicConfig(level=BOT_INFO,
                 format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
                 filename="log.log")
 
-TOKEN = "7998597879:AAHDOosw1hVVFoEmKz5RuzNymvisTWT5qjg"  # dev-token
-# TOKEN = "7465141345:AAHkj1SKA-CG9FRGdARz5EbmK_xk2OM9vZA"
+# TOKEN = "7998597879:AAHDOosw1hVVFoEmKz5RuzNymvisTWT5qjg"  # dev-token
+TOKEN = "7465141345:AAHkj1SKA-CG9FRGdARz5EbmK_xk2OM9vZA"
 DB_LINK = "mongodb://localhost:27017"
 
 client = MongoClient(DB_LINK)

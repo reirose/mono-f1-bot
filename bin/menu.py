@@ -6,7 +6,7 @@ from telegram.ext import ContextTypes
 from bin.achievements import bot_check_achievements
 from lib.classes.user import User
 from lib.keyboard_markup import main_menu_markup
-from lib.variables import achievements_dict
+from lib.variables import achievements_dict, roll_cards_dict
 
 
 async def menu(update: Update, _: ContextTypes.DEFAULT_TYPE):
@@ -17,10 +17,20 @@ async def menu(update: Update, _: ContextTypes.DEFAULT_TYPE):
     cards_n = len(user.collection)
     unique_cards_n = len(list(set(user.collection)))
 
-    response = (f"<b>{user.username} • {user.id}</b>\n\n"
+    collectors_badge = f"{'🎗' if user.statistics['collectors_badge'] else ''}"
+
+    all_cards_rolled = all(code in set(user.collection) for code, __ in roll_cards_dict.items())
+
+    collectors_badge_redeem_s = ("\n\n<i>Вам доступна возможность получить Ленту Коллекционера. Для ознакомления "
+                                 "нажмите /collectors_ribbon_info</i>") if all_cards_rolled else ""
+
+    banned_badge = "⚱️" if user.status == "banned" else ""
+
+    response = (f"{banned_badge}<b>{user.username} • {user.id}</b>{collectors_badge}\n\n"
                 f"Карт в коллекции: {cards_n}\n"
                 f"<i>из которых уникальные: {unique_cards_n}</i>\n"
-                f"Монет: {user.coins} 🪙")
+                f"Монет: {user.coins} 🪙"
+                f"{collectors_badge_redeem_s}")
 
     await mes.reply_text(response,
                          reply_markup=main_menu_markup,
@@ -37,8 +47,11 @@ async def about_me(update: Update, context: ContextTypes.DEFAULT_TYPE):
     packs_opened = user.statistics["packs_opened"]
     coins_spent = user.statistics["coins_spent"]
     trades_complete = user.statistics["trades_complete"]
+    collectors_badges = user.statistics["collectors_badge"]
+    collectors_badges_s = f"Лент Коллекционера: {collectors_badges}🎗\n" if collectors_badges else ""
 
     response = (f"<b>{user.username} • {user.id}</b>\n\n"
+                f"{collectors_badges_s}"
                 f"Паков открыто: {packs_opened}\n"
                 f"Монет потрачено: {coins_spent} 🪙\n"
                 f"Совершено обменов: {trades_complete}\n"

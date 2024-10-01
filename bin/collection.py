@@ -10,13 +10,15 @@ from lib.variables import cards_dict, translation, sort_keys_by, sort_list, \
     sort_list_transl, category_color
 
 
-async def show_card(query, context, in_market: bool):
+async def show_card(query, context, in_market: bool, page: int = 0):
     user_collection = User.get(query.from_user).collection
     card = cards_dict.get(f"c_{re.search('c_(.{3})', query.data).group(1)}")
+    limited = card["type"] == "limited"
     # card_pic_id = ("AgACAgQAAxkBAAIMP2bKLDHHQSdb4-"
     #                "4qJpG9WTW7k8QtAAK0wTEbmxtZUuGYL8YF6ayLAQADAgADeAADNQQ")
     try:
-        card_pic_id = open(f"bin/img/{card['code']}.png", "rb")
+        card_pic_id = open(f"bin/img/{card['code']}.mp4", "rb") if limited else open(f"bin/img/{card['code']}.png",
+                                                                                     "rb")
     except FileNotFoundError:
         card_pic_id = open(f"bin/img/card.png", "rb")
     card_name = card["name"]
@@ -37,13 +39,21 @@ async def show_card(query, context, in_market: bool):
     market_s = "market_" if in_market else ""
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Продать",
                                                                callback_data=market_s + "sell_" + card["code"])],
-                                         [InlineKeyboardButton("Закрыть", callback_data=market_s + "close_card")]])
+                                         [InlineKeyboardButton("Закрыть",
+                                                               callback_data=market_s + "close_card" + f"_{page}")]])
+    if limited:
+        await context.bot.send_animation(chat_id=query.message.chat.id,
+                                         animation=card_pic_id,
+                                         caption=response,
+                                         parse_mode="HTML",
+                                         reply_markup=reply_markup)
+    else:
+        await context.bot.send_photo(chat_id=query.message.chat.id,
+                                     photo=card_pic_id,
+                                     caption=response,
+                                     parse_mode="HTML",
+                                     reply_markup=reply_markup)
 
-    await context.bot.send_photo(chat_id=query.message.chat.id,
-                                 photo=card_pic_id,
-                                 caption=response,
-                                 parse_mode="HTML",
-                                 reply_markup=reply_markup)
     try:
         await context.bot.delete_message(chat_id=query.from_user.id,
                                          message_id=query.message.message_id)
@@ -54,13 +64,18 @@ async def show_card(query, context, in_market: bool):
 
 async def list_cards(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     user = update.effective_user
-    page = 0
-    await send_card_list(update, context, user, page, False, trade_receiver=0)
+    try:
+        page = int(context.user_data["page"])
+        closed_card = context.user_data["closed_card"]
+    except KeyError:
+        page = 0
+        closed_card = False
+    await send_card_list(update, context, user, page, False, trade_receiver=0, closed_card=closed_card)
 
 
 async def send_card_list(update: Update, context: ContextTypes.DEFAULT_TYPE,
                          telegram_user, page: int, in_market: bool,
-                         trade_receiver: int, trade: bool = None) -> None:
+                         trade_receiver: int, trade: bool = None, closed_card: bool = False) -> None:
     if not User.get(telegram_user).collection:
         await context.bot.send_message(text="У вас нет карточек. Чтобы получить их - "
                                             "перейдите в раздел Получение карт.",
@@ -74,6 +89,13 @@ async def send_card_list(update: Update, context: ContextTypes.DEFAULT_TYPE,
                                   not update.callback_query.data == "close_card" and
                                   not update.callback_query.data.startswith("market_close_")):
         await update.callback_query.answer()
+        if closed_card:
+            await update.callback_query.delete_message()
+            await context.bot.send_message(text="Ваш список карт:",
+                                           chat_id=update.callback_query.message.chat.id,
+                                           reply_markup=reply_markup)
+            return
+
         await update.callback_query.edit_message_text("Ваш список карт:", reply_markup=reply_markup)
         return
     else:
@@ -151,7 +173,7 @@ async def collection_completeness(update: Update, _: ContextTypes.DEFAULT_TYPE):
         if prev != card_d["type"]:
             resp += "\n<b>" + translation[card_d["type"]] + "</b>\n"
             prev = card_d["type"]
-        resp += f"{card_d['name']} {'✅' if card in user.collection else ''}\n"
+        resp += f"{card_d['name']} {'☑️' if card in user.collection else ''}\n"
 
     await mes.reply_text(resp,
                          parse_mode="HTML")

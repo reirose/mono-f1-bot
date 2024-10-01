@@ -5,14 +5,14 @@ from lib.classes.user import User
 from lib.variables import achievements_dict
 
 
-def check_achievements(user: User) :
+def check_achievements(user: User):
     """
     Проверяет достижения пользователя и возвращает список выполненных достижений.
     """
     completed_achievements = []
 
     for achievement_id, achievement in achievements_dict.items():
-        if achievement["requirement"](user):
+        if achievement["requirement"](user) and achievement_id not in user.achievements:
             completed_achievements.append(achievement_id)
 
     return completed_achievements
@@ -23,10 +23,7 @@ def update_user_achievements(user: User):
     Обновляет достижения пользователя и возвращает список новых достижений.
     """
 
-    current_achievements = set(check_achievements(user))
-    new_achievements = current_achievements - set(user.achievements)
-
-    user.achievements = list(current_achievements)
+    new_achievements = set(check_achievements(user))
 
     return list(new_achievements)
 
