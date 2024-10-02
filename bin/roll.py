@@ -2,7 +2,7 @@ import datetime
 import logging
 import random
 
-from telegram import Update
+from telegram import Update, InputMediaPhoto
 from telegram.ext import ContextTypes
 
 from bin.achievements import bot_check_achievements
@@ -20,8 +20,11 @@ def select_card_weighted(garant: bool = None, user: User = None):
             categories.append(category)
 
     for category, prob in probability_by_category.items():
-        if random.random() < prob:
+        rand = random.random()
+        if rand < prob:
             categories.append(category)
+            break
+        if len(categories) > 2:
             break
 
     if not any(cat in ["gold", "ruby", 'sapphire', 'platinum'] for cat in categories) and garant:
@@ -58,7 +61,7 @@ async def roll_menu(update: Update, _: ContextTypes.DEFAULT_TYPE):
     time_left = "меньше минуты" if (not hrs and not mins and not (next_free_roll_time // 60)) \
         else f"{hrs} ч {mins} мин"
 
-    response = (f"<b>Доступно круток:</b> 🏳️‍🌈 {user.rolls_available}\n"
+    response = (f"🃏 <b>Доступно круток:</b> {user.rolls_available}\n"
                 f"Гарант: {user.garant}\n\n"
                 f"До следующей бесплатной попытки: {time_left}")
 
@@ -118,6 +121,13 @@ async def roll_result(context):
     rolled_cards = job.data[1]
     mes = job.data[2]
 
+    cards_pics = []
+    for card in rolled_cards:
+        try:
+            cards_pics.append(InputMediaPhoto(open(f"bin/img/{card['code']}.png", 'rb')))
+        except FileNotFoundError:
+            cards_pics.append(InputMediaPhoto(open("bin/img/card.png", 'rb')))
+
     response = f"Получены карты: \n\n"
 
     for card in rolled_cards:
@@ -127,9 +137,9 @@ async def roll_result(context):
 
         user.collection.append(card["code"])
 
-    await mes.reply_text(text=response,
-                         reply_markup=roll_menu_markup,
-                         parse_mode="HTML")
+    await mes.reply_media_group(media=cards_pics,
+                                caption=response,
+                                parse_mode="HTML")
 
     user.status = "idle"
     user.write()

@@ -7,6 +7,7 @@ from telegram.error import BadRequest
 from telegram.ext import ContextTypes
 
 from bin.achievements import bot_check_achievements
+from bin.anon_trade import generate_trade_keyboard
 from bin.coinflip import coinflip_result
 from bin.collection import send_card_list, show_card, list_cards, get_collection_s
 from bin.market import market_sell_list_menu, shop_menu
@@ -14,7 +15,7 @@ from lib.classes.user import User
 from lib.init import BOT_INFO
 from lib.keyboard_markup import shop_inline_markup, generate_collection_keyboard
 from lib.variables import cards_dict, packs_prices, category_prices, sort_list, sort_keys_by, sort_list_transl, \
-    trades_log_chat_id
+    trades_log_chat_id, roll_cards_dict
 
 
 def find_noop_index(data):
@@ -44,18 +45,34 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await send_card_list(update, context, telegram_user, page, in_market=False, trade=True,
                              trade_receiver=receiver)
 
+    if query.data.startswith("anon_trade_page_"):
+        page = int(query.data.split("_")[-1])
+        context.user_data["page"] = page
+        keyboard = generate_trade_keyboard(context)
+        await query.edit_message_reply_markup(reply_markup=keyboard)
+
     elif query.data.startswith("c_"):
-        await show_card(query, context, in_market=False)
+        inline_keyboard = query.message.to_dict().get('reply_markup').get('inline_keyboard')
+        page_index = 0  # next((i for i, item in enumerate(inline_keyboard[-3]) if item['callback_data'] == 'noop'))
+        for i, item in enumerate(inline_keyboard[-1]):
+            if item['callback_data'] == 'noop':
+                page_index = i
+                break
+
+        page = int(inline_keyboard[-1][page_index]['text']) - 1
+        await show_card(query, context, in_market=False, page=page)
 
     elif query.data.startswith("close_"):
+        if "card" in query.data:
+            context.user_data['page'] = query.data.split("_")[-1]
+            context.user_data["closed_card"] = True
+            await list_cards(update, context)
+        elif "market" in query.data:
+            await shop_menu(update, context)
         try:
             await context.bot.delete_message(chat_id=query.from_user.id, message_id=query.message.message_id)
         except BadRequest:
             pass
-        if "card" in query.data:
-            await list_cards(update, context)
-        elif "market" in query.data:
-            await shop_menu(update, context)
 
     elif query.data.startswith("market_close_"):
         await context.bot.delete_message(chat_id=query.from_user.id, message_id=query.message.message_id)
@@ -173,7 +190,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         for z in user.collection:
             coll.update({z: {"card": cards_dict[z], "n": user.collection.count(z)}})
 
-        coll = dict(sorted(coll.items(), key=lambda item: sort_keys_by[sorted_by][item[1]['card'][sorted_by]]))
+        coll = dict(sorted(coll.items(), key=lambda x: sort_keys_by[sorted_by][x[1]['card'][sorted_by]]))
 
         try:
             next_sort_type = sort_list[sort_list.index(sorted_by) + 1]
@@ -240,7 +257,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         await context.bot.send_message(chat_id=receiver.id,
                                        text="<b>Получено от пользователя %s:</b>\n\n%s" % (
-                                           user.username, traded_cards_list),
+                                           user.username if user.username else user.id, traded_cards_list),
                                        parse_mode="HTML")
 
         await context.bot.send_message(chat_id=trades_log_chat_id,
@@ -278,7 +295,8 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif query.data.startswith("coinflip_accept"):
         await query.answer()
 
-        await context.bot.send_message(chat_id=int(re.search("coinflip_accept_(.+)_(.+)", query.data).group(1)),
+        sender_id = int(re.search("coinflip_accept_(.+)_(.+)", query.data).group(1))
+        await context.bot.send_message(chat_id=sender_id,
                                        text="🪙")
 
         await context.bot.send_message(chat_id=user.id,
@@ -314,3 +332,41 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                              message_id=query.message.message_id)
         except BadRequest:
             pass
+
+    elif query.data == "ribbon_redeem":
+        for code, _ in roll_cards_dict.items():
+            for __ in range(user.collection.count(code)):
+                user.collection.remove(code)
+
+        user.statistics["collectors_badge"] += 1
+        user.write()
+
+        await context.bot.delete_message(user.id,
+                                         message_id=query.message.message_id)
+
+        await context.bot.send_message(user.id,
+                                       text="Поздравляем! Лента получена и отображается в вашем, а карточки списаны. "
+                                            "Может, ещё одну?")
+        await query.answer()
+
+    elif query.data.startswith("anon_trade_add_"):
+        card_code = "c_" + re.search("anon_trade_add_c_(.+)_(.+)", query.data).group(1)
+        page = int(re.search("anon_trade_add_c_(.+)_(.+)", query.data).group(2))
+        if card_code in user.anon_trade["wts"]:
+            await query.answer("Ошибка")
+            return
+
+        user.anon_trade["wts"].append(card_code)
+        user.write()
+        await show_card(query, context, in_market=False, page=page)
+
+    elif query.data.startswith("anon_trade_remove_"):
+        card_code = "c_" + re.search("anon_trade_remove_c_(.+)_(.+)", query.data).group(1)
+        page = int(re.search("anon_trade_remove_c_(.+)_(.+)", query.data).group(2))
+        if card_code not in user.anon_trade["wts"]:
+            await query.answer("Ошибка")
+            return
+
+        user.anon_trade["wts"].remove(card_code)
+        user.write()
+        await show_card(query, context, in_market=False, page=page)

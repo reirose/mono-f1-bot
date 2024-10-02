@@ -1,4 +1,4 @@
-from telegram import Update
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import ContextTypes
 
 from bin.menu import menu
@@ -6,7 +6,7 @@ from lib.classes.user import User
 from lib.filters import DEV_MODE
 from lib.keyboard_markup import main_menu_markup
 from lib.init import USER_COLLECTION
-from lib.variables import cards_dict
+from lib.variables import cards_dict, roll_cards_dict
 
 
 async def dev_mode_change(_: Update, __: ContextTypes.DEFAULT_TYPE):
@@ -19,7 +19,15 @@ class UpdateError(Exception):
 
 async def update_user(user: 'User', update_type: str,
                       value: str, context: ContextTypes.DEFAULT_TYPE) -> None:
-    if update_type == "coins":
+    if update_type == "all_cards":
+        for code, __ in roll_cards_dict.items():
+            if code in user.collection:
+                continue
+            user.collection.append(code)
+        await context.bot.send_message(user.id,
+                                       "done")
+        user.write()
+    elif update_type == "coins":
         user.coins += int(value)
         await context.bot.send_message(user.id,
                                        "<b>Получено</b>:\n"
@@ -33,6 +41,8 @@ async def update_user(user: 'User', update_type: str,
                                        parse_mode="HTML")
     elif update_type == "card":
         user.collection.append(value)
+        if value not in cards_dict:
+            raise UpdateError(f"Неверный код карты: {value}")
         await context.bot.send_message(user.id,
                                        f"<b>Получено</b>:\n"
                                        f"Карта: {cards_dict[value]['name']}",
@@ -49,7 +59,7 @@ async def give_user(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
         target, update_type, value = context.args
 
-        if update_type not in ["coins", "rolls", "card"]:
+        if update_type not in ["coins", "rolls", "card", "all_cards"]:
             raise UpdateError(f"Неверный тип обновления: {update_type}")
 
         if target == "all":
@@ -81,6 +91,26 @@ async def give_user(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.message.reply_text(f"Произошла непредвиденная ошибка: {str(e)}")
 
 
+async def ribbon_info(update: Update, _: ContextTypes.DEFAULT_TYPE):
+    mes = update.message
+    user = User.get(mes.from_user)
+    if not all(code in set(user.collection) for code, __ in roll_cards_dict.items()):
+        return
+
+    response = (
+        "Лента Коллекционера — это престижный символ признания, венчающий ваш путь истинного собирателя карт. Эта "
+        "уникальная награда отмечает ваше неустанное стремление к совершенству и страсть к коллекционированию.\n\n"
+        "Как это работает? Жмёте на кнопку, и вуаля:\n"
+        "- Вы освободитесь от всех карт, доступных в обычных паках\n"
+        "- Взамен вы обретете не только заветную Ленту Коллекционера, но и редчайшую лимитированную карту — настоящее "
+        "сокровище для любого коллекционера.\n\n"
+        "Погнали?")
+
+    reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Поехали!", callback_data="ribbon_redeem")]])
+    await mes.reply_text(response,
+                         reply_markup=reply_markup)
+
+
 async def unstuck(update: Update, _: ContextTypes.DEFAULT_TYPE):
     user = User.get(update.effective_user)
     user.status = "idle"
@@ -98,3 +128,14 @@ async def start(update: Update, _: ContextTypes.DEFAULT_TYPE):
                          reply_markup=main_menu_markup)
 
     await menu(update, _)
+
+
+async def get_logs(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    mes = update.message
+    with open("log.log", "rt") as logfile:
+        lines = logfile.readlines()[-int(context.args[0] if context.args else 10):]
+        response = ""
+        for line in lines:
+            response += line
+
+    await mes.reply_text(response)
