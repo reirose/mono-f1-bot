@@ -7,6 +7,7 @@ cards_by_category: dict = {
     "bronze": [],
     "silver": [],
     "gold": [],
+    "champion": [],
     "platinum": [],
     "ruby": [],
     "sapphire": [],
@@ -17,6 +18,7 @@ category_color: dict = {
     'bronze': '',
     'silver': '️',
     'gold': '',
+    'champion': '',
     'platinum': '',
     'ruby': '💠 ',
     'sapphire': '💠 ',
@@ -27,6 +29,7 @@ category_prices: dict = {
     "bronze": 1,
     "silver": 4,
     "gold": 8,
+    "champion": 12,
     "platinum": 16,
     "ruby": 26,
     "sapphire": 38,
@@ -54,6 +57,7 @@ translation: dict = {
     "bronze": "Бронзовая",
     "silver": "Серебряная",
     "gold": "Золотая",
+    "champion": "Чемпион",
     "platinum": "Платиновая",
     "ruby": "Рубиновая",
     "sapphire": "Сапфировая",
@@ -73,29 +77,31 @@ translation: dict = {
 }
 
 probability_by_category: dict = {
-        "silver": .12,
-        "gold": .06,
-        "platinum": .03,
-        "ruby": .015,
-        "sapphire": .0075
-    }
+    "silver": .12,
+    "gold": .06,
+    "champion": .05,
+    "platinum": .03,
+    "ruby": .015,
+    "sapphire": .0075
+}
 
 category_distribution = {
-        "bronze": 2,
-        "silver": 0,
-        "gold": 0,
-        "platinum": 0,
-        "ruby": 0,
-        "sapphire": 0
-    }
+    "bronze": 2,
+    "silver": 0,
+    "gold": 0,
+    "platinum": 0,
+    "ruby": 0,
+    "sapphire": 0
+}
 
 category_sort_keys: dict[str, int] = {'bronze': 0,
                                       'silver': 1,
                                       'gold': 2,
-                                      'platinum': 3,
-                                      'ruby': 4,
-                                      'sapphire': 5,
-                                      'diamond': 6}
+                                      'champion': 3,
+                                      'platinum': 4,
+                                      'ruby': 5,
+                                      'sapphire': 6,
+                                      'diamond': 7}
 
 team_sort_keys: dict[str, int] = {'Alpine': 0,
                                   'Aston Martin': 1,
@@ -133,14 +139,13 @@ cards_in_pack: int = 2
 
 garant_value: int = 10
 
-garant_list: list[str] = ["gold", "platinum", "ruby", "sapphire", "diamond"]
+garant_list: list[str] = ["gold", "platinum", "champion", "ruby", "sapphire", "diamond"]
 
 dev_list: list[int] = [352318827, 889865196]
 admin_list: list[int] = [352318827, 400977526, 417603391, 522033389, 776014112, 889865196, 1161121344, 1293045951,
                          1306616210, 1949641072, 5163281155, 6983627466, 7581615486]
 
 trades_log_chat_id = -1002401343820
-
 
 achievements_sort_order = {
     "collector_bronze": 0,
@@ -156,7 +161,6 @@ achievements_sort_order = {
     "oldschool": 10,
     "rockefeller": 11
 }
-
 
 achievements_dict = {
     "collector_bronze":

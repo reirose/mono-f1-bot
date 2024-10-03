@@ -30,14 +30,12 @@ async def show_card(query, context, in_market: bool, page: int = 0):
     card_n = user.collection.count(card["code"])
     card_description = card["description"]
     desc_str = f"<i>{card_description}</i>\n" if card_description else ""
-    wts = "\n<i>🕒 Выставлена для трейда</i>" if card_code in user.anon_trade["wts"] else ""
     response = (f"<b>{card_name}</b>\n"
                 f"{desc_str}\n"
                 f"{card_team}"
                 f"Тип карты: {card_type}\n"
                 f"Редкость: {card_category}\n\n"
-                f"{f'<i>Всего: {card_n} шт.</i>' if card_n > 1 else ''}"
-                f"{wts}")
+                f"{f'<i>Всего: {card_n} шт.</i>' if card_n > 1 else ''}")
 
     market_s = "market_" if in_market else ""
     reply_markup_buttons = [[InlineKeyboardButton("Продать",
@@ -45,12 +43,8 @@ async def show_card(query, context, in_market: bool, page: int = 0):
                             [InlineKeyboardButton("Закрыть",
                                                   callback_data=market_s + "close_card" + f"_{page}")]]
 
-    if wts:
-        reply_markup_buttons.insert(1, [InlineKeyboardButton("Убрать из трейда",
-                                                             callback_data=f"anon_trade_remove_{card_code}_{page}")])
-    else:
-        reply_markup_buttons.insert(1, [InlineKeyboardButton("Выбрать для трейда",
-                                                             callback_data=f"anon_trade_add_{card_code}_{page}")])
+    reply_markup_buttons.insert(1, [InlineKeyboardButton("Выбрать для трейда",
+                                                         callback_data=f"anon_trade_add_{card_code}_{page}")])
 
     reply_markup = InlineKeyboardMarkup(reply_markup_buttons)
 
