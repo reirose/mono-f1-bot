@@ -138,7 +138,7 @@
   "name": "Alexander Albon",
   "type": "driver",
   "team": "Williams",
-  "category": "bronze",
+  "category": "silver",
   "description": ""
 },
 {
@@ -215,7 +215,7 @@
   "name": "Nico Hulkenberg",
   "type": "driver",
   "team": "Haas",
-  "category": "bronze",
+  "category": "silver",
   "description": ""
 },
 {
@@ -281,7 +281,7 @@
   "name": "Gasly • Ocon",
   "type": "duo",
   "team": "Alpine",
-  "category": "silver",
+  "category": "bronze",
   "description": ""
 },
 {
@@ -325,7 +325,7 @@
   "name": "Magnussen • Hulkenberg",
   "type": "duo",
   "team": "Haas",
-  "category": "bronze",
+  "category": "silver",
   "description": ""
 },
 {
@@ -391,7 +391,7 @@
   "name": "GAS • OCO • Oakes",
   "type": "team",
   "team": "Alpine",
-  "category": "silver",
+  "category": "bronze",
   "description": ""
 },
 {
@@ -435,7 +435,7 @@
   "name": "MAG • HUL • Komatsu",
   "type": "team",
   "team": "Haas",
-  "category": "bronze",
+  "category": "silver",
   "description": ""
 },
 {
