@@ -370,3 +370,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user.anon_trade["wts"].remove(card_code)
         user.write()
         await show_card(query, context, in_market=False, page=page)
+
+
+    elif query.data.startswith("anon_trade_c_"):
+
