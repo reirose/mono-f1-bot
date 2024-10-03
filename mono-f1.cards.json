@@ -259,7 +259,7 @@
   "name": "Norris • Piastri",
   "type": "duo",
   "team": "McLaren",
-  "category": "silver",
+  "category": "gold",
   "description": ""
 },
 {
@@ -292,7 +292,7 @@
   "name": "Albon • Colapinto",
   "type": "duo",
   "team": "Williams",
-  "category": "bronze",
+  "category": "silver",
   "description": ""
 },
 {
@@ -303,7 +303,7 @@
   "name": "Lawson • Tsunoda",
   "type": "duo",
   "team": "RB",
-  "category": "silver",
+  "category": "bronze",
   "description": ""
 },
 {
@@ -366,10 +366,10 @@
     "$oid": "66e3d681e0ee9fa3b0c92201"
   },
   "code": "c_304",
-  "name": "NOR • PIA • Brown",
+  "name": "NOR • PIA • Stella",
   "type": "team",
   "team": "McLaren",
-  "category": "silver",
+  "category": "gold",
   "description": ""
 },
 {
@@ -402,7 +402,7 @@
   "name": "ALB • COL • Vowles",
   "type": "team",
   "team": "Williams",
-  "category": "bronze",
+  "category": "silver",
   "description": ""
 },
 {
@@ -413,7 +413,7 @@
   "name": "LAW • TSU • Mekies",
   "type": "team",
   "team": "RB",
-  "category": "silver",
+  "category": "bronze",
   "description": ""
 },
 {
@@ -476,10 +476,10 @@
     "$oid": "66e3d681e0ee9fa3b0c921ed"
   },
   "code": "c_404",
-  "name": "Zak Brown",
+  "name": "Andrea Stella",
   "type": "team_principal",
   "team": "McLaren",
-  "category": "gold",
+  "category": "silver",
   "description": ""
 },
 {
@@ -490,7 +490,7 @@
   "name": "Mike Krack",
   "type": "team_principal",
   "team": "Aston Martin",
-  "category": "gold",
+  "category": "silver",
   "description": ""
 },
 {
@@ -501,7 +501,7 @@
   "name": "Oliver Oakes",
   "type": "team_principal",
   "team": "Alpine",
-  "category": "gold",
+  "category": "bronze",
   "description": ""
 },
 {
@@ -512,7 +512,7 @@
   "name": "James Vowles",
   "type": "team_principal",
   "team": "Williams",
-  "category": "gold",
+  "category": "silver",
   "description": ""
 },
 {
@@ -523,7 +523,7 @@
   "name": "Laurent Mekies",
   "type": "team_principal",
   "team": "RB",
-  "category": "gold",
+  "category": "bronze",
   "description": ""
 },
 {
@@ -534,7 +534,7 @@
   "name": "Alessandro Alunni Bravi",
   "type": "team_principal",
   "team": "Sauber",
-  "category": "gold",
+  "category": "bronze",
   "description": ""
 },
 {
@@ -545,7 +545,7 @@
   "name": "Ayao Komatsu",
   "type": "team_principal",
   "team": "Haas",
-  "category": "gold",
+  "category": "silver",
   "description": ""
 },
 {
@@ -820,7 +820,7 @@
   "name": "W15",
   "type": "car",
   "team": "Mercedes",
-  "category": "silver",
+  "category": "gold",
   "description": ""
 },
 {
@@ -875,7 +875,7 @@
   "name": "FW46",
   "type": "car",
   "team": "Williams",
-  "category": "bronze",
+  "category": "silver",
   "description": ""
 },
 {
@@ -908,7 +908,7 @@
   "name": "VF-24",
   "type": "car",
   "team": "Haas",
-  "category": "bronze",
+  "category": "silver",
   "description": ""
 },
 {
@@ -941,8 +941,8 @@
   "type": "collab",
   "team": "MonoF1",
   "category": "ruby",
-  "description": "Ноет, что никто ничего не делает, а сам делать не хочет. Вот так вот :)",
-  "name": "@ma14sss"
+  "description": "",
+  "name": "LEC"
 },
 {
   "_id": {
