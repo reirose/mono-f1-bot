@@ -12,7 +12,11 @@ from lib.variables import cards_dict, translation, sort_keys_by, sort_list, \
 
 async def show_card(query, context, in_market: bool, page: int = 0):
     user = User.get(query.from_user)
-    card_code = f"c_{re.search('c_(.{3})', query.data).group(1)}"
+    try:
+        card_code = context.user_data["card_code"]
+    except KeyError:
+        card_code = f"c_{re.search('c_(.{3})', query.data).group(1)}"
+    context.user_data.clear()
     card = cards_dict.get(card_code)
     limited = card["type"] == "limited"
     # card_pic_id = ("AgACAgQAAxkBAAIMP2bKLDHHQSdb4-"

@@ -8,7 +8,7 @@ from telegram.ext import ContextTypes
 
 from bin.achievements import bot_check_achievements
 from bin.anon_trade import generate_trade_keyboard, anon_trade_select_desired, \
-    anon_trade_confirm_sell
+    anon_trade_confirm_sell, anon_trade_buy_card_show_offers, anon_trade_choose_menu
 from bin.coinflip import coinflip_result
 from bin.collection import send_card_list, show_card, list_cards, get_collection_s
 from bin.market import market_sell_list_menu, shop_menu
@@ -46,14 +46,19 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await send_card_list(update, context, telegram_user, page, in_market=False, trade=True,
                              trade_receiver=receiver)
 
-    if (query.data.startswith("anon_trade_sell_page_") or
-            query.data.startswith("anon_trade_buy_page_")):
-        page = int(query.data.split("_")[4])  # anon_trade_sell_page_12_c_114
+    if query.data.startswith("anon_trade_sell_page_"):
+        page = int(query.data.split("_")[4])
         card_code = "c_" + re.search("anon_trade_sell_page_(.+)_c_(.+)", query.data).group(2)
         context.user_data["page"] = page
-        # context.user_data["wts"] = card_code
         mode = query.data.split("_")[2]
         keyboard = generate_trade_keyboard(context, mode=mode, wts=card_code)
+        await query.edit_message_reply_markup(reply_markup=keyboard)
+
+    if query.data.startswith("anon_trade_buy_page_"):
+        page = int(query.data.split("_")[4])
+        context.user_data["page"] = page
+        mode = query.data.split("_")[2]
+        keyboard = generate_trade_keyboard(context, mode=mode)
         await query.edit_message_reply_markup(reply_markup=keyboard)
 
     elif query.data.startswith("c_"):
@@ -356,6 +361,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif query.data.startswith("anon_trade_add_"):
         await query.answer()
+        await query.delete_message()
         card_code = "c_" + re.search("anon_trade_add_c_(.+)_(.+)", query.data).group(1)
         page = re.search("anon_trade_add_c_(.+)_(.+)", query.data).group(2)
         context.user_data["wts"] = card_code
@@ -364,16 +370,16 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif query.data.startswith("anon_trade_sell_c_"):
         await query.answer()
-        wtb = "c_" + re.search("anon_trade_sell_c_(.+)_c_(.+)", query.data).group(2)
-        wts = "c_" + re.search("anon_trade_sell_c_(.+)_c_(.+)", query.data).group(1)
+        wts = "c_" + re.search("anon_trade_sell_c_(.+)_c_(.+)", query.data).group(2)
+        wtb = "c_" + re.search("anon_trade_sell_c_(.+)_c_(.+)", query.data).group(1)
         context.user_data["wtb"] = wtb
         context.user_data["wts"] = wts
         await anon_trade_confirm_sell(update, context)
 
     elif query.data.startswith("anon_trade_confirm_sell_"):
         await query.answer()
-        wts = "c_" + re.search("anon_trade_confirm_sell_c_(.+)_(.+)", query.data).group(1)
-        wtb = re.search("anon_trade_confirm_sell_c_(.+)_(.+)", query.data).group(2)
+        wtb = "c_" + re.search("anon_trade_confirm_sell_c_(.+)_(.+)", query.data).group(2)
+        wts = "c_" + re.search("anon_trade_confirm_sell_c_(.+)_c_(.+)", query.data).group(1)
         await query.delete_message()
 
         user.anon_trade.append({"wts": wts, "wtb": wtb})
@@ -389,3 +395,18 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif query.data == "anon_trade_cancel_sell":
         await query.answer("Отменено")
         await query.delete_message()
+
+    elif query.data.startswith("anon_trade_close_sell_"):
+        card_code = re.search("anon_trade_close_sell_(.+)", query.data).group(1)
+        context.user_data["card_code"] = card_code
+        await show_card(query, context, in_market=False)
+
+    elif query.data.startswith("anon_trade_buy_c_"):
+        card_code = "c_" + re.search("anon_trade_buy_c_(.+)", query.data).group(1)
+        context.user_data["card_code"] = card_code
+        await anon_trade_buy_card_show_offers(update, context)
+
+    elif query.data.startswith("anon_trade_view_buy_list"):
+        await query.answer()
+        context.user_data["page"] = 0
+        await anon_trade_choose_menu(update, context)
