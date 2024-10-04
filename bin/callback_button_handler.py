@@ -8,7 +8,7 @@ from telegram.ext import ContextTypes
 
 from bin.achievements import bot_check_achievements
 from bin.anon_trade import generate_trade_keyboard, anon_trade_select_desired, \
-    anon_trade_confirm_sell, anon_trade_buy_card_show_offers, anon_trade_choose_menu
+    anon_trade_confirm_sell, anon_trade_buy_card_show_offers, anon_trade_choose_menu, generate_trade_offers_keyboard
 from bin.coinflip import coinflip_result
 from bin.collection import send_card_list, show_card, list_cards, get_collection_s
 from bin.market import market_sell_list_menu, shop_menu
@@ -59,6 +59,21 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         context.user_data["page"] = page
         mode = query.data.split("_")[2]
         keyboard = generate_trade_keyboard(context, mode=mode)
+        await query.edit_message_reply_markup(reply_markup=keyboard)
+
+    if query.data.startswith("anon_trade_view_offer_page_"):
+        page = int(query.data.split("_")[-1])
+        context.user_data["anon_trade_page"] = page
+        try:
+            _ = context.user_data["anon_trade_offers"]
+        except KeyError:
+            await query.delete_message()
+            return
+        keyboard = generate_trade_offers_keyboard(context, offers=context.user_data["anon_trade_offers"])
+        if not keyboard:
+            await query.answer("Ошибка")
+            await query.delete_message()
+            return
         await query.edit_message_reply_markup(reply_markup=keyboard)
 
     elif query.data.startswith("c_"):
@@ -410,3 +425,47 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.answer()
         context.user_data["page"] = 0
         await anon_trade_choose_menu(update, context)
+
+    elif query.data.startswith("anon_trade_view_offer_"):
+        await query.answer()
+        receiver_id, wts, wtb = re.search("anon_trade_view_offer_(.+)_c_(.+)_c_(.+)", query.data).groups()
+        wts = "c_" + wts
+        wtb = "c_" + wtb
+
+        if wtb not in user.collection:
+            await query.answer("У вас нет этой карточки :(", show_alert=True)
+            return
+
+        resp = f"Вы согласны отдать карту {cards_dict[wtb]['name']} и получить карту {cards_dict[wts]['name']}?"
+        keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("Да",
+                                                               callback_data=f"anon_trade_offer_confirm_{receiver_id}_{wts}_{wtb}")],
+                                         [InlineKeyboardButton("Нет",
+                                                               callback_data=f"anon_trade_offer_reject_{wts}")]])
+
+        await query.edit_message_text(resp,
+                                      reply_markup=keyboard)
+
+    elif query.data.startswith("anon_trade_offer_confirm_"):
+        receiver_id, wts, wtb = re.search("anon_trade_offer_confirm_(.+)_c_(.+)_c_(.+)", query.data).groups()
+        wts = "c_" + wts
+        wtb = "c_" + wtb
+
+        receiver = User.get(None, int(receiver_id))
+        try:
+            user.collection.remove(wts)
+            receiver.collection.append(wtb)
+        except ValueError:
+            await query.delete_message()
+            return
+
+        user.write()
+        receiver.write()
+
+        await context.bot.send_message(user.id,
+                                       f"Успешно!\n\nПолучена карта {cards_dict[wtb]['name']}.")
+
+        await context.bot.send_message(receiver.id,
+                                       f"Кто-то обменялся в вами картой!\n\nПолучена карта {cards_dict[wts]['name']}.")
+
+        await query.delete_message()
+        await query.answer()

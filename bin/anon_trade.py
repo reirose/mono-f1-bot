@@ -9,6 +9,52 @@ from lib.keyboard_markup import CARDS_PER_PAGE
 from lib.variables import cards_dict
 
 
+def generate_trade_offers_keyboard(context, **kwargs):
+    offers = list(kwargs["offers"])
+    page = context.user_data["anon_trade_page"]
+    try:
+        context.user_data["anon_trade_offers"] = offers
+    except KeyError:
+        return
+
+    total_pages = math.ceil(len(offers) / CARDS_PER_PAGE)
+
+    start = page * CARDS_PER_PAGE
+    end = start + CARDS_PER_PAGE
+    current_page_offers = offers[start:end]
+
+    keyboard = []
+    for offer in current_page_offers:
+        offer_terms = list(offer.values())[0]
+        offer_user = list(offer.keys())[0]
+        card_name = cards_dict[offer_terms['wtb']]['name']
+        keyboard.append([InlineKeyboardButton(f"Обмен на {card_name}",
+                                              callback_data=f"anon_trade_view_offer_{offer_user}_"
+                                                            f"{offer_terms['wts']}_{offer_terms['wtb']}")])
+
+    nav_buttons = []
+    if page > 0:
+        nav_buttons.append(InlineKeyboardButton("<<",
+                                                callback_data=f"anon_trade_view_offer_page_0"))
+        nav_buttons.append(InlineKeyboardButton("<",
+                                                callback_data=f"anon_trade_view_offer_page_{page - 1}"))
+    if len(keyboard) > CARDS_PER_PAGE:
+        nav_buttons.append(InlineKeyboardButton(f"{page + 1}",
+                                                callback_data="noop"))
+    if page < total_pages - 1:
+        nav_buttons.append(InlineKeyboardButton(">", callback_data=f"anon_trade_view_offer_page_{page + 1}"))
+        nav_buttons.append(InlineKeyboardButton(">>",
+                                                callback_data=f"anon_trade_view_offer_page_{total_pages - 1}"))
+
+    if not keyboard:
+        keyboard.append([InlineKeyboardButton("Предложения отсутствуют", callback_data="noop")])
+    else:
+        keyboard.append(nav_buttons)
+    keyboard.append([InlineKeyboardButton("Назад", callback_data="anon_trade_view_buy_list")])
+
+    return InlineKeyboardMarkup(keyboard)
+
+
 def generate_trade_keyboard(context, mode: Literal["buy", "sell"], **kwargs):
     page = context.user_data["page"]
 
@@ -54,7 +100,8 @@ async def anon_trade_choose_menu(update: Update, context: ContextTypes.DEFAULT_T
     context.user_data["page"] = 0
     reply_markup = generate_trade_keyboard(context, mode="buy")
     resp = "Выберите карту, по которой хотите посмотреть предложения"
-    await update.callback_query.delete_message()
+    if update.callback_query:
+        await update.callback_query.delete_message()
     await update.effective_chat.send_message(resp,
                                              reply_markup=reply_markup)
 
@@ -71,9 +118,11 @@ async def anon_trade_select_desired(update: Update, context: ContextTypes.DEFAUL
 async def anon_trade_confirm_sell(update: Update, context: ContextTypes.DEFAULT_TYPE):
     wts = context.user_data['wts']
     wtb = context.user_data['wtb']
+    wts_name = cards_dict[wts]['name']
+    wtb_name = cards_dict[wtb]['name']
     resp = ("Вы уверены, что хотите создать предложение обмена?\n\n"
-            f"Отдаёте: {wts}\n"
-            f"Получаете: {wtb}")
+            f"Отдаёте: {wts_name}\n"
+            f"Получаете: {wtb_name}")
 
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Да",
                                                                callback_data=f"anon_trade_confirm_sell_{wts}_{wtb}")],
@@ -94,19 +143,26 @@ async def anon_trade_buy_card_show_offers(update: Update, context: ContextTypes.
         for uid, offers_list in user.items():
             for offer in offers_list:
                 for mode, code in offer.items():
-                    if code == card_code:
+                    if (code == card_code and mode == 'wts') and uid != update.callback_query.from_user.id:
                         offers.append({uid: {"wts": offer.get("wts"), "wtb": offer.get("wtb")}})
 
-    response = f"Предложения по {card_code}:"
-    keyboard = []
-    for offer in offers:
-        offer_terms = list(offer.values())[0]
-        offer_user = list(offer.keys())[0]
-        keyboard.append([InlineKeyboardButton(f"Обмен на {offer_terms['wts']}",
-                                              callback_data=f"anon_trade_view_offer_{offer_user}_"
-                                                            f"{offer_terms['wts']}_{offer_terms['wtb']}")])
-    if not keyboard:
-        keyboard.append([InlineKeyboardButton("Предложения отсутствуют", callback_data="noop")])
-    keyboard.append([InlineKeyboardButton("Назад", callback_data="anon_trade_view_buy_list")])
+    try:
+        _ = context.user_data["anon_trade_page"]
+    except KeyError:
+        context.user_data["anon_trade_page"] = 0
 
-    await update.callback_query.edit_message_text(response, reply_markup=InlineKeyboardMarkup(keyboard))
+    card_name = cards_dict[card_code]['name']
+    response = f"Предложения по {card_name}:"
+    keyboard = generate_trade_offers_keyboard(context, offers=offers)
+    # keyboard = []
+    # for offer in offers:
+    #     offer_terms = list(offer.values())[0]
+    #     offer_user = list(offer.keys())[0]
+    #     keyboard.append([InlineKeyboardButton(f"Обмен на {offer_terms['wts']}",
+    #                                           callback_data=f"anon_trade_view_offer_{offer_user}_"
+    #                                                         f"{offer_terms['wts']}_{offer_terms['wtb']}")])
+    # if not keyboard:
+    #     keyboard.append([InlineKeyboardButton("Предложения отсутствуют", callback_data="noop")])
+    # keyboard.append([InlineKeyboardButton("Назад", callback_data="anon_trade_view_buy_list")])
+
+    await update.callback_query.edit_message_text(response, reply_markup=keyboard)
