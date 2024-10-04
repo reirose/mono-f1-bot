@@ -6,7 +6,7 @@
   "name": "Max Verstappen",
   "type": "driver",
   "team": "Red Bull",
-  "category": "gold",
+  "category": "champion",
   "description": ""
 },
 {
@@ -17,7 +17,7 @@
   "name": "Sergio Perez",
   "type": "driver",
   "team": "Red Bull",
-  "category": "bronze",
+  "category": "silver",
   "description": ""
 },
 {
@@ -28,7 +28,7 @@
   "name": "Lewis Hamilton",
   "type": "driver",
   "team": "Mercedes",
-  "category": "gold",
+  "category": "champion",
   "description": ""
 },
 {
@@ -39,7 +39,7 @@
   "name": "George Russell",
   "type": "driver",
   "team": "Mercedes",
-  "category": "silver",
+  "category": "gold",
   "description": ""
 },
 {
@@ -50,7 +50,7 @@
   "name": "Charles Leclerc",
   "type": "driver",
   "team": "Ferrari",
-  "category": "silver",
+  "category": "gold",
   "description": ""
 },
 {
@@ -61,7 +61,7 @@
   "name": "Carlos Sainz Jr.",
   "type": "driver",
   "team": "Ferrari",
-  "category": "silver",
+  "category": "gold",
   "description": ""
 },
 {
@@ -72,7 +72,7 @@
   "name": "Lando Norris",
   "type": "driver",
   "team": "McLaren",
-  "category": "silver",
+  "category": "gold",
   "description": ""
 },
 {
@@ -83,7 +83,7 @@
   "name": "Oscar Piastri",
   "type": "driver",
   "team": "McLaren",
-  "category": "silver",
+  "category": "gold",
   "description": ""
 },
 {
@@ -94,7 +94,7 @@
   "name": "Fernando Alonso",
   "type": "driver",
   "team": "Aston Martin",
-  "category": "gold",
+  "category": "champion",
   "description": ""
 },
 {
@@ -105,7 +105,7 @@
   "name": "Lance Stroll",
   "type": "driver",
   "team": "Aston Martin",
-  "category": "bronze",
+  "category": "silver",
   "description": ""
 },
 {
@@ -116,7 +116,7 @@
   "name": "Pierre Gasly",
   "type": "driver",
   "team": "Alpine",
-  "category": "bronze",
+  "category": "silver",
   "description": ""
 },
 {
@@ -127,7 +127,7 @@
   "name": "Esteban Ocon",
   "type": "driver",
   "team": "Alpine",
-  "category": "bronze",
+  "category": "silver",
   "description": ""
 },
 {
@@ -171,7 +171,7 @@
   "name": "Yuki Tsunoda",
   "type": "driver",
   "team": "RB",
-  "category": "bronze",
+  "category": "silver",
   "description": ""
 },
 {
@@ -182,7 +182,7 @@
   "name": "Valtteri Bottas",
   "type": "driver",
   "team": "Sauber",
-  "category": "bronze",
+  "category": "silver",
   "description": ""
 },
 {
@@ -281,7 +281,7 @@
   "name": "Gasly • Ocon",
   "type": "duo",
   "team": "Alpine",
-  "category": "bronze",
+  "category": "silver",
   "description": ""
 },
 {
@@ -391,7 +391,7 @@
   "name": "GAS • OCO • Oakes",
   "type": "team",
   "team": "Alpine",
-  "category": "bronze",
+  "category": "silver",
   "description": ""
 },
 {
@@ -479,7 +479,7 @@
   "name": "Andrea Stella",
   "type": "team_principal",
   "team": "McLaren",
-  "category": "silver",
+  "category": "gold",
   "description": ""
 },
 {
