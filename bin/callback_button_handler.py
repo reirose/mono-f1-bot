@@ -50,7 +50,6 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if query.data.startswith("anon_trade_sell_page_"):
         page = int(query.data.split("_")[4])
         card_code = "c_" + re.search("anon_trade_sell_page_(.+)_c_(.+)", query.data).group(2)
-        # context.user_data["page"] = page
         mode: str = query.data.split("_")[2]
         keyboard = generate_trade_keyboard(context, mode=mode, wts=card_code, page=page, user_id=query.from_user.id)
         await query.edit_message_reply_markup(reply_markup=keyboard)
@@ -397,16 +396,12 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.delete_message()
         card_code = "c_" + re.search("anon_trade_add_c_(.+)_(.+)", query.data).group(1)
         page = re.search("anon_trade_add_c_(.+)_(.+)", query.data).group(2)
-        # context.user_data["wts"] = card_code
-        # context.user_data["page"] = page
         await anon_trade_select_desired(update, context, wts=card_code, page=page)
 
     elif query.data.startswith("anon_trade_sell_c_"):
         await query.answer()
         wts = "c_" + re.search("anon_trade_sell_c_(.+)_c_(.+)", query.data).group(2)
         wtb = "c_" + re.search("anon_trade_sell_c_(.+)_c_(.+)", query.data).group(1)
-        # context.user_data["wtb"] = wtb
-        # context.user_data["wts"] = wts
         await anon_trade_confirm_sell(update, context, wts=wts, wtb=wtb)
 
     elif query.data.startswith("anon_trade_confirm_sell_"):
@@ -433,12 +428,10 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     elif query.data.startswith("anon_trade_close_sell_"):
         card_code = re.search("anon_trade_close_sell_(.+)", query.data).group(1)
-        # context.user_data["card_code"] = card_code
         await show_card(query, context, in_market=False, card_code=card_code)
 
     elif query.data.startswith("anon_trade_buy_c_"):
         card_code = "c_" + re.search("anon_trade_buy_c_(.+)", query.data).group(1)
-        # context.user_data["card_code"] = card_code
         await anon_trade_buy_card_show_offers(update, context, card_code=card_code)
 
     elif query.data.startswith("anon_trade_view_buy_list"):
@@ -448,12 +441,10 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         except KeyError:
             context.user_data['anon_trade_page'] = 0
             page = 0
-        # context.user_data["page"] = 0
         await anon_trade_choose_menu(update, context, page=page, user_id=query.from_user.id)
 
     elif query.data.startswith("anon_trade_close_buy"):
         await query.answer()
-        # context.user_data["page"] = 0
         await query.delete_message()
 
     elif query.data.startswith("anon_trade_view_offer_"):
@@ -492,15 +483,18 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await query.delete_message()
             return
 
+        user.statistics["trades_complete"] += 1
         user.write()
+        await bot_check_achievements(update, context)
+        receiver.statistics["trades_complete"] += 1
         receiver.write()
+        await bot_check_achievements(update, context, user=receiver)
 
         wtb_limited, wts_limited = wtb.startswith("c_9"), wts.startswith("c_9")
 
         wtb_card_pic_id = get_card_image(wtb, is_limited=wtb_limited)
         wts_card_pic_id = get_card_image(wts, is_limited=wts_limited)
 
-        # Отправляем карту wtb
         if wtb_limited:
             await context.bot.send_animation(user.id,
                                              animation=wtb_card_pic_id,
@@ -510,7 +504,6 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                          photo=wtb_card_pic_id,
                                          caption=f"Успешно!\nПолучена карта: {cards_dict[wtb]['name']}.")
 
-        # Отправляем карту wts
         if wts_limited:
             await context.bot.send_animation(receiver.id,
                                              animation=wts_card_pic_id,
@@ -522,7 +515,6 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                          caption=f"Кто-то обменялся с вами картой!\nПолучена карта: "
                                                  f"{cards_dict[wts]['name']}.")
 
-        # await query.delete_message()
         await query.answer()
 
     elif query.data.startswith("anon_trade_my_offer_c_"):

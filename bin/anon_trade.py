@@ -218,8 +218,8 @@ async def anon_trade_show_my_offers(update: Update, context: ContextTypes.DEFAUL
 async def anon_trade_show_my_offer(update: Update, context: ContextTypes.DEFAULT_TYPE, **kwargs):
     wts, wtb = kwargs['wts'], kwargs['wtb']
     resp = ("Ваше предложение обмена:\n"
-            f"Предлагаете: {wts}\n"
-            f"В обмен на: {wtb}")
+            f"Предлагаете: {cards_dict[wts]['name']}\n"
+            f"В обмен на: {cards_dict[wtb]['name']}")
     keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("Отменить предложение",
                                                            callback_data="anon_trade_my_offer_"
                                                                          f"remove_{wts}_{wtb}")],

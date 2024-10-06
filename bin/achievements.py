@@ -28,8 +28,8 @@ def update_user_achievements(user: User):
     return list(new_achievements)
 
 
-async def bot_check_achievements(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user = User.get(update.effective_user)
+async def bot_check_achievements(update: Update, context: ContextTypes.DEFAULT_TYPE, **kwargs):
+    user = kwargs['user'] if 'user' in kwargs else User.get(update.effective_user)
     new_achievements = update_user_achievements(user)
     for ach in new_achievements:
         await context.bot.send_message(text=f"Получено достижение: <i>{achievements_dict[ach]['name']}</i>",
