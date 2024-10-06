@@ -97,7 +97,7 @@ class FilterMarketButton(filters.MessageFilter):
 
 class FilterTradeButton(filters.MessageFilter):
     def filter(self, message) -> bool:
-        return message.text is not None and re.search("Обмен", message.text) is not None
+        return message.text is not None and re.search("Отправить", message.text) is not None
 
 
 class FilterAllCardsButton(filters.MessageFilter):
@@ -125,7 +125,23 @@ class FilterUserNotBanned(filters.MessageFilter):
         return User.get(message.from_user).status != "banned"
 
 
+class FilterAnonTradeButton(filters.MessageFilter):
+    def filter(self, message: Message) -> bool:
+        return message.text is not None and re.search("Трейды", message.text) is not None
+
+
+class FilterMyOffersButton(filters.MessageFilter):
+    def filter(self, message: Message) -> bool:
+        return message.text is not None and re.search("Мои предложения", message.text) is not None
+
+
+class FilterOffersButton(filters.MessageFilter):
+    def filter(self, message: Message) -> bool:
+        return message.text is not None and re.search("Предложения игроков", message.text) is not None
+
+
 not_banned_filter = FilterUserNotBanned()
+anon_trade_button_filter = FilterAnonTradeButton()
 other_button_filter = FilterOtherButton()
 menu_button_filter = FilterMenuButton()
 roll_button_filter = FilterRollButton()
@@ -142,5 +158,8 @@ all_cards_button_filter = FilterAllCardsButton()
 coinflip_menu_button_filter = FilterCoinflipMenuButton()
 coinflip_button_filter = FilterCoinflipButton()
 coinflip_pve_button_filter = FilterCoinflipPVEButton()
+my_offers_button_filter = FilterMyOffersButton()
+offers_button_filter = FilterOffersButton()
+
 is_admin = IsAdminFilter()
 dev_mode = DevMode()

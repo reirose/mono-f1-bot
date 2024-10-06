@@ -47,7 +47,6 @@ def restart_status_reset():
 
 
 async def notify_free_pack(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    print(1)
     users = USER_COLLECTION.find({}, {"_id": 0})
     for user in users:
         try:

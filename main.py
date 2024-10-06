@@ -3,7 +3,7 @@ import logging
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler
 
-from bin.anon_trade import anon_trade_choose_menu
+from bin.anon_trade import anon_trade_choose_menu, anon_trade_main_menu, anon_trade_show_my_offers
 from bin.callback_button_handler import button_callback
 from bin.coinflip import coinflip_conv_handler, abort, coinflip_menu
 from bin.coinflip_pve import bot_coinflip_conv_handler
@@ -20,7 +20,8 @@ from lib.init import TOKEN, client, BOT_INFO
 from lib.filters import (other_button_filter, menu_button_filter, roll_menu_button_filter, roll_button_filter,
                          collection_menu_button_filter, show_card_button_filter, collection_list_button_filter,
                          dev_mode, packs_shop_button_filter, me_button_filter, market_button_filter, not_banned_filter,
-                         is_admin, all_cards_button_filter, shop_button_filter, coinflip_menu_button_filter)
+                         is_admin, all_cards_button_filter, shop_button_filter, coinflip_menu_button_filter,
+                         anon_trade_button_filter, offers_button_filter, my_offers_button_filter)
 from lib.routines import update_cards, scheduler, update_free_roll, clear_logs
 
 scheduler.start()
@@ -48,6 +49,9 @@ def main():
 
     # обработчики текстовых сообщений (для кнопок)
     app.add_handler(MessageHandler(dev_mode & other_button_filter & not_banned_filter, other_menu))
+    app.add_handler(MessageHandler(dev_mode & anon_trade_button_filter & not_banned_filter, anon_trade_main_menu))
+    app.add_handler(MessageHandler(dev_mode & offers_button_filter & not_banned_filter, anon_trade_choose_menu))
+    app.add_handler(MessageHandler(dev_mode & my_offers_button_filter & not_banned_filter, anon_trade_show_my_offers))
     app.add_handler(MessageHandler(dev_mode & menu_button_filter, menu))
     app.add_handler(MessageHandler(dev_mode & me_button_filter & not_banned_filter, about_me))
     app.add_handler(MessageHandler(dev_mode & roll_menu_button_filter & not_banned_filter, roll_menu))

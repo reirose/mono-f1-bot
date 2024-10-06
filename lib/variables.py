@@ -89,6 +89,7 @@ category_distribution = {
     "bronze": 2,
     "silver": 0,
     "gold": 0,
+    "champion": 0,
     "platinum": 0,
     "ruby": 0,
     "sapphire": 0

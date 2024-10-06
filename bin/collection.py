@@ -10,10 +10,17 @@ from lib.variables import cards_dict, translation, sort_keys_by, sort_list, \
     sort_list_transl, category_color
 
 
-async def show_card(query, context, in_market: bool, page: int = 0):
+def get_card_image(card_id: str, is_limited: bool = False):
+    try:
+        return open(f"bin/img/{card_id}.mp4", "rb") if is_limited else open(f"bin/img/{card_id}.png", "rb")
+    except FileNotFoundError:
+        return open(f"bin/img/card.png", "rb")
+
+
+async def show_card(query, context, in_market: bool, page: int = 0, **kwargs):
     user = User.get(query.from_user)
     try:
-        card_code = context.user_data["card_code"]
+        card_code = kwargs["card_code"]
     except KeyError:
         card_code = f"c_{re.search('c_(.{3})', query.data).group(1)}"
     context.user_data.clear()
@@ -21,11 +28,7 @@ async def show_card(query, context, in_market: bool, page: int = 0):
     limited = card["type"] == "limited"
     # card_pic_id = ("AgACAgQAAxkBAAIMP2bKLDHHQSdb4-"
     #                "4qJpG9WTW7k8QtAAK0wTEbmxtZUuGYL8YF6ayLAQADAgADeAADNQQ")
-    try:
-        card_pic_id = open(f"bin/img/{card['code']}.mp4", "rb") if limited else open(f"bin/img/{card['code']}.png",
-                                                                                     "rb")
-    except FileNotFoundError:
-        card_pic_id = open(f"bin/img/card.png", "rb")
+    card_pic_id = get_card_image(card_code, is_limited=limited)
     card_name = card["name"]
     card_team = card["team"]
     card_team = f"Команда: {card_team}\n" if card_team else ""
@@ -70,7 +73,7 @@ async def show_card(query, context, in_market: bool, page: int = 0):
                                          message_id=query.message.message_id)
     except BadRequest:
         pass
-    await query.answer()  # f"Вы выбрали карту {query.data}"
+    await query.answer()
 
 
 async def list_cards(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -98,7 +101,8 @@ async def send_card_list(update: Update, context: ContextTypes.DEFAULT_TYPE,
 
     if update.callback_query and (not update.callback_query.data.startswith("sell_confirm_") and
                                   not update.callback_query.data == "close_card" and
-                                  not update.callback_query.data.startswith("market_close_")):
+                                  not update.callback_query.data.startswith("market_close_") and
+                                  not update.callback_query.data.startswith("anon_trade_confirm_sell_")):
         await update.callback_query.answer()
         if closed_card:
             await update.callback_query.delete_message()
@@ -177,6 +181,7 @@ async def view_collection_list(update: Update, context: ContextTypes.DEFAULT_TYP
 async def collection_completeness(update: Update, _: ContextTypes.DEFAULT_TYPE):
     mes = update.message
     user = User.get(mes.from_user)
+    completeness = int((len(set(user.collection))/len(cards_dict))*100)
     resp = "Список карт в игре:\n"
     prev = ""
     for card in cards_dict:
@@ -185,6 +190,8 @@ async def collection_completeness(update: Update, _: ContextTypes.DEFAULT_TYPE):
             resp += "\n<b>" + translation[card_d["type"]] + "</b>\n"
             prev = card_d["type"]
         resp += f"{card_d['name']} {'☑️' if card in user.collection else ''}\n"
+
+    resp += f"\n<i>Вы собрали {completeness}% всех карт в игре!</i>"
 
     await mes.reply_text(resp,
                          parse_mode="HTML")
