@@ -39,10 +39,15 @@ async def trade_handle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return ConversationHandler.END
 
 
+async def cancel_trade(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await collection_menu(update, context)
+    return ConversationHandler.END
+
+
 trade_conv_handler = ConversationHandler(
     entry_points=[MessageHandler(trade_button_filter, trade_initialization)],
     states={
         "trade_init": [MessageHandler(filters.TEXT & ~filters.COMMAND, trade_handle)],
     },
-    fallbacks=[CommandHandler("cancel", collection_menu)]
+    fallbacks=[CommandHandler("cancel", cancel_trade)]
 )

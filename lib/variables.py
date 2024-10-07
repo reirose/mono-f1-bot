@@ -203,3 +203,6 @@ achievements_dict = {
          (int((datetime.datetime.now().timestamp() - user.date_of_registration) // 86400) + 1) >= 30,
          "desc": "30 дней в игре. Неплохо для новичка"}
 }
+
+
+cards_pics_cache = {}

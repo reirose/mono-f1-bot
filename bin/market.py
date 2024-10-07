@@ -43,7 +43,8 @@ async def buy_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def shop_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(text="🛒",
-                                   chat_id=update.message.from_user.id,
+                                   chat_id=update.callback_query.from_user.id if update.callback_query
+                                   else update.message.from_user.id,
                                    reply_markup=shop_menu_markup)
 
 

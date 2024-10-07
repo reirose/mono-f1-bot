@@ -6,11 +6,12 @@ from telegram import Update, InputMediaPhoto
 from telegram.ext import ContextTypes
 
 from bin.achievements import bot_check_achievements
+from bin.collection import get_card_image
 from lib.classes.user import User
 from lib.init import BOT_INFO
 from lib.keyboard_markup import roll_menu_markup
 from lib.variables import probability_by_category, cards_by_category, translation, garant_list, \
-    roll_cards_dict, category_sort_keys, garant_value, category_distribution
+    roll_cards_dict, category_sort_keys, garant_value, category_distribution, cards_pics_cache
 
 
 def select_card_weighted(garant: bool = None, user: User = None):
@@ -33,7 +34,10 @@ def select_card_weighted(garant: bool = None, user: User = None):
 
     rolled_cards = []
     for cat in categories:
-        card = roll_cards_dict[random.choice(cards_by_category[cat])]
+        try:
+            card = roll_cards_dict[random.choice(cards_by_category[cat])]
+        except IndexError:
+            continue
         while card in rolled_cards or card["code"] in user.last_roll:
             card = roll_cards_dict[random.choice(cards_by_category[cat])]
         rolled_cards.append(card)
@@ -124,7 +128,7 @@ async def roll_result(context):
     cards_pics = []
     for card in rolled_cards:
         try:
-            cards_pics.append(InputMediaPhoto(open(f"bin/img/{card['code']}.png", 'rb')))
+            cards_pics.append(InputMediaPhoto(get_card_image(card['code'])))
         except FileNotFoundError:
             cards_pics.append(InputMediaPhoto(open("bin/img/card.png", 'rb')))
 
@@ -137,11 +141,17 @@ async def roll_result(context):
 
         user.collection.append(card["code"])
 
-    await mes.reply_media_group(media=cards_pics,
-                                caption=response,
-                                parse_mode="HTML")
+    sent = await mes.reply_media_group(media=cards_pics,
+                                       caption=response,
+                                       parse_mode="HTML")
 
     user.status = "idle"
     user.write()
+
+    for index, message in enumerate(sent):
+        for photo_index, photo in enumerate(message.photo):
+            if rolled_cards[index]['code'] not in cards_pics_cache and (photo_index+1) // 4:
+                cards_pics_cache.update({rolled_cards[index]['code']:photo.file_id})
+                logging.log(BOT_INFO, f"Cached {rolled_cards[index]['name']} successfully")
 
     await bot_check_achievements(job.data[3], context)

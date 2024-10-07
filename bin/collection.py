@@ -1,17 +1,18 @@
 import re
 
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, Bot
-from telegram.error import BadRequest
 from telegram.ext import ContextTypes
 
 from lib.classes.user import User
 from lib.keyboard_markup import collection_menu_markup, generate_collection_keyboard
 from lib.variables import cards_dict, translation, sort_keys_by, sort_list, \
-    sort_list_transl, category_color
+    sort_list_transl, category_color, cards_pics_cache
 
 
 def get_card_image(card_id: str, is_limited: bool = False):
     try:
+        if card_id in cards_pics_cache:
+            return cards_pics_cache.get(card_id)
         return open(f"bin/img/{card_id}.mp4", "rb") if is_limited else open(f"bin/img/{card_id}.png", "rb")
     except FileNotFoundError:
         return open(f"bin/img/card.png", "rb")
@@ -26,8 +27,6 @@ async def show_card(query, context, in_market: bool, page: int = 0, **kwargs):
     context.user_data.clear()
     card = cards_dict.get(card_code)
     limited = card["type"] == "limited"
-    # card_pic_id = ("AgACAgQAAxkBAAIMP2bKLDHHQSdb4-"
-    #                "4qJpG9WTW7k8QtAAK0wTEbmxtZUuGYL8YF6ayLAQADAgADeAADNQQ")
     card_pic_id = get_card_image(card_code, is_limited=limited)
     card_name = card["name"]
     card_team = card["team"]
@@ -61,18 +60,13 @@ async def show_card(query, context, in_market: bool, page: int = 0, **kwargs):
                                          caption=response,
                                          parse_mode="HTML",
                                          reply_markup=reply_markup)
+
     else:
         await context.bot.send_photo(chat_id=query.message.chat.id,
                                      photo=card_pic_id,
                                      caption=response,
                                      parse_mode="HTML",
                                      reply_markup=reply_markup)
-
-    try:
-        await context.bot.delete_message(chat_id=query.from_user.id,
-                                         message_id=query.message.message_id)
-    except BadRequest:
-        pass
     await query.answer()
 
 
@@ -181,7 +175,7 @@ async def view_collection_list(update: Update, context: ContextTypes.DEFAULT_TYP
 async def collection_completeness(update: Update, _: ContextTypes.DEFAULT_TYPE):
     mes = update.message
     user = User.get(mes.from_user)
-    completeness = int((len(set(user.collection))/len(cards_dict))*100)
+    completeness = int((len(set(user.collection)) / len(cards_dict)) * 100)
     resp = "Список карт в игре:\n"
     prev = ""
     for card in cards_dict:

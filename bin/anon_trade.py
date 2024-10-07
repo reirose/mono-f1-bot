@@ -52,7 +52,7 @@ def generate_trade_offers_keyboard(context, **kwargs):
             keyboard.append([InlineKeyboardButton(f"Обмен на {card_name}"
                                                   f"{' ✖️' if card_code not in collection else ''}",
                                                   callback_data=f"anon_trade_view_offer_{offer_user}_"
-                                                                f"{offer_terms['wts']}_{offer_terms['wtb']}")])
+                                                  f"{offer_terms['wts']}_{offer_terms['wtb']}")])
 
     # Кнопки навигации
     nav_buttons = []
@@ -121,7 +121,11 @@ def generate_trade_keyboard(context, mode: Literal["buy", "sell"], **kwargs):
         nav_buttons.append(InlineKeyboardButton(">>",
                                                 callback_data=f"anon_trade_{mode}_page_{total_pages - 1}{wts}{wtb}"))
 
-    keyboard.append(nav_buttons)
+    if not current_page_cards:
+        keyboard.append([InlineKeyboardButton("Предложения отсутствуют", callback_data="noop")])
+    else:
+        if nav_buttons:
+            keyboard.append(nav_buttons)
     keyboard.append([InlineKeyboardButton("Закрыть",
                                           callback_data=f"anon_trade_close_{mode}{wts}{wtb}")])
 
@@ -215,7 +219,7 @@ async def anon_trade_show_my_offers(update: Update, context: ContextTypes.DEFAUL
                                                   reply_markup=keyboard)
 
 
-async def anon_trade_show_my_offer(update: Update, context: ContextTypes.DEFAULT_TYPE, **kwargs):
+async def anon_trade_show_my_offer(update: Update, _: ContextTypes.DEFAULT_TYPE, **kwargs):
     wts, wtb = kwargs['wts'], kwargs['wtb']
     resp = ("Ваше предложение обмена:\n"
             f"Предлагаете: {cards_dict[wts]['name']}\n"

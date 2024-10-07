@@ -22,12 +22,14 @@ from lib.filters import (other_button_filter, menu_button_filter, roll_menu_butt
                          dev_mode, packs_shop_button_filter, me_button_filter, market_button_filter, not_banned_filter,
                          is_admin, all_cards_button_filter, shop_button_filter, coinflip_menu_button_filter,
                          anon_trade_button_filter, offers_button_filter, my_offers_button_filter)
-from lib.routines import update_cards, scheduler, update_free_roll, clear_logs
+from lib.routines import update_cards, scheduler, update_free_roll, clear_logs, notify_free_pack, async_scheduler
 
 scheduler.start()
+async_scheduler.start()
 scheduler.add_job(update_cards, 'interval', minutes=5)
 scheduler.add_job(update_free_roll, 'cron', hour=8, minute=0, second=0)
 scheduler.add_job(update_free_roll, 'cron', hour=20, minute=0, second=0)
+async_scheduler.add_job(notify_free_pack, 'cron', hour=10, minute=38, second=0)
 scheduler.add_job(clear_logs, 'interval', hours=1)
 
 

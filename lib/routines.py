@@ -6,9 +6,8 @@ import logging
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
-from telegram import Update
-from telegram.error import BadRequest
-from telegram.ext import ContextTypes
+from telegram import Bot
+from telegram.error import BadRequest, Forbidden
 
 from lib.init import CARDS_COLLECTION, USER_COLLECTION, BOT_INFO
 from lib.variables import cards_list, cards_dict, cards_by_category, roll_cards_dict, type_sort_keys
@@ -46,13 +45,16 @@ def restart_status_reset():
     logging.log(BOT_INFO, "Status reset successful (%i)" % resp.matched_count)
 
 
-async def notify_free_pack(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def notify_free_pack():
+    TOKEN = "7998597879:AAHDOosw1hVVFoEmKz5RuzNymvisTWT5qjg"  # dev-token
+    # TOKEN = "7465141345:AAHkj1SKA-CG9FRGdARz5EbmK_xk2OM9vZA"
+    bot = Bot(token=TOKEN)
     users = USER_COLLECTION.find({}, {"_id": 0})
     for user in users:
         try:
-            context.bot.send_message(chat_id=user.get("id"),
-                                     text="Получен бесплатный пак. Иди скорее открывай")
-        except BadRequest:
+            await bot.send_message(chat_id=user.get("id"),
+                                   text="Привет, тебе выдан бесплатный пак")
+        except (BadRequest, Forbidden):
             pass
 
 

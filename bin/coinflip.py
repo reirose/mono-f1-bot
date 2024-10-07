@@ -10,60 +10,57 @@ from lib.keyboard_markup import coinflip_menu_markup
 
 
 async def coinflip_menu(update: Update, __: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Выберите режим игры",
-                                    reply_markup=coinflip_menu_markup)
+    await update.message.reply_text("Выберите режим игры", reply_markup=coinflip_menu_markup)
 
 
 async def coinflip_entry(update: Update, _: ContextTypes.DEFAULT_TYPE):
-    if not User.get(update.message.from_user).coins:
-        await update.message.reply_text("У вас совсем не осталось монет."
-                                        "\n\n<i>Какой-то невнятный бубнёж про кружку пива...</i>",
-                                        parse_mode="HTML")
+    user = User.get(update.message.from_user)
+    if not user.coins:
+        await update.message.reply_text("У вас совсем не осталось монет.\n\n<i>Какой-то невнятный бубнёж про кружку "
+                                        "пива...</i>", parse_mode="HTML")
         return ConversationHandler.END
 
-    if User.get(update.message.from_user).coinflip:
-        await update.message.reply_text("У вас есть незаконченная игра! Если вы хотите отозвать предложение - "
-                                        "нажмите /coinflip_cancel",
-                                        parse_mode="HTML")
+    if user.coinflip:
+        await update.message.reply_text("У вас есть незаконченная игра! Если вы хотите отозвать предложение - нажмите "
+                                        "/coinflip_cancel", parse_mode="HTML")
         return ConversationHandler.END
 
-    await update.message.reply_text("Введите имя или ID пользователя, с которым хотите сыграть\n"
-                                    "(вы можете прервать операцию командой /coinflip_abort)")
+    await update.message.reply_text("Введите имя или ID пользователя, с которым хотите сыграть\n(вы можете прервать "
+                                    "операцию командой /coinflip_abort)")
     return "coinflip_parse_id"
 
 
 async def coinflip_parse_id(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mes = update.message
     try:
-        receiver_id = int(update.message.text)
+        receiver_id = int(mes.text)
     except ValueError:
-        receiver_id = update.message.text
+        receiver_id = mes.text
 
     if receiver_id == mes.from_user.id or receiver_id == mes.from_user.username:
-        await update.message.reply_text("Неверный ввод")
+        await mes.reply_text("Неверный ввод")
         return "coinflip_parse_id"
 
-    if not User.get(user=None, update=receiver_id):
-        await update.message.reply_text("Пользователя с таким ID или именем не существует. "
-                                        "Проверьте данные и повторите ввод.")
+    receiver = User.get(user=None, update=receiver_id)
+    if not receiver:
+        await mes.reply_text("Пользователя с таким ID или именем не существует. Проверьте данные и повторите ввод.")
         return "coinflip_parse_id"
 
-    if not User.get(user=None, update=receiver_id).coins:
-        await update.message.reply_text("У пользователя нет монет. Попробуйте сыграть с кем-то другим!"
-                                        "(вы можете прервать операцию командой /coinflip_abort)")
+    if not receiver.coins:
+        await mes.reply_text("У пользователя нет монет. Попробуйте сыграть с кем-то другим!(вы можете прервать "
+                             "операцию командой /coinflip_abort)")
         return "coinflip_parse_id"
 
-    if User.get(user=None, update=receiver_id).coinflip:
-        await update.message.reply_text("Пользователь уже в игре! Попробуйте сыграть с кем-то другим!"
-                                        "(вы можете прервать операцию командой /coinflip_abort)")
+    if receiver.coinflip:
+        await mes.reply_text("Пользователь уже в игре! Попробуйте сыграть с кем-то другим!(вы можете прервать "
+                             "операцию командой /coinflip_abort)")
         return "coinflip_parse_id"
 
-    bet_cap = min([User.get(user=None, update=receiver_id).coins, User.get(mes.from_user).coins])
+    bet_cap = min(User.get(mes.from_user).coins, receiver.coins)
     context.user_data["bet_cap"] = bet_cap
-    context.user_data["receiver_id"] = User.get(None, receiver_id).id
+    context.user_data["receiver_id"] = receiver.id
 
-    await mes.reply_text("Введите вашу ставку (максимум: %i)" % bet_cap)
-
+    await mes.reply_text(f"Введите вашу ставку (максимум: {bet_cap})")
     return "coinflip_bet_handle"
 
 
@@ -71,14 +68,15 @@ async def coinflip_bet_handle(update: Update, context: ContextTypes.DEFAULT_TYPE
     mes = update.message
     bet_cap = context.user_data["bet_cap"]
     receiver_id = context.user_data["receiver_id"]
+
     try:
-        bet = int(update.message.text)
+        bet = int(mes.text)
     except ValueError:
-        await update.message.reply_text("Неверный ввод")
+        await mes.reply_text("Неверный ввод")
         return "coinflip_bet_handle"
 
     if bet > bet_cap:
-        await update.message.reply_text("Неверный ввод")
+        await mes.reply_text("Неверный ввод")
         return "coinflip_bet_handle"
 
     user = User.get(mes.from_user)
@@ -86,23 +84,18 @@ async def coinflip_bet_handle(update: Update, context: ContextTypes.DEFAULT_TYPE
     user.write()
 
     resp = "Предложение сыграть отправлено, ждём подтверждения."
-    resp_rec = "@%s предложил сыграть в \"монетку\" на %i 🪙" % (mes.from_user.username, bet)
-    resp_keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("Принять",
-                                                                callback_data=f"coinflip_accept_"
-                                                                              f"{mes.from_user.id}_{bet}")],
-                                          [InlineKeyboardButton("Отклонить",
-                                                                callback_data=f"coinflip_decline_{mes.from_user.id}")]])
+    resp_rec = f"@{mes.from_user.username} предложил сыграть в \"монетку\" на {bet} 🪙"
+    resp_keyboard = InlineKeyboardMarkup([
+        [InlineKeyboardButton("Принять", callback_data=f"coinflip_accept_{mes.from_user.id}_{bet}")],
+        [InlineKeyboardButton("Отклонить", callback_data=f"coinflip_decline_{mes.from_user.id}")]
+    ])
 
-    sent = await context.bot.send_message(chat_id=receiver_id,
-                                          text=resp_rec,
-                                          reply_markup=resp_keyboard)
+    sent = await context.bot.send_message(chat_id=receiver_id, text=resp_rec, reply_markup=resp_keyboard)
 
-    abort_keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("Отменить",
-                                                                 callback_data=f"coinflip_cancel_{receiver_id}"
-                                                                               f"_{sent.message_id}")]])
-    await context.bot.send_message(chat_id=mes.from_user.id,
-                                   text=resp,
-                                   reply_markup=abort_keyboard)
+    abort_keyboard = InlineKeyboardMarkup([
+        [InlineKeyboardButton("Отменить", callback_data=f"coinflip_cancel_{receiver_id}_{sent.message_id}")]
+    ])
+    await context.bot.send_message(chat_id=mes.from_user.id, text=resp, reply_markup=abort_keyboard)
 
     return ConversationHandler.END
 
@@ -145,13 +138,8 @@ async def coinflip_result(context: ContextTypes.DEFAULT_TYPE):
     winner.write()
     loser.write()
 
-    await context.bot.send_message(chat_id=winner.id,
-                                   text=resp_winner,
-                                   parse_mode="HTML")
-
-    await context.bot.send_message(chat_id=loser.id,
-                                   text=resp_loser,
-                                   parse_mode="HTML")
+    await context.bot.send_message(chat_id=winner.id, text=resp_winner, parse_mode="HTML")
+    await context.bot.send_message(chat_id=loser.id, text=resp_loser, parse_mode="HTML")
 
 
 coinflip_conv_handler = ConversationHandler(
