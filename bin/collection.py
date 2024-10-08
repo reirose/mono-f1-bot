@@ -18,24 +18,21 @@ def get_card_image(card_id: str, is_limited: bool = False):
         return open(f"bin/img/card.png", "rb")
 
 
-async def show_card(query, context, in_market: bool, page: int = 0, **kwargs):
+async def show_card(query, context, in_market: bool, page: int = 0, edit_message: bool = False, **kwargs):
     user = User.get(query.from_user)
-    try:
-        card_code = kwargs["card_code"]
-    except KeyError:
-        card_code = f"c_{re.search('c_(.{3})', query.data).group(1)}"
-    context.user_data.clear()
-    card = cards_dict.get(card_code)
-    limited = card["type"] == "limited"
-    card_pic_id = get_card_image(card_code, is_limited=limited)
+    card_code = kwargs.get("card_code") or f"c_{re.search('c_(.{3})', query.data).group(1)}"
+    card = cards_dict[card_code]
+
+    card_pic_id = get_card_image(card_code, is_limited=card["type"] == "limited")
+    card_n = user.collection.count(card["code"])
     card_name = card["name"]
     card_team = card["team"]
     card_team = f"Команда: {card_team}\n" if card_team else ""
     card_category = translation[card["category"]]
     card_type = translation[card["type"]]
-    card_n = user.collection.count(card["code"])
     card_description = card["description"]
     desc_str = f"<i>{card_description}</i>\n" if card_description else ""
+
     response = (f"<b>{card_name}</b>\n"
                 f"{desc_str}\n"
                 f"{card_team}"
@@ -43,30 +40,37 @@ async def show_card(query, context, in_market: bool, page: int = 0, **kwargs):
                 f"Редкость: {card_category}\n\n"
                 f"{f'<i>Всего: {card_n} шт.</i>' if card_n > 1 else ''}")
 
-    market_s = "market_" if in_market else ""
-    reply_markup_buttons = [[InlineKeyboardButton("Продать",
-                                                  callback_data=market_s + "sell_" + card["code"])],
-                            [InlineKeyboardButton("Закрыть",
-                                                  callback_data=market_s + "close_card" + f"_{page}")]]
-
-    reply_markup_buttons.insert(1, [InlineKeyboardButton("Выбрать для трейда",
-                                                         callback_data=f"anon_trade_add_{card_code}_{page}")])
-
+    market_prefix = "market_" if in_market else ""
+    reply_markup_buttons = [
+        [InlineKeyboardButton("Продать", callback_data=f"{market_prefix}sell_{card['code']}_{page}")],
+        [InlineKeyboardButton("Выбрать для трейда", callback_data=f"anon_trade_add_{card_code}_{page}")],
+        [InlineKeyboardButton("Закрыть", callback_data=f"{market_prefix}close_card_{page}")]
+    ]
     reply_markup = InlineKeyboardMarkup(reply_markup_buttons)
 
-    if limited:
-        await context.bot.send_animation(chat_id=query.message.chat.id,
-                                         animation=card_pic_id,
-                                         caption=response,
-                                         parse_mode="HTML",
-                                         reply_markup=reply_markup)
-
+    if edit_message:
+        if card["type"] == "limited":
+            await query.message.edit_caption(
+                caption=response,
+                parse_mode="HTML",
+                reply_markup=reply_markup
+            )
+        else:
+            await query.message.edit_caption(
+                caption=response,
+                parse_mode="HTML",
+                reply_markup=reply_markup
+            )
     else:
-        await context.bot.send_photo(chat_id=query.message.chat.id,
-                                     photo=card_pic_id,
-                                     caption=response,
-                                     parse_mode="HTML",
-                                     reply_markup=reply_markup)
+        send_method = context.bot.send_animation if card["type"] == "limited" else context.bot.send_photo
+        await send_method(
+            chat_id=query.message.chat.id,
+            photo=card_pic_id,
+            caption=response,
+            parse_mode="HTML",
+            reply_markup=reply_markup
+        )
+
     await query.answer()
 
 

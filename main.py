@@ -29,7 +29,8 @@ async_scheduler.start()
 scheduler.add_job(update_cards, 'interval', minutes=5)
 scheduler.add_job(update_free_roll, 'cron', hour=8, minute=0, second=0)
 scheduler.add_job(update_free_roll, 'cron', hour=20, minute=0, second=0)
-async_scheduler.add_job(notify_free_pack, 'cron', hour=10, minute=38, second=0)
+async_scheduler.add_job(notify_free_pack, 'cron', hour=8, minute=0, second=0)
+async_scheduler.add_job(notify_free_pack, 'cron', hour=20, minute=0, second=0)
 scheduler.add_job(clear_logs, 'interval', hours=1)
 
 

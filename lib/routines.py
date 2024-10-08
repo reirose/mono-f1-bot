@@ -46,8 +46,8 @@ def restart_status_reset():
 
 
 async def notify_free_pack():
-    TOKEN = "7998597879:AAHDOosw1hVVFoEmKz5RuzNymvisTWT5qjg"  # dev-token
-    # TOKEN = "7465141345:AAHkj1SKA-CG9FRGdARz5EbmK_xk2OM9vZA"
+    # TOKEN = "7998597879:AAHDOosw1hVVFoEmKz5RuzNymvisTWT5qjg"  # dev-token
+    TOKEN = "7465141345:AAHkj1SKA-CG9FRGdARz5EbmK_xk2OM9vZA"
     bot = Bot(token=TOKEN)
     users = USER_COLLECTION.find({}, {"_id": 0})
     for user in users:

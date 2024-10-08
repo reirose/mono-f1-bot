@@ -175,15 +175,17 @@ async def handle_market_close(update, context, query, _):
 
 
 async def handle_sell(update, context, query, user):
-    if query.data.count("_") == 2:
-        card_code = re.search("sell_(.+)", query.data).group(1)
+    if re.search("sell_c_(.+)_(.+)", query.data):
+        card_code = "c_" + re.search("sell_c_(.+)_(.+)", query.data).group(1)
+        page = int(re.search("sell_c_(.+)_(.+)", query.data).group(2))
         n_of_cards = user.collection.count(card_code)
         card_category = cards_dict.get(card_code).get("category")
         card_name = cards_dict.get(card_code).get("name")
         card_price = category_prices.get(card_category)
-        reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Да", callback_data=f"sell_confirm_{card_code}")],
+        reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Да",
+                                                                   callback_data=f"sell_confirm_{card_code}_{page}")],
                                              [InlineKeyboardButton("Отменить",
-                                                                   callback_data=f"sell_decline_{card_code}")]])
+                                                                   callback_data=f"sell_decline_{card_code}_{page}")]])
         await context.bot.edit_message_caption(
             chat_id=query.message.chat.id,
             message_id=query.message.message_id,
@@ -196,10 +198,12 @@ async def handle_sell(update, context, query, user):
         )
         await query.answer()
     elif query.data.startswith("sell_decline_"):
-        await context.bot.delete_message(chat_id=user.id, message_id=query.message.message_id)
-        await show_card(query, context, in_market=False)
+        card_code = "c_" + re.search(r'sell_decline_c_(.+)_(.+)', query.data).group(1)
+        page = int(re.search(r'sell_decline_c_(.+)_(.+)', query.data).group(2))
+        await show_card(query, context, in_market=False, card_code=card_code, edit_message=True, page=page)
     elif query.data.startswith("sell_confirm_"):
-        card_code = re.search("sell_confirm_(.+)", query.data).group(1)
+        card_code = "c_" + re.search("sell_confirm_c_(.+)_(.+)", query.data).group(1)
+        page = int(re.search("sell_confirm_c_(.+)_(.+)", query.data).group(2))
         if card_code not in user.collection:
             context.bot.delete_message(chat_id=user.id, message_id=query.message.message_id)
         card_category = cards_dict.get(card_code).get("category")
@@ -219,9 +223,10 @@ async def handle_sell(update, context, query, user):
             await context.bot.delete_message(chat_id=user.id, message_id=query.message.message_id)
             return
 
-        reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Да", callback_data=f"sell_confirm_{card_code}")],
+        reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Да",
+                                                                   callback_data=f"sell_confirm_{card_code}_{page}")],
                                              [InlineKeyboardButton("Отменить",
-                                                                   callback_data=f"sell_decline_{card_code}")]])
+                                                                   callback_data=f"sell_decline_{card_code}_{page}")]])
         n_of_cards = user.collection.count(card_code)
         await context.bot.edit_message_caption(
             chat_id=query.message.chat.id,
@@ -515,7 +520,6 @@ async def handle_anon_trade_offer_confirm(update, context, query, user):
         user.collection.append(wtb)
         receiver.anon_trade.remove({'wts': wtb, 'wtb': wts})
         receiver.collection.append(wts)
-        await anon_trade_choose_menu(update, context)
     except ValueError:
         await query.delete_message()
         return
@@ -557,12 +561,13 @@ async def handle_anon_trade_offer_confirm(update, context, query, user):
                                    f"\n</code><b>{user.username}</b> ({user.id}) --> <b>{receiver.username}</b> "
                                    f"({receiver.id})\n<blockquote expandable>{cards_dict[wts]['name']}"
                                    f"</blockquote>\n\n"
-                                   f"</code><b>{receiver.username}</b> ({receiver.id}) --> <b>{user.username}</b> "
+                                   f"<b>{receiver.username}</b> ({receiver.id}) --> <b>{user.username}</b> "
                                    f"({user.id})\n<blockquote expandable>{cards_dict[wtb]['name']}"
                                    f"</blockquote>",
                                    parse_mode="HTML")
 
     await query.answer()
+    await anon_trade_choose_menu(update, context)
 
 
 async def handle_anon_trade_my_offer(update, context, query, _):
