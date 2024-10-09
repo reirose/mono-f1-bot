@@ -1,5 +1,4 @@
 import datetime
-import logging
 import random
 
 from telegram import Update, InputMediaPhoto
@@ -8,7 +7,7 @@ from telegram.ext import ContextTypes
 from bin.achievements import bot_check_achievements
 from bin.collection import get_card_image
 from lib.classes.user import User
-from lib.init import BOT_INFO
+from lib.init import BOT_INFO, logger
 from lib.keyboard_markup import roll_menu_markup
 from lib.variables import probability_by_category, cards_by_category, translation, garant_list, \
     roll_cards_dict, category_sort_keys, garant_value, category_distribution, cards_pics_cache
@@ -29,7 +28,7 @@ def select_card_weighted(garant: bool = None, user: User = None):
             break
 
     if not any(cat in ["gold", "ruby", 'sapphire', 'platinum'] for cat in categories) and garant:
-        logging.log(BOT_INFO, "garant rolled")
+        logger.log(BOT_INFO, "garant rolled")
         categories.append(random.choices(["gold", "platinum", "ruby", "sapphire"], [.42, .27, .17, .16])[0])
 
     rolled_cards = []
@@ -104,8 +103,8 @@ async def roll(update: Update, context: ContextTypes.DEFAULT_TYPE):
     rolled_cards = sorted(select_card_weighted(garant=garant, user=user),
                           key=lambda x: category_sort_keys.get(x['category'], float('inf')))
 
-    logging.log(BOT_INFO, (f"{user.username} rolled: "
-                           f"{', '.join([card['name'] for card in rolled_cards])}"))
+    logger.log(BOT_INFO, (f"{user.username} rolled: "
+                          f"{', '.join([card['name'] for card in rolled_cards])}"))
 
     user.garant = 0 if (garant or any(card in garant_list for card in [x["category"] for x in rolled_cards])) else \
         user.garant + 1
@@ -150,8 +149,8 @@ async def roll_result(context):
 
     for index, message in enumerate(sent):
         for photo_index, photo in enumerate(message.photo):
-            if rolled_cards[index]['code'] not in cards_pics_cache and (photo_index+1) // 4:
-                cards_pics_cache.update({rolled_cards[index]['code']:photo.file_id})
-                logging.log(BOT_INFO, f"Cached {rolled_cards[index]['name']} successfully")
+            if rolled_cards[index]['code'] not in cards_pics_cache and (photo_index + 1) // 4:
+                cards_pics_cache.update({rolled_cards[index]['code']: photo.file_id})
+                logger.log(BOT_INFO, f"Cached {rolled_cards[index]['name']} successfully")
 
     await bot_check_achievements(job.data[3], context)

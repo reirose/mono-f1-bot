@@ -5,6 +5,7 @@ from telegram.ext import ContextTypes
 
 from lib.classes.user import User
 from lib.keyboard_markup import collection_menu_markup, generate_collection_keyboard
+from lib.messages_templates import get_message_text
 from lib.variables import cards_dict, translation, sort_keys_by, sort_list, \
     sort_list_transl, category_color, cards_pics_cache
 
@@ -33,12 +34,15 @@ async def show_card(query, context, in_market: bool, page: int = 0, edit_message
     card_description = card["description"]
     desc_str = f"<i>{card_description}</i>\n" if card_description else ""
 
-    response = (f"<b>{card_name}</b>\n"
-                f"{desc_str}\n"
-                f"{card_team}"
-                f"Тип карты: {card_type}\n"
-                f"Редкость: {card_category}\n\n"
-                f"{f'<i>Всего: {card_n} шт.</i>' if card_n > 1 else ''}")
+    card_count = f'<i>Всего: {card_n} шт.</i>' if card_n > 1 else ''
+
+    response = get_message_text("card_info",
+                                card_name=card_name,
+                                desc_str=desc_str,
+                                card_team=card_team,
+                                card_type=card_type,
+                                card_category=card_category,
+                                card_count=card_count)
 
     market_prefix = "market_" if in_market else ""
     reply_markup_buttons = [
@@ -62,14 +66,22 @@ async def show_card(query, context, in_market: bool, page: int = 0, edit_message
                 reply_markup=reply_markup
             )
     else:
-        send_method = context.bot.send_animation if card["type"] == "limited" else context.bot.send_photo
-        await send_method(
-            chat_id=query.message.chat.id,
-            photo=card_pic_id,
-            caption=response,
-            parse_mode="HTML",
-            reply_markup=reply_markup
-        )
+        if card["type"] == "limited":
+            await context.bot.send_animation(
+                chat_id=query.message.chat.id,
+                animation=card_pic_id,
+                caption=response,
+                parse_mode="HTML",
+                reply_markup=reply_markup
+            )
+        else:
+            await context.bot.send_photo(
+                chat_id=query.message.chat.id,
+                photo=card_pic_id,
+                caption=response,
+                parse_mode="HTML",
+                reply_markup=reply_markup
+            )
 
     await query.answer()
 
@@ -89,8 +101,7 @@ async def send_card_list(update: Update, context: ContextTypes.DEFAULT_TYPE,
                          telegram_user, page: int, in_market: bool,
                          trade_receiver: int, trade: bool = None, closed_card: bool = False) -> None:
     if not User.get(telegram_user).collection:
-        await context.bot.send_message(text="У вас нет карточек. Чтобы получить их - "
-                                            "перейдите в раздел Получение карт.",
+        await context.bot.send_message(text=get_message_text("no_cards_in_collection"),
                                        reply_markup=collection_menu_markup,
                                        chat_id=telegram_user.id)
         return
@@ -128,7 +139,7 @@ async def get_collection_s(coll: dict, user: User, bot: Bot, sorted_by: str = 'c
     try:
         prev = ''
     except IndexError:
-        await bot.send_message(text="У вас нет карточек. Чтобы получить их - перейдите в раздел Получение карт.",
+        await bot.send_message(text=get_message_text("no_cards_in_collection"),
                                chat_id=user.id,
                                reply_markup=collection_menu_markup)
         return

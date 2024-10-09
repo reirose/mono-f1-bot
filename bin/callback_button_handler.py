@@ -1,5 +1,4 @@
 import datetime
-import logging
 import re
 
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
@@ -17,7 +16,7 @@ from bin.coinflip import coinflip_result
 from bin.collection import send_card_list, show_card, list_cards, get_collection_s, get_card_image
 from bin.market import market_sell_list_menu, shop_menu
 from lib.classes.user import User
-from lib.init import BOT_INFO
+from lib.init import BOT_INFO, logger
 from lib.keyboard_markup import shop_inline_markup, generate_collection_keyboard
 from lib.variables import (
     cards_dict, packs_prices, category_prices, sort_list,
@@ -28,7 +27,7 @@ from lib.variables import (
 async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     user = User.get(query.from_user)
-    logging.log(BOT_INFO, f"{user.username} {query.data}")
+    logger.log(BOT_INFO, f"{user.username} {query.data}")
 
     handlers = {
         "page_": handle_page,
@@ -179,62 +178,143 @@ async def handle_sell(update, context, query, user):
         card_code = "c_" + re.search("sell_c_(.+)_(.+)", query.data).group(1)
         page = int(re.search("sell_c_(.+)_(.+)", query.data).group(2))
         n_of_cards = user.collection.count(card_code)
+        sell_n = context.user_data.get('sell_n', 1)
         card_category = cards_dict.get(card_code).get("category")
         card_name = cards_dict.get(card_code).get("name")
         card_price = category_prices.get(card_category)
-        reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Да",
-                                                                   callback_data=f"sell_confirm_{card_code}_{page}")],
-                                             [InlineKeyboardButton("Отменить",
-                                                                   callback_data=f"sell_decline_{card_code}_{page}")]])
+
+        keyboard = [
+            [InlineKeyboardButton("Да", callback_data=f"sell_confirm_{card_code}_{sell_n}_{page}")],
+            [InlineKeyboardButton("Отменить", callback_data=f"sell_decline_{card_code}_{page}")]
+        ]
+
+        if n_of_cards > 1:
+            decrease_button = InlineKeyboardButton("<", callback_data=f"sell_n_decrease_{card_code}_{page}")
+            increase_button = InlineKeyboardButton(">", callback_data=f"sell_n_increase_{card_code}_{page}")
+            quantity_button = InlineKeyboardButton(f"{sell_n}", callback_data=f"sell_n_{card_code}_{page}")
+
+            quantity_row = []
+            if sell_n > 1:
+                quantity_row.append(decrease_button)
+            else:
+                quantity_row.append(InlineKeyboardButton("|", callback_data="noop"))
+            quantity_row.append(quantity_button)
+            if sell_n < n_of_cards:
+                quantity_row.append(increase_button)
+            else:
+                quantity_row.append(InlineKeyboardButton("|", callback_data="noop"))
+
+            keyboard.insert(0, quantity_row)
+
+        reply_markup = InlineKeyboardMarkup(keyboard)
         await context.bot.edit_message_caption(
             chat_id=query.message.chat.id,
             message_id=query.message.message_id,
-            caption=f"Вы уверены, что хотите продать {card_name} за {card_price} 🪙?\n\n"
-            f"(У вас осталось: {n_of_cards} шт.)\n\n"
-            f"<i>Осуществляется быстрая продажа карты. Для продажи карты"
-            f" другим пользователям перейдите в раздел Маркет (Другое)</i>",
+            caption=f"Вы уверены, что хотите продать {sell_n}x {card_name} за {card_price * sell_n} 🪙?\n\n"
+                    f"(У вас осталось: {n_of_cards} шт.)\n\n"
+                    f"<i>Осуществляется быстрая продажа карты. Для продажи карты"
+                    f" другим пользователям перейдите в раздел Маркет (Другое)</i>",
             reply_markup=reply_markup,
             parse_mode="HTML"
         )
         await query.answer()
+
     elif query.data.startswith("sell_decline_"):
         card_code = "c_" + re.search(r'sell_decline_c_(.+)_(.+)', query.data).group(1)
         page = int(re.search(r'sell_decline_c_(.+)_(.+)', query.data).group(2))
         await show_card(query, context, in_market=False, card_code=card_code, edit_message=True, page=page)
+
     elif query.data.startswith("sell_confirm_"):
-        card_code = "c_" + re.search("sell_confirm_c_(.+)_(.+)", query.data).group(1)
-        page = int(re.search("sell_confirm_c_(.+)_(.+)", query.data).group(2))
-        if card_code not in user.collection:
-            context.bot.delete_message(chat_id=user.id, message_id=query.message.message_id)
-        card_category = cards_dict.get(card_code).get("category")
-        card_name = cards_dict.get(card_code).get("name")
-        card_price = category_prices.get(card_category)
-        if card_code not in user.collection:
-            await query.answer("Ошибка")
+        card_code, sell_n, page = re.search(r"sell_confirm_c_(.+)_(\d+)_(\d+)", query.data).groups()
+        card_code = "c_" + card_code
+        sell_n = int(sell_n)
+        page = int(page)
+
+        if card_code not in user.collection or user.collection.count(card_code) < sell_n:
+            await query.answer("Ошибка: недостаточно карт")
             return
 
-        user.collection.remove(card_code)
-        user.coins += card_price
-        user.write()
-        await query.answer("Успешно!")
+        card_category = cards_dict.get(card_code).get("category")
+        # card_name = cards_dict.get(card_code).get("name")
+        card_price = category_prices.get(card_category)
 
-        if card_code not in user.collection:
+        for _ in range(sell_n):
+            user.collection.remove(card_code)
+        user.coins += card_price * sell_n
+        user.write()
+
+        await query.answer("Успешно продано!")
+        context.user_data["sell_n"] = 1
+
+        n_of_cards = user.collection.count(card_code)
+        if n_of_cards == 0:
             await list_cards(update, context)
             await context.bot.delete_message(chat_id=user.id, message_id=query.message.message_id)
-            return
+        else:
+            # context.user_data['sell_n'] = 1  # Reset sell_n after successful sale
+            await show_card(query, context, in_market=False, card_code=card_code, edit_message=True, page=page)
 
-        reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Да",
-                                                                   callback_data=f"sell_confirm_{card_code}_{page}")],
-                                             [InlineKeyboardButton("Отменить",
-                                                                   callback_data=f"sell_decline_{card_code}_{page}")]])
+    elif query.data.startswith("sell_n_"):
+        action, card_code, page = re.search(r"sell_n_(\w+)_c_(.+)_(\d+)", query.data).groups()
+        card_code = "c_" + card_code
+        page = int(page)
         n_of_cards = user.collection.count(card_code)
-        await context.bot.edit_message_caption(
-            chat_id=query.message.chat.id,
-            message_id=query.message.message_id,
-            caption=f"Вы уверены, что хотите продать {card_name} за {card_price} 🪙?\n\n"
-            f"(У вас осталось: {n_of_cards} шт.)",
-            reply_markup=reply_markup
-        )
+        sell_n = context.user_data.get('sell_n', 1)
+
+        if action == "increase":
+            sell_n = min(sell_n + 1, n_of_cards)
+        elif action == "decrease":
+            sell_n = max(sell_n - 1, 1)
+
+        context.user_data['sell_n'] = sell_n
+        await show_sell_confirmation(update, context, query, user, card_code, sell_n, page)
+
+
+async def show_sell_confirmation(_, context, query, user, card_code, sell_n, page):
+    n_of_cards = user.collection.count(card_code)
+    card_category = cards_dict.get(card_code).get("category")
+    card_name = cards_dict.get(card_code).get("name")
+    card_price = category_prices.get(card_category)
+
+    keyboard = [
+        [InlineKeyboardButton("Да", callback_data=f"sell_confirm_{card_code}_{sell_n}_{page}")],
+        [InlineKeyboardButton("Отменить", callback_data=f"sell_decline_{card_code}_{page}")]
+    ]
+
+    if n_of_cards > 1:
+        decrease_button = InlineKeyboardButton("<", callback_data=f"sell_n_decrease_{card_code}_{page}")
+        increase_button = InlineKeyboardButton(">", callback_data=f"sell_n_increase_{card_code}_{page}")
+        quantity_button = InlineKeyboardButton(f"{sell_n}", callback_data=f"sell_n_{card_code}_{page}")
+
+        quantity_row = []
+        if sell_n > 1:
+            quantity_row.append(decrease_button)
+        else:
+            quantity_row.append(InlineKeyboardButton("|", callback_data="noop"))
+        quantity_row.append(quantity_button)
+        if sell_n < n_of_cards:
+            quantity_row.append(increase_button)
+        else:
+            quantity_row.append(InlineKeyboardButton("|", callback_data="noop"))
+
+        keyboard.insert(0, quantity_row)
+
+    if sell_n > n_of_cards:
+        await query.answer()
+        return
+
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    await context.bot.edit_message_caption(
+        chat_id=query.message.chat.id,
+        message_id=query.message.message_id,
+        caption=f"Вы уверены, что хотите продать {sell_n}x {card_name} за {card_price * sell_n} 🪙?\n\n"
+                f"(У вас осталось: {n_of_cards} шт.)\n\n"
+                f"<i>Осуществляется быстрая продажа карты. Для продажи карты"
+                f" другим пользователям перейдите в раздел Маркет (Другое)</i>",
+        reply_markup=reply_markup,
+        parse_mode="HTML"
+    )
+    await query.answer()
 
 
 async def handle_pack_buy(update, context, query, user):
@@ -347,13 +427,13 @@ async def handle_trade_confirm(update, context, query, user):
 
     await context.bot.send_message(chat_id=receiver.id,
                                    text=f"<b>Получено от пользователя {user.username if user.username else user.id}:"
-                                   f"</b>\n\n{traded_cards_list}",
+                                        f"</b>\n\n{traded_cards_list}",
                                    parse_mode="HTML")
 
     await context.bot.send_message(chat_id=trades_log_chat_id,
                                    text=f"<code>Trade @ {datetime.datetime.now().strftime('%d/%m/%y %H:%M:%S')}"
-                                   f"\n</code><b>{user.username}</b> ({user.id}) --> <b>{receiver.username}</b> "
-                                   f"({receiver.id})\n<blockquote expandable>{traded_cards_list}</blockquote>",
+                                        f"\n</code><b>{user.username}</b> ({user.id}) --> <b>{receiver.username}</b> "
+                                        f"({receiver.id})\n<blockquote expandable>{traded_cards_list}</blockquote>",
                                    parse_mode="HTML")
 
     await context.bot.delete_message(chat_id=user.id, message_id=query.message.message_id)
@@ -549,21 +629,21 @@ async def handle_anon_trade_offer_confirm(update, context, query, user):
         await context.bot.send_animation(receiver.id,
                                          animation=wts_card_pic_id,
                                          caption=f"Кто-то обменялся с вами картой!\nПолучена карта: "
-                                         f"{cards_dict[wts]['name']}.")
+                                                 f"{cards_dict[wts]['name']}.")
     else:
         await context.bot.send_photo(receiver.id,
                                      photo=wts_card_pic_id,
                                      caption=f"Кто-то обменялся с вами картой!\nПолучена карта: "
-                                     f"{cards_dict[wts]['name']}.")
+                                             f"{cards_dict[wts]['name']}.")
 
     await context.bot.send_message(chat_id=trades_log_chat_id,
                                    text=f"<code>Trade @ {datetime.datetime.now().strftime('%d/%m/%y %H:%M:%S')}"
-                                   f"\n</code><b>{user.username}</b> ({user.id}) --> <b>{receiver.username}</b> "
-                                   f"({receiver.id})\n<blockquote expandable>{cards_dict[wts]['name']}"
-                                   f"</blockquote>\n\n"
-                                   f"<b>{receiver.username}</b> ({receiver.id}) --> <b>{user.username}</b> "
-                                   f"({user.id})\n<blockquote expandable>{cards_dict[wtb]['name']}"
-                                   f"</blockquote>",
+                                        f"\n</code><b>{user.username}</b> ({user.id}) --> <b>{receiver.username}</b> "
+                                        f"({receiver.id})\n<blockquote expandable>{cards_dict[wts]['name']}"
+                                        f"</blockquote>\n\n"
+                                        f"<b>{receiver.username}</b> ({receiver.id}) --> <b>{user.username}</b> "
+                                        f"({user.id})\n<blockquote expandable>{cards_dict[wtb]['name']}"
+                                        f"</blockquote>",
                                    parse_mode="HTML")
 
     await query.answer()

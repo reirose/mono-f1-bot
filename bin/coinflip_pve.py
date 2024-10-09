@@ -1,5 +1,4 @@
 import random
-import re
 
 from telegram import Update
 from telegram.ext import ContextTypes, ConversationHandler, MessageHandler, filters, CommandHandler
