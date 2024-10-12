@@ -11,7 +11,7 @@ from bin.collection import view_collection_list, collection_menu, list_cards, co
 from bin.market import market_menu, conv_handler, buy_command, shop_menu
 from bin.menu import menu, about_me, achievements
 from bin.roll import roll, roll_menu
-from bin.service_commands import start, dev_mode_change, unstuck, give_user, ribbon_info, get_logs
+from bin.service_commands import start, dev_mode_change, unstuck, give_user, ribbon_info, get_logs, update_github
 from bin.other import other_menu
 from bin.packs_shop import packs_shop_menu
 from bin.trade import trade_conv_handler
@@ -49,6 +49,7 @@ def main():
     app.add_handler(CommandHandler("buy", buy_command, has_args=True, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("coinflip_cancel", abort, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("collectors_ribbon_info", ribbon_info, filters=dev_mode & not_banned_filter))
+    app.add_handler(CommandHandler("gh_update", update_github, filters=is_admin))
 
     # обработчики текстовых сообщений (для кнопок)
     app.add_handler(MessageHandler(dev_mode & other_button_filter & not_banned_filter, other_menu))

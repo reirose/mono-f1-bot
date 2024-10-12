@@ -191,7 +191,7 @@ async def handle_sell(update, context, query, user):
         if n_of_cards > 1:
             decrease_button = InlineKeyboardButton("<", callback_data=f"sell_n_decrease_{card_code}_{page}")
             increase_button = InlineKeyboardButton(">", callback_data=f"sell_n_increase_{card_code}_{page}")
-            quantity_button = InlineKeyboardButton(f"{sell_n}", callback_data=f"sell_n_{card_code}_{page}")
+            quantity_button = InlineKeyboardButton(f"{sell_n}", callback_data=f"noop")
 
             quantity_row = []
             if sell_n > 1:
@@ -284,7 +284,7 @@ async def show_sell_confirmation(_, context, query, user, card_code, sell_n, pag
     if n_of_cards > 1:
         decrease_button = InlineKeyboardButton("<", callback_data=f"sell_n_decrease_{card_code}_{page}")
         increase_button = InlineKeyboardButton(">", callback_data=f"sell_n_increase_{card_code}_{page}")
-        quantity_button = InlineKeyboardButton(f"{sell_n}", callback_data=f"sell_n_{card_code}_{page}")
+        quantity_button = InlineKeyboardButton(f"{sell_n}", callback_data=f"noop")
 
         quantity_row = []
         if sell_n > 1:
@@ -402,7 +402,7 @@ async def handle_trade_confirm(update, context, query, user):
         await query.answer("Ошибка: не выбрано ни одной карты.")
         return
     try:
-        receiver_id = int(query.data.split("_")[-1])
+        receiver_id = int(re.search("trade_confirm_(.+)", query.data).group(1))
     except ValueError:
         receiver_id = re.search("trade_confirm_(.+)", query.data).group(1)
     receiver = User.get(None, receiver_id)
@@ -548,6 +548,7 @@ async def handle_anon_trade_cancel_sell(_, context, query, __):
 
 async def handle_anon_trade_close_sell(_, context, query, __):
     card_code = re.search("anon_trade_close_sell_(.+)", query.data).group(1)
+    await query.delete_message()
     await show_card(query, context, in_market=False, card_code=card_code)
 
 

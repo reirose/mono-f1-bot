@@ -1,3 +1,7 @@
+import os
+import subprocess
+import sys
+
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import ContextTypes
 
@@ -7,6 +11,7 @@ from lib.filters import DEV_MODE
 from lib.keyboard_markup import main_menu_markup
 from lib.init import USER_COLLECTION
 from lib.variables import cards_dict, roll_cards_dict
+
 
 
 async def dev_mode_change(_: Update, __: ContextTypes.DEFAULT_TYPE):
@@ -139,3 +144,22 @@ async def get_logs(update: Update, context: ContextTypes.DEFAULT_TYPE):
             response += line
 
     await mes.reply_text(response)
+
+
+async def update_github(update, _):
+    await update.message.reply_text("Начинаю обновление кода с GitHub...")
+
+    try:
+        result = subprocess.run(["git", "pull"], capture_output=True, text=True)
+        if result.returncode == 0:
+            await update.message.reply_text("Код успешно обновлен с GitHub. Перезапускаю бота...")
+            restart_bot()
+        else:
+            await update.message.reply_text(f"Ошибка при обновлении: {result.stderr}")
+    except Exception as e:
+        await update.message.reply_text(f"Произошла ошибка: {str(e)}")
+
+
+def restart_bot():
+    print("Перезапускаю бота...")
+    os.execv(__file__, ['python'] + sys.argv)
