@@ -15,6 +15,7 @@ from bin.anon_trade import (
 from bin.coinflip import coinflip_result
 from bin.collection import send_card_list, show_card, list_cards, get_collection_s, get_card_image
 from bin.market import market_sell_list_menu, shop_menu
+from bin.roll import roll_new_continue
 from lib.classes.user import User
 from lib.init import BOT_INFO, logger
 from lib.keyboard_markup import shop_inline_markup, generate_collection_keyboard
@@ -67,7 +68,8 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "anon_trade_show_my_offers": handle_anon_trade_show_my_offers,
         "anon_trade_my_offer_remove_c_": handle_anon_trade_my_offer_remove,
         "anon_trade_my_offer_remove_confirm_c_": handle_anon_trade_my_offer_remove_confirm,
-        "anon_trade_my_offers_close": handle_anon_trade_my_offers_close
+        "anon_trade_my_offers_close": handle_anon_trade_my_offers_close,
+        "roll_new_": handle_roll_new_continue
     }
 
     for prefix, handler in handlers.items():
@@ -698,3 +700,7 @@ async def handle_anon_trade_my_offers_close(_, context, query, __):
         await context.bot.delete_message(chat_id=query.from_user.id, message_id=query.message.message_id)
     except BadRequest:
         pass
+
+
+async def handle_roll_new_continue(update, context, _, __):
+    await roll_new_continue(update, context)

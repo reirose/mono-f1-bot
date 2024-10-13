@@ -52,7 +52,7 @@ class FilterMenuButton(filters.MessageFilter):
 
 class FilterRollButton(filters.MessageFilter):
     def filter(self, message) -> bool:
-        return message.text is not None and re.search("Получить карту", message.text) is not None
+        return message.text is not None and re.search("Открыть пак", message.text) is not None
 
 
 class FilterRollMenuButton(filters.MessageFilter):

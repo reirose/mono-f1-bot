@@ -10,7 +10,7 @@ from bin.coinflip_pve import bot_coinflip_conv_handler
 from bin.collection import view_collection_list, collection_menu, list_cards, collection_completeness
 from bin.market import market_menu, conv_handler, buy_command, shop_menu
 from bin.menu import menu, about_me, achievements
-from bin.roll import roll, roll_menu
+from bin.roll import roll_menu, roll_new
 from bin.service_commands import start, dev_mode_change, unstuck, give_user, ribbon_info, get_logs, update_github
 from bin.other import other_menu
 from bin.packs_shop import packs_shop_menu
@@ -50,6 +50,7 @@ def main():
     app.add_handler(CommandHandler("coinflip_cancel", abort, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("collectors_ribbon_info", ribbon_info, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("gh_update", update_github, filters=is_admin))
+    app.add_handler(CommandHandler("roll", roll_new, filters=is_admin))
 
     # обработчики текстовых сообщений (для кнопок)
     app.add_handler(MessageHandler(dev_mode & other_button_filter & not_banned_filter, other_menu))
@@ -59,7 +60,8 @@ def main():
     app.add_handler(MessageHandler(dev_mode & menu_button_filter, menu))
     app.add_handler(MessageHandler(dev_mode & me_button_filter & not_banned_filter, about_me))
     app.add_handler(MessageHandler(dev_mode & roll_menu_button_filter & not_banned_filter, roll_menu))
-    app.add_handler(MessageHandler(dev_mode & roll_button_filter & not_banned_filter, roll))
+    app.add_handler(MessageHandler(dev_mode & roll_button_filter & not_banned_filter, roll_new))
+    # app.add_handler(MessageHandler(dev_mode & roll_button_filter & not_banned_filter, roll))
     app.add_handler(MessageHandler(dev_mode & collection_menu_button_filter & not_banned_filter, collection_menu))
     app.add_handler(MessageHandler(dev_mode & collection_list_button_filter & not_banned_filter, view_collection_list))
     app.add_handler(MessageHandler(dev_mode & show_card_button_filter & not_banned_filter, list_cards))

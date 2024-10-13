@@ -1,3 +1,4 @@
+import json
 import os
 import subprocess
 import sys
@@ -9,9 +10,8 @@ from bin.menu import menu
 from lib.classes.user import User
 from lib.filters import DEV_MODE
 from lib.keyboard_markup import main_menu_markup
-from lib.init import USER_COLLECTION
+from lib.init import USER_COLLECTION, CARDS_COLLECTION
 from lib.variables import cards_dict, roll_cards_dict
-
 
 
 async def dev_mode_change(_: Update, __: ContextTypes.DEFAULT_TYPE):
@@ -153,13 +153,30 @@ async def update_github(update, _):
         result = subprocess.run(["git", "pull"], capture_output=True, text=True)
         if result.returncode == 0:
             await update.message.reply_text("Код успешно обновлен с GitHub. Перезапускаю бота...")
-            restart_bot()
         else:
             await update.message.reply_text(f"Ошибка при обновлении: {result.stderr}")
+            return
     except Exception as e:
         await update.message.reply_text(f"Произошла ошибка: {str(e)}")
+        return
+
+    try:
+        with open('mono-f1.cards.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
+
+        CARDS_COLLECTION.delete_many({})
+        for doc in data:
+            if '_id' in doc and '$oid' in doc['_id']:
+                doc['_id'] = doc['_id']['$oid']
+        CARDS_COLLECTION.insert_many(data)
+
+        print(f"Обновление базы данных завершено, добавлено {len(data)} записей.")
+    except Exception as e:
+        print(f"Ошибка при обновлении базы данных: {str(e)}")
+
+    restart_bot()
 
 
 def restart_bot():
     print("Перезапускаю бота...")
-    os.execv(__file__, ['python'] + sys.argv)
+    os.execv(sys.executable, ["py", "main.py"])
