@@ -77,7 +77,7 @@ translation: dict = {
 }
 
 probability_by_category: dict = {
-    "silver": .15,
+    "silver": .12,
     "gold": .06,
     "champion": .025,
     "platinum": .025,

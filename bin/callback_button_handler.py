@@ -69,7 +69,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "anon_trade_my_offer_remove_c_": handle_anon_trade_my_offer_remove,
         "anon_trade_my_offer_remove_confirm_c_": handle_anon_trade_my_offer_remove_confirm,
         "anon_trade_my_offers_close": handle_anon_trade_my_offers_close,
-        "roll_new_": handle_roll_new_continue
+        "roll_": handle_roll_new_continue
     }
 
     for prefix, handler in handlers.items():

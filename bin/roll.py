@@ -196,7 +196,7 @@ async def roll_new(update: Update, _: ContextTypes.DEFAULT_TYPE):
     user.status = 'rolling'
     user.statistics["packs_opened"] += 1
     user.rolls_available -= 1
-    callback_data = "roll_new" + "".join([f"_{x['code']}" for x in rolled_cards])
+    callback_data = "roll" + "".join([f"_{x['code']}" for x in rolled_cards])
     cards_left_s = f" ({len(rolled_cards)})"
     keyboard = InlineKeyboardMarkup(
         [[InlineKeyboardButton(f"Следующая карта{cards_left_s}", callback_data=callback_data)]])
@@ -229,7 +229,7 @@ async def roll_new_continue(update: Update, _: ContextTypes.DEFAULT_TYPE):
 
     if cards:
         cards_left_s = f" ({len(cards)})"
-        callback_data = "roll_new" + "".join([f"_{x['code']}" for x in cards])
+        callback_data = "roll" + "".join([f"_{x['code']}" for x in cards])
         keyboard = InlineKeyboardMarkup(
             [[InlineKeyboardButton(f"Следующая карта{cards_left_s}", callback_data=callback_data)]])
     else:
