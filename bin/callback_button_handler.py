@@ -12,6 +12,7 @@ from bin.anon_trade import (
     anon_trade_choose_menu, generate_trade_offers_keyboard,
     anon_trade_show_my_offer, anon_trade_show_my_offers
 )
+from bin.battle import battle_init_menu, battle_confirm_choice, battle_init_game
 from bin.coinflip import coinflip_result
 from bin.collection import send_card_list, show_card, list_cards, get_collection_s, get_card_image
 from bin.market import market_sell_list_menu, shop_menu
@@ -69,7 +70,9 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "anon_trade_my_offer_remove_c_": handle_anon_trade_my_offer_remove,
         "anon_trade_my_offer_remove_confirm_c_": handle_anon_trade_my_offer_remove_confirm,
         "anon_trade_my_offers_close": handle_anon_trade_my_offers_close,
-        "roll_": handle_roll_new_continue
+        "roll_": handle_roll_new_continue,
+        "battle_page_": handle_battle_choice_page,
+        "battle_select_c_": handle_battle_select,
     }
 
     for prefix, handler in handlers.items():
@@ -83,6 +86,12 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def handle_page(update, context, query, _):
     page = int(query.data.split("_")[1])
     await send_card_list(update, context, query.from_user, page, in_market=False, trade_receiver=0)
+
+
+async def handle_battle_choice_page(update, context, query, _):
+    page = int(query.data.split("_")[-1])
+    context.user_data["battle_choice_page"] = page
+    await battle_init_menu(update, context, page=page)
 
 
 async def handle_market_page(update, context, query, _):
@@ -213,9 +222,7 @@ async def handle_sell(update, context, query, user):
             chat_id=query.message.chat.id,
             message_id=query.message.message_id,
             caption=f"Вы уверены, что хотите продать {sell_n}x {card_name} за {card_price * sell_n} 🪙?\n\n"
-                    f"(У вас осталось: {n_of_cards} шт.)\n\n"
-                    f"<i>Осуществляется быстрая продажа карты. Для продажи карты"
-                    f" другим пользователям перейдите в раздел Маркет (Другое)</i>",
+                    f"(У вас осталось: {n_of_cards} шт.)\n\n",
             reply_markup=reply_markup,
             parse_mode="HTML"
         )
@@ -310,9 +317,7 @@ async def show_sell_confirmation(_, context, query, user, card_code, sell_n, pag
         chat_id=query.message.chat.id,
         message_id=query.message.message_id,
         caption=f"Вы уверены, что хотите продать {sell_n}x {card_name} за {card_price * sell_n} 🪙?\n\n"
-                f"(У вас осталось: {n_of_cards} шт.)\n\n"
-                f"<i>Осуществляется быстрая продажа карты. Для продажи карты"
-                f" другим пользователям перейдите в раздел Маркет (Другое)</i>",
+                f"(У вас осталось: {n_of_cards} шт.)\n\n",
         reply_markup=reply_markup,
         parse_mode="HTML"
     )
@@ -569,12 +574,12 @@ async def handle_anon_trade_view_buy_list(update, context, query, user):
     await anon_trade_choose_menu(update, context, page=page, user_id=user.id)
 
 
-async def handle_anon_trade_close_buy(_, __, query, ___):
+async def handle_anon_trade_close_buy(*_, query, ___):
     await query.answer()
     await query.delete_message()
 
 
-async def handle_anon_trade_view_offer(_, __, query, user):
+async def handle_anon_trade_view_offer(*_, query, user):
     await query.answer()
     receiver_id, wts, wtb = re.search("anon_trade_view_offer_(.+)_c_(.+)_c_(.+)", query.data).groups()
     wts = "c_" + wts
@@ -661,12 +666,12 @@ async def handle_anon_trade_my_offer(update, context, query, _):
     await anon_trade_show_my_offer(update, context, wts=wts, wtb=wtb)
 
 
-async def handle_anon_trade_show_my_offers(update, context, _, __):
+async def handle_anon_trade_show_my_offers(update, context, *_):
     page = context.user_data.get("anon_trade_my_offers_page", 0)
     await anon_trade_show_my_offers(update, context, page=page)
 
 
-async def handle_anon_trade_my_offer_remove(_, __, query, ___):
+async def handle_anon_trade_my_offer_remove(*_, query, ___):
     wts, wtb = re.search("anon_trade_my_offer_remove_c_(.+)_c_(.+)", query.data).groups()
     resp = "Вы уверены, что хотите отменить предложение?"
     keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("Да",
@@ -702,5 +707,13 @@ async def handle_anon_trade_my_offers_close(_, context, query, __):
         pass
 
 
-async def handle_roll_new_continue(update, context, _, __):
+async def handle_roll_new_continue(update, context, *_):
     await roll_new_continue(update, context)
+
+
+async def handle_battle_select(update, context, *_):
+    await battle_confirm_choice(update, context)
+
+
+async def handle_choice_confirm(update, context, *_):
+    await battle_init_game(update, context)

@@ -140,6 +140,11 @@ class FilterOffersButton(filters.MessageFilter):
         return message.text is not None and re.search("Предложения игроков", message.text) is not None
 
 
+class FilterBattleButton(filters.MessageFilter):
+    def filter(self, message: Message) -> bool:
+        return message.text is not None and re.search("Битва картами", message.text) is not None
+
+
 not_banned_filter = FilterUserNotBanned()
 anon_trade_button_filter = FilterAnonTradeButton()
 other_button_filter = FilterOtherButton()
@@ -160,6 +165,7 @@ coinflip_button_filter = FilterCoinflipButton()
 coinflip_pve_button_filter = FilterCoinflipPVEButton()
 my_offers_button_filter = FilterMyOffersButton()
 offers_button_filter = FilterOffersButton()
+battle_init_button_filter = FilterBattleButton()
 
 is_admin = IsAdminFilter()
 dev_mode = DevMode()
