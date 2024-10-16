@@ -119,8 +119,8 @@ roll_menu_buttons = [[KeyboardButton("Открыть пак")], [KeyboardButton(
 shop_menu_buttons = [[KeyboardButton("Паки"), KeyboardButton("Получение карт")],
                      [KeyboardButton("Меню")]]
 
-other_menu_buttons = [[KeyboardButton("Монетка"), KeyboardButton("Битва картами")],
-                      [KeyboardButton("Все карты"), KeyboardButton("MonoF1"), KeyboardButton("Меню")]]
+other_menu_buttons = [[KeyboardButton("Монетка"),  # KeyboardButton("Битва картами")],
+                      KeyboardButton("Все карты")], [KeyboardButton("MonoF1"), KeyboardButton("Меню")]]
 
 coinflip_menu_buttons = [[KeyboardButton("С игроком"), KeyboardButton("С ботом")], [KeyboardButton("Меню")]]
 

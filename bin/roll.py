@@ -11,7 +11,8 @@ from lib.classes.user import User
 from lib.init import BOT_INFO, logger
 from lib.keyboard_markup import roll_menu_markup
 from lib.variables import probability_by_category, cards_by_category, translation, garant_list, \
-    roll_cards_dict, category_sort_keys, garant_value, category_distribution, cards_dict
+    roll_cards_dict, category_sort_keys, garant_value, category_distribution, cards_dict, \
+    cumulative_probability_by_category
 
 
 def select_card_weighted(garant: bool = None, user: User = None) -> list[dict]:
@@ -20,17 +21,18 @@ def select_card_weighted(garant: bool = None, user: User = None) -> list[dict]:
         for _ in range(count):
             categories.append(category)
 
-    for category, prob in probability_by_category.items():
-        rand = random.random()
+    rand = random.random()
+    for category, prob in cumulative_probability_by_category.items():
+        if len(categories) > 2:
+            break
         if rand < prob:
             categories.append(category)
             break
-        if len(categories) > 2:
-            break
 
-    if not any(cat in ["gold", "ruby", 'sapphire', 'platinum'] for cat in categories) and garant:
+    if not any(cat in ["gold", "ruby", 'champion', 'sapphire', 'platinum'] for cat in categories) and garant:
         logger.log(BOT_INFO, "garant rolled")
-        categories.append(random.choices(["gold", "platinum", "ruby", "sapphire"], [.42, .27, .17, .16])[0])
+        categories.append(random.choices(["gold", "champion", "platinum", "ruby", "sapphire"],
+                                         [.5460, .2009, .0739, .0272, .01])[0])
 
     rolled_cards = []
     for cat in categories:
