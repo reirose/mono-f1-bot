@@ -88,7 +88,7 @@ probability_by_category: dict = {
 cumulative_probability_by_category: dict = {
     "silver": .2455,
     "gold": .1255,
-    "champion": .0655,
+    "champion": 0.0655,
     "platinum": .0405,
     "ruby": .0155,
     "sapphire": .0065
