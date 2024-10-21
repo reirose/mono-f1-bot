@@ -79,11 +79,12 @@ async def generate_collection_keyboard(update: Update, context: ContextTypes.DEF
     return reply_markup
 
 
-shop_inline_markup = InlineKeyboardMarkup([[InlineKeyboardButton("1 пак - 10 🪙", callback_data="pack_buy_1")],
-                                           [InlineKeyboardButton("2 пака - 20 🪙", callback_data="pack_buy_2")],
-                                           [InlineKeyboardButton("3 пака - 28 🪙", callback_data="pack_buy_3")],
-                                           [InlineKeyboardButton("5 паков - 47 🪙", callback_data="pack_buy_5")],
-                                           [InlineKeyboardButton("10 паков - 90 🪙", callback_data="pack_buy_10")]])
+shop_inline_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Стандартный пак - 10 🪙",
+                                                                 callback_data="pack_buy_standard")],
+                                           [InlineKeyboardButton("Золотой пак - 30 🪙",
+                                                                 callback_data="pack_buy_pack_gold")],
+                                           [InlineKeyboardButton("Драгоценный пак - 50 🪙",
+                                                                 callback_data="pack_buy_gem")]])
 
 
 def build_menu(buttons,

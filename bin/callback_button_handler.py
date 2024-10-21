@@ -16,7 +16,7 @@ from bin.battle import battle_init_menu, battle_confirm_choice, battle_init_game
 from bin.coinflip import coinflip_result
 from bin.collection import send_card_list, show_card, list_cards, get_collection_s, get_card_image
 from bin.market import market_sell_list_menu, shop_menu
-from bin.roll import roll_new_continue
+from bin.roll import roll_new_continue, roll_new
 from lib.classes.user import User
 from lib.init import BOT_INFO, logger
 from lib.keyboard_markup import shop_inline_markup, generate_collection_keyboard
@@ -73,6 +73,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "roll_": handle_roll_new_continue,
         "battle_page_": handle_battle_choice_page,
         "battle_select_c_": handle_battle_select,
+        "pack_open_": handle_pack_open
     }
 
     for prefix, handler in handlers.items():
@@ -325,8 +326,8 @@ async def show_sell_confirmation(_, context, query, user, card_code, sell_n, pag
 
 
 async def handle_pack_buy(update, context, query, user):
-    quant = int(re.search("pack_buy_(.+)", query.data).group(1))
-    price = packs_prices.get(quant)
+    pack_type = re.search("pack_buy_(.+)", query.data).group(1)
+    price = packs_prices.get(pack_type)
 
     if user.coins < price:
         await query.answer("Тебе не хватит денег даже на кружку пива. Иди зарабатывать.", show_alert=True)
@@ -334,7 +335,7 @@ async def handle_pack_buy(update, context, query, user):
 
     user.coins -= price
     user.statistics["coins_spent"] += price
-    user.rolls_available += quant
+    user.rolls_available[pack_type] += 1
     user.write()
     await bot_check_achievements(update, context)
     await query.answer("Успешно!")
@@ -717,3 +718,12 @@ async def handle_battle_select(update, context, *_):
 
 async def handle_choice_confirm(update, context, *_):
     await battle_init_game(update, context)
+
+
+async def handle_pack_open(update, context, query, __):
+    await query.answer()
+    if query.message.photo:
+        query.edit_message_reply_markup(reply_markup=None)
+    else:
+        await query.delete_message()
+    await roll_new(update, context, pack_type=re.search("pack_open_(.+)", query.data).group(1))

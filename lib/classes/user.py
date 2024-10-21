@@ -22,7 +22,7 @@ class User:
         self.username: str = data.username
         self.collection: list = data.collection
         self.last_roll: list = data.last_roll
-        self.rolls_available: int = data.rolls_available
+        self.rolls_available: dict = data.rolls_available
         self.date_of_registration: int = data.dor
         self.status: str = data.status
         self.coins: int = data.coins
@@ -56,7 +56,11 @@ class User:
                      "username": user.username,
                      "collection": [],
                      "last_roll": [],
-                     "rolls_available": 1,
+                     "rolls_available": {
+                         "standard": 1,
+                         "gold": 0,
+                         "gem": 0
+                     },
                      "dor": datetime.datetime.now().timestamp(),
                      "status": "idle",
                      "coins": 0,

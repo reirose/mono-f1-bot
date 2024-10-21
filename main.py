@@ -11,7 +11,7 @@ from bin.coinflip_pve import bot_coinflip_conv_handler
 from bin.collection import view_collection_list, collection_menu, list_cards, collection_completeness
 from bin.market import conv_handler, shop_menu
 from bin.menu import menu, about_me, achievements
-from bin.roll import roll_menu, roll_new
+from bin.roll import roll_menu, roll_new, packs_menu
 from bin.service_commands import start, dev_mode_change, unstuck, give_user, ribbon_info, get_logs, update_github
 from bin.other import other_menu
 from bin.packs_shop import packs_shop_menu
@@ -51,6 +51,7 @@ def main():
     app.add_handler(CommandHandler("coinflip_cancel", abort, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("collectors_ribbon_info", ribbon_info, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("gh_update", update_github, filters=is_admin))
+    app.add_handler(CommandHandler("packs", packs_menu, filters=dev_mode & not_banned_filter))
 
     # обработчики текстовых сообщений (для кнопок)
     app.add_handler(MessageHandler(dev_mode & other_button_filter & not_banned_filter, other_menu))
