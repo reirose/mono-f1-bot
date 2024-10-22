@@ -13,6 +13,8 @@ async def menu(update: Update, _: ContextTypes.DEFAULT_TYPE):
     mes = update.message
     telegram_user = update.effective_user
     user = User.get(telegram_user)
+    if not User.get(update.effective_user):
+        return
 
     cards_n = len(user.collection)
     unique_cards_n = len(list(set(user.collection)))

@@ -9,6 +9,8 @@ from lib.classes.user import User
 
 
 async def trade_initialization(update: Update, _: ContextTypes.DEFAULT_TYPE):
+    if not User.get(update.effective_user):
+        return
     await update.message.reply_text("Введите ID или имя пользователя, с которым хотите совершить обмен "
                                     "(для отмены нажмите /cancel)")
     return "trade_init"

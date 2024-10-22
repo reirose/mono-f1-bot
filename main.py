@@ -1,7 +1,7 @@
 import logging
 
 from telegram import Update
-from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler
+from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler, filters
 
 from bin.anon_trade import anon_trade_choose_menu, anon_trade_main_menu, anon_trade_show_my_offers
 from bin.battle import battle_init_menu, battle_conv_handler
@@ -11,8 +11,9 @@ from bin.coinflip_pve import bot_coinflip_conv_handler
 from bin.collection import view_collection_list, collection_menu, list_cards, collection_completeness
 from bin.market import conv_handler, shop_menu
 from bin.menu import menu, about_me, achievements
-from bin.roll import roll_menu, roll_new
-from bin.service_commands import start, dev_mode_change, unstuck, give_user, ribbon_info, get_logs, update_github
+from bin.roll import roll_menu, packs_menu
+from bin.service_commands import dev_mode_change, unstuck, give_user, ribbon_info, get_logs, update_github, \
+    handle_promo_link, generate_promo_link
 from bin.other import other_menu
 from bin.packs_shop import packs_shop_menu
 from bin.trade import trade_conv_handler
@@ -41,10 +42,14 @@ def main():
     app: Application = Application.builder().token(TOKEN).build()
 
     # текстовые команды (через "/")
-    app.add_handler(CommandHandler("start", start, filters=dev_mode & not_banned_filter))
+    app.add_handler(CommandHandler("start", handle_promo_link,
+                                   filters=dev_mode & not_banned_filter & filters.Regex("promo_(.+)")))
+    # app.add_handler(CommandHandler("start", start, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("dm", dev_mode_change))
     app.add_handler(CommandHandler("give", give_user, filters=is_admin))
+    app.add_handler(CommandHandler("generate_promo", generate_promo_link, filters=is_admin, has_args=True))
     app.add_handler(CommandHandler("get_logs", get_logs, filters=is_admin, has_args=True))
+    app.add_handler(CommandHandler("packs", packs_menu, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("unstuck", unstuck, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("achievements", achievements, filters=dev_mode & not_banned_filter))
     # app.add_handler(CommandHandler("buy", buy_command, has_args=True, filters=dev_mode & not_banned_filter))
@@ -54,20 +59,26 @@ def main():
 
     # обработчики текстовых сообщений (для кнопок)
     app.add_handler(MessageHandler(dev_mode & other_button_filter & not_banned_filter, other_menu))
-    app.add_handler(MessageHandler(dev_mode & anon_trade_button_filter & not_banned_filter, anon_trade_main_menu))
-    app.add_handler(MessageHandler(dev_mode & offers_button_filter & not_banned_filter, anon_trade_choose_menu))
-    app.add_handler(MessageHandler(dev_mode & my_offers_button_filter & not_banned_filter, anon_trade_show_my_offers))
+    app.add_handler(MessageHandler(dev_mode & anon_trade_button_filter & not_banned_filter,
+                                   anon_trade_main_menu))
+    app.add_handler(MessageHandler(dev_mode & offers_button_filter & not_banned_filter,
+                                   anon_trade_choose_menu))
+    app.add_handler(MessageHandler(dev_mode & my_offers_button_filter & not_banned_filter,
+                                   anon_trade_show_my_offers))
     app.add_handler(MessageHandler(dev_mode & menu_button_filter, menu))
     app.add_handler(MessageHandler(dev_mode & me_button_filter & not_banned_filter, about_me))
     app.add_handler(MessageHandler(dev_mode & roll_menu_button_filter & not_banned_filter, roll_menu))
-    app.add_handler(MessageHandler(dev_mode & roll_button_filter & not_banned_filter, roll_new))
-    app.add_handler(MessageHandler(dev_mode & collection_menu_button_filter & not_banned_filter, collection_menu))
-    app.add_handler(MessageHandler(dev_mode & collection_list_button_filter & not_banned_filter, view_collection_list))
+    app.add_handler(MessageHandler(dev_mode & roll_button_filter & not_banned_filter, packs_menu))
+    app.add_handler(MessageHandler(dev_mode & collection_menu_button_filter & not_banned_filter,
+                                   collection_menu))
+    app.add_handler(MessageHandler(dev_mode & collection_list_button_filter & not_banned_filter,
+                                   view_collection_list))
     app.add_handler(MessageHandler(dev_mode & show_card_button_filter & not_banned_filter, list_cards))
     app.add_handler(MessageHandler(dev_mode & packs_shop_button_filter & not_banned_filter, packs_shop_menu))
     app.add_handler(MessageHandler(dev_mode & shop_button_filter & not_banned_filter, shop_menu))
     # app.add_handler(MessageHandler(dev_mode & market_button_filter & not_banned_filter, market_menu))
-    app.add_handler(MessageHandler(dev_mode & all_cards_button_filter & not_banned_filter, collection_completeness))
+    app.add_handler(MessageHandler(dev_mode & all_cards_button_filter & not_banned_filter,
+                                   collection_completeness))
     app.add_handler(MessageHandler(dev_mode & coinflip_menu_button_filter & not_banned_filter, coinflip_menu))
     app.add_handler(MessageHandler(dev_mode & battle_init_button_filter & not_banned_filter, battle_init_menu))
 

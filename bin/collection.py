@@ -24,7 +24,7 @@ async def show_card(query, context, in_market: bool, page: int = 0, edit_message
     card_code = kwargs.get("card_code") or f"c_{re.search('c_(.{3})', query.data).group(1)}"
     card = cards_dict[card_code]
 
-    card_pic_id = get_card_image(card_code, is_limited=card["type"] == "limited")
+    card_pic_id = get_card_image(card_code, is_limited=card["type"] == "limited" or card_code == "c_903")
     card_n = user.collection.count(card["code"])
     card_name = card["name"]
     card_team = card["team"]
@@ -130,6 +130,8 @@ async def send_card_list(update: Update, context: ContextTypes.DEFAULT_TYPE,
 
 async def collection_menu(update: Update, _: ContextTypes.DEFAULT_TYPE):
     mes = update.message
+    if not User.get(update.effective_user):
+        return
     await mes.reply_text("Выберите действие",
                          reply_markup=collection_menu_markup)
 
@@ -163,6 +165,8 @@ async def view_collection_list(update: Update, context: ContextTypes.DEFAULT_TYP
     user = User.get(telegram_user)
     coll = {}
     for z in user.collection:
+        if z not in cards_dict:
+            continue
         coll.update({z: {"card": cards_dict[z], "n": user.collection.count(z)}})
 
     coll = dict(sorted(coll.items(), key=lambda item: sort_keys_by[sorted_by][item[1]['card'][sorted_by]]))

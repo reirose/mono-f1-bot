@@ -18,7 +18,7 @@ def update_free_roll():
     """
     Добавление крутки пользователям
     """
-    resp = USER_COLLECTION.update_many({}, {"$inc": {"rolls_available": 1}})
+    resp = USER_COLLECTION.update_many({}, {"$inc": {"rolls_available.standard": 1}})
     logger.log(BOT_INFO, f"Updated %i free rolls" % resp.matched_count)
 
 
@@ -39,7 +39,8 @@ def update_cards():
 
 
 def restart_status_reset():
-    resp = USER_COLLECTION.update_many({}, {"$set": {"status": "idle"}})
+    resp = USER_COLLECTION.update_many({"status": {"$not": {"$in": ["banned"]}}},
+                                       {"$set": {"status": "idle"}})
     logger.log(BOT_INFO, "Status reset successful (%i)" % resp.matched_count)
 
 

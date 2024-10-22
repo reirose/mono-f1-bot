@@ -1,4 +1,5 @@
 import datetime
+import random
 import re
 
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
@@ -16,13 +17,13 @@ from bin.battle import battle_init_menu, battle_confirm_choice, battle_init_game
 from bin.coinflip import coinflip_result
 from bin.collection import send_card_list, show_card, list_cards, get_collection_s, get_card_image
 from bin.market import market_sell_list_menu, shop_menu
-from bin.roll import roll_new_continue
+from bin.roll import roll_new_continue, roll_new
 from lib.classes.user import User
 from lib.init import BOT_INFO, logger
 from lib.keyboard_markup import shop_inline_markup, generate_collection_keyboard
 from lib.variables import (
     cards_dict, packs_prices, category_prices, sort_list,
-    sort_keys_by, sort_list_transl, trades_log_chat_id, roll_cards_dict
+    sort_keys_by, sort_list_transl, trades_log_chat_id, roll_cards_dict, translation
 )
 
 
@@ -73,6 +74,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "roll_": handle_roll_new_continue,
         "battle_page_": handle_battle_choice_page,
         "battle_select_c_": handle_battle_select,
+        "pack_open_": handle_pack_open
     }
 
     for prefix, handler in handlers.items():
@@ -325,8 +327,8 @@ async def show_sell_confirmation(_, context, query, user, card_code, sell_n, pag
 
 
 async def handle_pack_buy(update, context, query, user):
-    quant = int(re.search("pack_buy_(.+)", query.data).group(1))
-    price = packs_prices.get(quant)
+    pack_type = re.search("pack_buy_(.+)", query.data).group(1)
+    price = packs_prices.get(pack_type)
 
     if user.coins < price:
         await query.answer("Тебе не хватит денег даже на кружку пива. Иди зарабатывать.", show_alert=True)
@@ -334,7 +336,7 @@ async def handle_pack_buy(update, context, query, user):
 
     user.coins -= price
     user.statistics["coins_spent"] += price
-    user.rolls_available += quant
+    user.rolls_available[pack_type] += 1
     user.write()
     await bot_check_achievements(update, context)
     await query.answer("Успешно!")
@@ -368,7 +370,12 @@ async def handle_market_card(_, context, query, __):
 
 async def handle_collection_sort(_, context, query, user):
     sorted_by = re.search("collection_sort_(.+)", query.data).group(1)
-    coll = {z: {"card": cards_dict[z], "n": user.collection.count(z)} for z in user.collection}
+    coll = {}
+    for z in user.collection:
+        if z not in cards_dict:
+            continue
+        coll.update({z: {"card": cards_dict[z], "n": user.collection.count(z)}})
+    # coll = {z: {"card": cards_dict[z], "n": user.collection.count(z)} for z in user.collection}
     coll = dict(sorted(coll.items(), key=lambda x: sort_keys_by[sorted_by][x[1]['card'][sorted_by]]))
 
     next_sort_type = sort_list[(sort_list.index(sorted_by) + 1) % len(sort_list)]
@@ -500,11 +507,19 @@ async def handle_coinflip_cancel(_, context, query, user):
         pass
 
 
-async def handle_ribbon_redeem(_, context, query, user):
+async def handle_ribbon_redeem(update, context, query, user):
     for code in roll_cards_dict:
         user.collection = [c for c in user.collection if c != code]
 
     user.statistics["collectors_badge"] += 1
+    prize_list = []
+    for x in cards_dict:
+        if cards_dict[x]['type'] == "limited":
+            prize_list.append(x)
+    prize = random.choice(prize_list)
+    user.collection.append(prize)
+    await update.effective_chat.send_message(f"Получена карточка: {translation[cards_dict[prize]['category']]}"
+                                             f" {cards_dict[prize]['name']}")
     user.write()
 
     await context.bot.delete_message(user.id, message_id=query.message.message_id)
@@ -574,7 +589,7 @@ async def handle_anon_trade_view_buy_list(update, context, query, user):
     await anon_trade_choose_menu(update, context, page=page, user_id=user.id)
 
 
-async def handle_anon_trade_close_buy(*_, query, ___):
+async def handle_anon_trade_close_buy(_, __, query, ___):
     await query.answer()
     await query.delete_message()
 
@@ -717,3 +732,12 @@ async def handle_battle_select(update, context, *_):
 
 async def handle_choice_confirm(update, context, *_):
     await battle_init_game(update, context)
+
+
+async def handle_pack_open(update, context, query, __):
+    await query.answer()
+    if query.message.photo:
+        query.edit_message_reply_markup(reply_markup=None)
+    else:
+        await query.delete_message()
+    await roll_new(update, context, pack_type=re.search("pack_open_(.+)", query.data).group(1))

@@ -29,19 +29,17 @@ category_prices: dict = {
     "bronze": 1,
     "silver": 4,
     "gold": 8,
-    "champion": 12,
     "platinum": 16,
     "ruby": 26,
     "sapphire": 38,
+    "champion": 38,
     "diamond": 50
 }
 
 packs_prices: dict = {
-    1: 10,
-    2: 20,
-    3: 28,
-    5: 47,
-    10: 90
+    "standard": 10,
+    "pack_gold": 30,
+    "gem": 50
 }
 
 translation: dict = {
@@ -73,43 +71,82 @@ translation: dict = {
     "Sauber": "Sauber",
     "Williams": "Williams",
     'MonoF1': "MonoF1",
-    '': "Другое"
+    "": "Другое",
+    "standard": "Стандартный",
+    "pack_gold": "Золотой",
+    "gem": "Драгоценный"
 }
 
 probability_by_category: dict = {
     "silver": .12,
     "gold": .06,
-    "champion": .025,
     "platinum": .025,
-    "ruby": .009,
+    "ruby": .01,
+    "champion": .0065,
     "sapphire": .0065
 }
 
 cumulative_probability_by_category: dict = {
-    "silver": .2455,
-    "gold": .1255,
-    "champion": 0.0655,
-    "platinum": .0405,
-    "ruby": .0155,
-    "sapphire": .0065
+    "standard": {
+        "silver": .125,
+        "gold": .1,
+        "platinum": .05,
+        "ruby": .01,
+        "sapphire": .0065
+    },
+    "pack_gold": {
+        "gold": .3,
+        "platinum": .15,
+        "champion": .1
+    },
+    "gem": {
+        "platinum": .2,
+        "ruby": .1,
+        "champion": .1,
+        "sapphire":  .1
+    }
 }
 
 category_distribution = {
-    "bronze": 2,
-    "silver": 0,
-    "gold": 0,
-    "champion": 0,
-    "platinum": 0,
-    "ruby": 0,
-    "sapphire": 0
+    "standard": {
+        "bronze": 2,
+        "silver": 0,
+        "gold": 0,
+        "platinum": 0,
+        "ruby": 0,
+        "champion": 0,
+        "sapphire": 0
+    },
+    "pack_gold": {
+        "bronze": 1,
+        "silver": 1,
+        "gold": 0,
+        "platinum": 0,
+        "champion": 0
+    },
+    "gem": {
+        "bronze": 1,
+        "silver": 1,
+        "gold": 1,
+        "platinum": 0,
+        "ruby": 0,
+        "champion": 0,
+        "sapphire": 0
+    }
+}
+
+MAX_CARDS_IN_PACK: dict[str, int] = {
+    "standard": 3,
+    "pack_gold": 3,
+    "gem": 4
 }
 
 category_sort_keys: dict[str, int] = {'bronze': 0,
                                       'silver': 1,
                                       'gold': 2,
-                                      'champion': 3,
-                                      'platinum': 4,
-                                      'ruby': 5,
+                                      'platinum': 3,
+                                      'ruby': 4,
+                                      'champion': 5,
                                       'sapphire': 6,
                                       'diamond': 7}
 
@@ -133,7 +170,7 @@ type_sort_keys: dict[str, int] = {"driver": 0,
                                   "track": 4,
                                   "car": 5,
                                   "collab": 6,
-                                  "historical": 7,
+                                  "champion": 7,
                                   "limited": 8}
 
 sort_keys_by: dict[str, dict] = {'team': team_sort_keys,

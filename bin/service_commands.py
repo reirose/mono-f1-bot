@@ -1,7 +1,9 @@
 import json
 import os
+import re
 import subprocess
 import sys
+import uuid
 
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import ContextTypes
@@ -10,7 +12,7 @@ from bin.menu import menu
 from lib.classes.user import User
 from lib.filters import DEV_MODE
 from lib.keyboard_markup import main_menu_markup
-from lib.init import USER_COLLECTION, CARDS_COLLECTION
+from lib.init import USER_COLLECTION, CARDS_COLLECTION, PROMO_LINKS_COLLECTION
 from lib.variables import cards_dict, roll_cards_dict
 
 
@@ -20,6 +22,9 @@ async def dev_mode_change(_: Update, __: ContextTypes.DEFAULT_TYPE):
 
 class UpdateError(Exception):
     pass
+
+
+
 
 
 async def update_user(user: 'User', update_type: str,
@@ -127,7 +132,7 @@ async def start(update: Update, _: ContextTypes.DEFAULT_TYPE):
     telegram_user = update.effective_user
     mes = update.message
 
-    User.get(telegram_user)
+    User.get(telegram_user, start=True)
 
     await mes.reply_text(text="Добро пожаловать, снова!",
                          reply_markup=main_menu_markup)
@@ -180,3 +185,26 @@ async def update_github(update, _):
 def restart_bot():
     print("Перезапускаю бота...")
     os.execv(sys.executable, ["py", "main.py"])
+
+
+async def handle_promo_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    promo_id = re.search("promo_(.+)", context.args[0]).group(1)
+    try:
+        data = list(PROMO_LINKS_COLLECTION.find({"id": promo_id}))[0]
+    except IndexError:
+        return
+    if data:
+        await start(update, context)
+        if data.get("activations") == 1:
+            PROMO_LINKS_COLLECTION.delete_one({"id": promo_id})
+        else:
+            PROMO_LINKS_COLLECTION.update_one({"id": promo_id}, {"$inc": {"activations": -1}})
+    return
+
+
+async def generate_promo_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    promo_id = uuid.uuid4().hex
+    activations = int(context.args[0])
+    PROMO_LINKS_COLLECTION.insert_one({"id": promo_id, "activations": activations})
+    await update.effective_chat.send_message(f"Ваша промо-ссылка (х{activations}): "
+                                             f"https://t.me/monof1alphabot?start=promo_" + promo_id)

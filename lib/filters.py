@@ -122,7 +122,10 @@ class FilterCoinflipPVEButton(filters.MessageFilter):
 
 class FilterUserNotBanned(filters.MessageFilter):
     def filter(self, message: Message) -> bool:
-        return User.get(message.from_user).status != "banned"
+        try:
+            return User.get(message.from_user).status != "banned"
+        except AttributeError:
+            return True
 
 
 class FilterAnonTradeButton(filters.MessageFilter):

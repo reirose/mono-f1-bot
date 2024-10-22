@@ -22,7 +22,7 @@ class User:
         self.username: str = data.username
         self.collection: list = data.collection
         self.last_roll: list = data.last_roll
-        self.rolls_available: int = data.rolls_available
+        self.rolls_available: dict = data.rolls_available
         self.date_of_registration: int = data.dor
         self.status: str = data.status
         self.coins: int = data.coins
@@ -56,7 +56,11 @@ class User:
                      "username": user.username,
                      "collection": [],
                      "last_roll": [],
-                     "rolls_available": 1,
+                     "rolls_available": {
+                         "standard": 1,
+                         "gold": 0,
+                         "gem": 0
+                     },
                      "dor": datetime.datetime.now().timestamp(),
                      "status": "idle",
                      "coins": 0,
@@ -75,7 +79,7 @@ class User:
         logging.log(logging.INFO, "Registered user %s" % user.username)
 
     @staticmethod
-    def get(user: Union[TelegramUser, None], update: Union[int, str] = None):
+    def get(user: Union[TelegramUser, None], update: Union[int, str] = None, **kwargs):
         """
         Формирование объекта пользователя из БД
         :param user: объект пользователя
@@ -89,10 +93,12 @@ class User:
             except TypeError:
                 return None
 
-        if not User.user_registered(user.id):
+        if not User.user_registered(user.id) and kwargs.get("start", False):
             User.register(user)
 
         data = USER_COLLECTION.find_one({"id": user.id}, {"_id": 0})
+        if not data and not kwargs.get("start", False):
+            return
         return User(UserData(**data))
 
     def write(self) -> bool:

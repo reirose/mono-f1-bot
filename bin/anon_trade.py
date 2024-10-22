@@ -41,11 +41,15 @@ def generate_trade_offers_keyboard(context, **kwargs):
         if is_my_offers:
             context.user_data["anon_trade_my_offers"] = offers
             wts, wtb = offer['wts'], offer['wtb']
+            if any([x not in cards_dict for x in [wts, wtb]]):
+                continue
             wts_name, wtb_name = cards_dict[wts]['name'], cards_dict[wtb]['name']
             keyboard.append([InlineKeyboardButton(f"{wtb_name} за вашу {wts_name}",
                                                   callback_data=f"anon_trade_my_offer_{wts}_{wtb}")])
         else:
             offer_terms = list(offer.values())[0]
+            if offer_terms['wts'] not in cards_dict or offer_terms['wtb'] not in cards_dict:
+                continue
             offer_user = list(offer.keys())[0]
             card_name = cards_dict[offer_terms['wtb']]['name']
             card_code = offer_terms['wtb']

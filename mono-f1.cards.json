@@ -1,7 +1,5 @@
 [{
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921d6"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921d6",
   "code": "c_101",
   "name": "Max Verstappen",
   "type": "driver",
@@ -10,9 +8,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921d7"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921d7",
   "code": "c_102",
   "name": "Sergio Perez",
   "type": "driver",
@@ -21,9 +17,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921d8"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921d8",
   "code": "c_103",
   "name": "Lewis Hamilton",
   "type": "driver",
@@ -32,9 +26,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921d9"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921d9",
   "code": "c_104",
   "name": "George Russell",
   "type": "driver",
@@ -43,9 +35,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921da"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921da",
   "code": "c_105",
   "name": "Charles Leclerc",
   "type": "driver",
@@ -54,9 +44,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921db"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921db",
   "code": "c_106",
   "name": "Carlos Sainz Jr.",
   "type": "driver",
@@ -65,9 +53,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921dc"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921dc",
   "code": "c_107",
   "name": "Lando Norris",
   "type": "driver",
@@ -76,9 +62,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921dd"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921dd",
   "code": "c_108",
   "name": "Oscar Piastri",
   "type": "driver",
@@ -87,9 +71,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921de"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921de",
   "code": "c_109",
   "name": "Fernando Alonso",
   "type": "driver",
@@ -98,9 +80,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921df"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921df",
   "code": "c_110",
   "name": "Lance Stroll",
   "type": "driver",
@@ -109,9 +89,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921e0"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921e0",
   "code": "c_111",
   "name": "Pierre Gasly",
   "type": "driver",
@@ -120,9 +98,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921e1"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921e1",
   "code": "c_112",
   "name": "Esteban Ocon",
   "type": "driver",
@@ -131,9 +107,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921e2"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921e2",
   "code": "c_113",
   "name": "Alexander Albon",
   "type": "driver",
@@ -142,9 +116,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921e3"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921e3",
   "code": "c_114",
   "name": "Franco Colapinto",
   "type": "driver",
@@ -153,9 +125,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921e4"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921e4",
   "code": "c_902",
   "name": "Daniel Ricciardo",
   "type": "limited",
@@ -164,9 +134,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921e5"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921e5",
   "code": "c_116",
   "name": "Yuki Tsunoda",
   "type": "driver",
@@ -175,9 +143,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921e6"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921e6",
   "code": "c_117",
   "name": "Valtteri Bottas",
   "type": "driver",
@@ -186,9 +152,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921e7"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921e7",
   "code": "c_118",
   "name": "Guanyu Zhou",
   "type": "driver",
@@ -197,9 +161,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921e8"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921e8",
   "code": "c_119",
   "name": "Kevin Magnussen",
   "type": "driver",
@@ -208,9 +170,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921e9"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921e9",
   "code": "c_120",
   "name": "Nico Hulkenberg",
   "type": "driver",
@@ -219,9 +179,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921f4"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921f4",
   "code": "c_201",
   "name": "Verstappen • Perez",
   "type": "duo",
@@ -230,9 +188,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921f5"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921f5",
   "code": "c_202",
   "name": "Hamilton • Russell",
   "type": "duo",
@@ -241,9 +197,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921f6"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921f6",
   "code": "c_203",
   "name": "Leclerc • Sainz",
   "type": "duo",
@@ -252,9 +206,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921f7"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921f7",
   "code": "c_204",
   "name": "Norris • Piastri",
   "type": "duo",
@@ -263,9 +215,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921f8"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921f8",
   "code": "c_205",
   "name": "Alonso • Stroll",
   "type": "duo",
@@ -274,9 +224,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921f9"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921f9",
   "code": "c_206",
   "name": "Gasly • Ocon",
   "type": "duo",
@@ -285,9 +233,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921fa"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921fa",
   "code": "c_207",
   "name": "Albon • Colapinto",
   "type": "duo",
@@ -296,9 +242,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921fb"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921fb",
   "code": "c_208",
   "name": "Tsunoda • Lawson",
   "type": "duo",
@@ -307,9 +251,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921fc"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921fc",
   "code": "c_209",
   "name": "Bottas • Zhou",
   "type": "duo",
@@ -318,9 +260,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921fd"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921fd",
   "code": "c_210",
   "name": "Magnussen • Hulkenberg",
   "type": "duo",
@@ -329,9 +269,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921fe"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921fe",
   "code": "c_301",
   "name": "VER • PER • Horner",
   "type": "team",
@@ -340,9 +278,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921ff"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921ff",
   "code": "c_302",
   "name": "HAM • RUS • Wolff",
   "type": "team",
@@ -351,9 +287,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c92200"
-  },
+  "_id": "66e3d681e0ee9fa3b0c92200",
   "code": "c_303",
   "name": "LEC • SAI • Vasseur",
   "type": "team",
@@ -362,9 +296,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c92201"
-  },
+  "_id": "66e3d681e0ee9fa3b0c92201",
   "code": "c_304",
   "name": "NOR • PIA • Stella",
   "type": "team",
@@ -373,9 +305,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c92202"
-  },
+  "_id": "66e3d681e0ee9fa3b0c92202",
   "code": "c_305",
   "name": "ALO • STR • Krack",
   "type": "team",
@@ -384,9 +314,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c92203"
-  },
+  "_id": "66e3d681e0ee9fa3b0c92203",
   "code": "c_306",
   "name": "GAS • OCO • Oakes",
   "type": "team",
@@ -395,9 +323,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c92204"
-  },
+  "_id": "66e3d681e0ee9fa3b0c92204",
   "code": "c_307",
   "name": "ALB • COL • Vowles",
   "type": "team",
@@ -406,9 +332,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c92205"
-  },
+  "_id": "66e3d681e0ee9fa3b0c92205",
   "code": "c_308",
   "name": "TSU • LAW • Mekies",
   "type": "team",
@@ -417,9 +341,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c92206"
-  },
+  "_id": "66e3d681e0ee9fa3b0c92206",
   "code": "c_309",
   "name": "BOT • ZHO • Bravi",
   "type": "team",
@@ -428,9 +350,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c92207"
-  },
+  "_id": "66e3d681e0ee9fa3b0c92207",
   "code": "c_310",
   "name": "MAG • HUL • Komatsu",
   "type": "team",
@@ -439,9 +359,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921ea"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921ea",
   "code": "c_401",
   "name": "Christian Horner",
   "type": "team_principal",
@@ -450,9 +368,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921eb"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921eb",
   "code": "c_402",
   "name": "Toto Wolff",
   "type": "team_principal",
@@ -461,9 +377,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921ec"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921ec",
   "code": "c_403",
   "name": "Frederic Vasseur",
   "type": "team_principal",
@@ -472,9 +386,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921ed"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921ed",
   "code": "c_404",
   "name": "Andrea Stella",
   "type": "team_principal",
@@ -483,9 +395,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921ee"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921ee",
   "code": "c_405",
   "name": "Mike Krack",
   "type": "team_principal",
@@ -494,9 +404,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921ef"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921ef",
   "code": "c_406",
   "name": "Oliver Oakes",
   "type": "team_principal",
@@ -505,9 +413,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921f0"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921f0",
   "code": "c_407",
   "name": "James Vowles",
   "type": "team_principal",
@@ -516,9 +422,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921f1"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921f1",
   "code": "c_408",
   "name": "Laurent Mekies",
   "type": "team_principal",
@@ -527,9 +431,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921f2"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921f2",
   "code": "c_409",
   "name": "Alessandro Alunni Bravi",
   "type": "team_principal",
@@ -538,9 +440,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c921f3"
-  },
+  "_id": "66e3d681e0ee9fa3b0c921f3",
   "code": "c_410",
   "name": "Ayao Komatsu",
   "type": "team_principal",
@@ -549,9 +449,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e69611"
-  },
+  "_id": "66ed3a73d7f9dbfa76e69611",
   "code": "c_501",
   "name": "Bahrain International Circuit | Bahrain",
   "type": "track",
@@ -560,9 +458,7 @@
   "description": "Открыт в 2004 году. Известен своими длинными прямыми и жарким климатом. Гонка проходит в вечернее время под искусственным освещением."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e69612"
-  },
+  "_id": "66ed3a73d7f9dbfa76e69612",
   "code": "c_502",
   "name": "Jeddah Corniche Circuit | Saudi Arabia",
   "type": "track",
@@ -571,9 +467,7 @@
   "description": "Самая длинная и быстрая городская трасса в календаре F1. Дебютировала в 2021 году. Известна своими скоростными поворотами и ночной гонкой."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e69613"
-  },
+  "_id": "66ed3a73d7f9dbfa76e69613",
   "code": "c_503",
   "name": "Albert Park Circuit | Australia",
   "type": "track",
@@ -582,9 +476,7 @@
   "description": "Полупостоянная трасса в Мельбурне. Сочетает в себе элементы городской и стационарной трассы. Известна своей живописностью и непредсказуемыми гонками."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e69614"
-  },
+  "_id": "66ed3a73d7f9dbfa76e69614",
   "code": "c_504",
   "name": "Suzuka International Racing Course | Japan",
   "type": "track",
@@ -593,9 +485,7 @@
   "description": "Одна из самых технически сложных трасс. Уникальная 'восьмерка' в конфигурации. Любима гонщиками за разнообразие поворотов и вызов для навыков пилотирования."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e69615"
-  },
+  "_id": "66ed3a73d7f9dbfa76e69615",
   "code": "c_505",
   "name": "Shanghai International Circuit | China",
   "type": "track",
@@ -604,9 +494,7 @@
   "description": "Известна своим уникальным дизайном, напоминающим китайский иероглиф 'шан'. Включает в себя один из самых длинных прямых участков в календаре F1."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e69616"
-  },
+  "_id": "66ed3a73d7f9dbfa76e69616",
   "code": "c_506",
   "name": "Miami International Autodrome | USA",
   "type": "track",
@@ -615,9 +503,7 @@
   "description": "Новая трасса, дебютировавшая в 2022 году. Расположена вокруг Hard Rock Stadium. Отличается сложными поворотами и длинными прямыми."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e69617"
-  },
+  "_id": "66ed3a73d7f9dbfa76e69617",
   "code": "c_507",
   "name": "Autodromo Enzo e Dino Ferrari | Italy",
   "type": "track",
@@ -626,9 +512,7 @@
   "description": "Также известна как Имола. Историческая трасса с богатыми традициями. Отличается сложным рельефом и техничными поворотами."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e69618"
-  },
+  "_id": "66ed3a73d7f9dbfa76e69618",
   "code": "c_508",
   "name": "Circuit de Monaco | Monaco",
   "type": "track",
@@ -637,9 +521,7 @@
   "description": "Самая престижная и известная трасса F1. Узкая городская трасса с множеством поворотов. Известна своей сложностью и гламурной атмосферой."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e69619"
-  },
+  "_id": "66ed3a73d7f9dbfa76e69619",
   "code": "c_509",
   "name": "Circuit de Barcelona-Catalunya | Spain",
   "type": "track",
@@ -648,9 +530,7 @@
   "description": "Часто используется для тестов F1. Сочетает в себе быстрые и медленные повороты. Требует хорошего баланса настроек болида."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e6961a"
-  },
+  "_id": "66ed3a73d7f9dbfa76e6961a",
   "code": "c_510",
   "name": "Circuit Gilles Villeneuve | Canada",
   "type": "track",
@@ -659,9 +539,7 @@
   "description": "Расположена на искусственном острове. Известна своими длинными прямыми и шиканами. Знаменита 'Стеной чемпионов' - последним поворотом трассы."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e6961b"
-  },
+  "_id": "66ed3a73d7f9dbfa76e6961b",
   "code": "c_511",
   "name": "Red Bull Ring | Austria",
   "type": "track",
@@ -670,9 +548,7 @@
   "description": "Короткая, но быстрая трасса с живописными видами на Штирийские Альпы. Отличается значительными перепадами высот."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e6961c"
-  },
+  "_id": "66ed3a73d7f9dbfa76e6961c",
   "code": "c_512",
   "name": "Silverstone Circuit | Great Britain",
   "type": "track",
@@ -681,9 +557,7 @@
   "description": "Одна из самых быстрых трасс в календаре. Историческое место рождения F1. Знаменита своими скоростными поворотами и британской погодой."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e6961d"
-  },
+  "_id": "66ed3a73d7f9dbfa76e6961d",
   "code": "c_513",
   "name": "Hungaroring | Hungary",
   "type": "track",
@@ -692,9 +566,7 @@
   "description": "Извилистая трасса, часто сравниваемая с картодромом из-за обилия поворотов. Известна своей жарой и сложностью обгонов."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e6961e"
-  },
+  "_id": "66ed3a73d7f9dbfa76e6961e",
   "code": "c_514",
   "name": "Circuit de Spa-Francorchamps | Belgium",
   "type": "track",
@@ -703,9 +575,7 @@
   "description": "Одна из самых длинных и быстрых трасс. Включает легендарный поворот Eau Rouge. Славится непредсказуемой погодой и захватывающими гонками."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e6961f"
-  },
+  "_id": "66ed3a73d7f9dbfa76e6961f",
   "code": "c_515",
   "name": "Circuit Zandvoort | Netherlands",
   "type": "track",
@@ -714,9 +584,7 @@
   "description": "Историческая трасса, вернувшаяся в календарь F1 в 2021 году. Отличается крутыми виражами и близостью к морю."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e69620"
-  },
+  "_id": "66ed3a73d7f9dbfa76e69620",
   "code": "c_516",
   "name": "Autodromo Nazionale Monza | Italy",
   "type": "track",
@@ -725,9 +593,7 @@
   "description": "Известна как 'Храм скорости'. Одна из самых быстрых трасс с длинными прямыми. Имеет богатую историю в F1."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e69621"
-  },
+  "_id": "66ed3a73d7f9dbfa76e69621",
   "code": "c_517",
   "name": "Marina Bay Street Circuit | Singapore",
   "type": "track",
@@ -736,9 +602,7 @@
   "description": "Первая ночная гонка в истории F1. Городская трасса с уникальной атмосферой. Известна своей физической сложностью для пилотов."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e69622"
-  },
+  "_id": "66ed3a73d7f9dbfa76e69622",
   "code": "c_518",
   "name": "Lusail International Circuit | Qatar",
   "type": "track",
@@ -747,9 +611,7 @@
   "description": "Новая трасса в календаре F1. Изначально построена для мотогонок. Отличается скоростными поворотами и современной инфраструктурой."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e69623"
-  },
+  "_id": "66ed3a73d7f9dbfa76e69623",
   "code": "c_519",
   "name": "Circuit of the Americas | USA",
   "type": "track",
@@ -758,9 +620,7 @@
   "description": "Современная трасса, вдохновленная лучшими элементами других трасс F1. Известна своим первым сектором и значительным перепадом высот."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e69624"
-  },
+  "_id": "66ed3a73d7f9dbfa76e69624",
   "code": "c_520",
   "name": "Autódromo Hermanos Rodríguez | Mexico",
   "type": "track",
@@ -769,9 +629,7 @@
   "description": "Расположена на большой высоте, что влияет на работу двигателей. Знаменита своим финальным сектором, проходящим через бейсбольный стадион."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e69625"
-  },
+  "_id": "66ed3a73d7f9dbfa76e69625",
   "code": "c_521",
   "name": "Autódromo José Carlos Pace | Brazil",
   "type": "track",
@@ -780,9 +638,7 @@
   "description": "Также известна как Интерлагос. Одна из немногих трасс, идущих против часовой стрелки. Славится своей непредсказуемостью и страстными болельщиками."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e69626"
-  },
+  "_id": "66ed3a73d7f9dbfa76e69626",
   "code": "c_522",
   "name": "Las Vegas Strip Circuit | USA",
   "type": "track",
@@ -791,9 +647,7 @@
   "description": "Новая ночная гонка на улицах Лас-Вегаса. Проходит мимо известных казино и отелей. Отличается длинными прямыми и скоростными поворотами."
 },
 {
-  "_id": {
-    "$oid": "66ed3a73d7f9dbfa76e69627"
-  },
+  "_id": "66ed3a73d7f9dbfa76e69627",
   "code": "c_523",
   "name": "Yas Marina Circuit | Abu Dhabi",
   "type": "track",
@@ -802,9 +656,7 @@
   "description": "Современная трасса, известная своей роскошной инфраструктурой. Гонка начинается днем и заканчивается ночью. Часто является финальным этапом сезона."
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c92208"
-  },
+  "_id": "66e3d681e0ee9fa3b0c92208",
   "code": "c_601",
   "name": "RB20",
   "type": "car",
@@ -813,9 +665,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c92209"
-  },
+  "_id": "66e3d681e0ee9fa3b0c92209",
   "code": "c_602",
   "name": "W15",
   "type": "car",
@@ -824,9 +674,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c9220a"
-  },
+  "_id": "66e3d681e0ee9fa3b0c9220a",
   "code": "c_603",
   "name": "SF-24",
   "type": "car",
@@ -835,9 +683,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c9220b"
-  },
+  "_id": "66e3d681e0ee9fa3b0c9220b",
   "code": "c_604",
   "name": "MCL38",
   "type": "car",
@@ -846,9 +692,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c9220c"
-  },
+  "_id": "66e3d681e0ee9fa3b0c9220c",
   "code": "c_605",
   "name": "AMR24",
   "type": "car",
@@ -857,9 +701,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c9220d"
-  },
+  "_id": "66e3d681e0ee9fa3b0c9220d",
   "code": "c_606",
   "name": "A524",
   "type": "car",
@@ -868,9 +710,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c9220e"
-  },
+  "_id": "66e3d681e0ee9fa3b0c9220e",
   "code": "c_607",
   "name": "FW46",
   "type": "car",
@@ -879,9 +719,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c9220f"
-  },
+  "_id": "66e3d681e0ee9fa3b0c9220f",
   "code": "c_608",
   "name": "VCARB 01",
   "type": "car",
@@ -890,9 +728,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c92210"
-  },
+  "_id": "66e3d681e0ee9fa3b0c92210",
   "code": "c_609",
   "name": "C44",
   "type": "car",
@@ -901,9 +737,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66e3d681e0ee9fa3b0c92211"
-  },
+  "_id": "66e3d681e0ee9fa3b0c92211",
   "code": "c_610",
   "name": "VF-24",
   "type": "car",
@@ -912,9 +746,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66ea8e4f1c700e64bac240e4"
-  },
+  "_id": "66ea8e4f1c700e64bac240e4",
   "code": "c_701",
   "name": "@reirose",
   "type": "collab",
@@ -923,20 +755,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66ea8f021c700e64bac240e6"
-  },
-  "code": "c_702",
-  "name": "@poppybo",
-  "type": "collab",
-  "team": "MonoF1",
-  "category": "ruby",
-  "description": ""
-},
-{
-  "_id": {
-    "$oid": "66f1c27e16a6561280f19105"
-  },
+  "_id": "66f1c27e16a6561280f19105",
   "code": "c_703",
   "type": "collab",
   "team": "MonoF1",
@@ -945,20 +764,7 @@
   "name": "LEC"
 },
 {
-  "_id": {
-    "$oid": "66ea8f021c700e64bac240e5"
-  },
-  "code": "c_801",
-  "name": "Kimi Raikkonen",
-  "type": "historical",
-  "team": "Ferrari",
-  "category": "sapphire",
-  "description": ""
-},
-{
-  "_id": {
-    "$oid": "66e3e3abe0ee9fa3b0c9222a"
-  },
+  "_id": "66e3e3abe0ee9fa3b0c9222a",
   "code": "c_901",
   "name": "Logan Sargeant",
   "type": "limited",
@@ -967,9 +773,7 @@
   "description": ""
 },
 {
-  "_id": {
-    "$oid": "66f979103aec60cc148e4043"
-  },
+  "_id": "66f979103aec60cc148e4043",
   "code": "c_115",
   "name": "Liam Lawson",
   "type": "driver",

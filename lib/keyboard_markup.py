@@ -28,8 +28,13 @@ async def generate_collection_keyboard(update: Update, context: ContextTypes.DEF
     :param page: текущая страница
     :return: маркап текущей страницы клавиатуры
     """
-    user_cards = User.get(user=None, update=telegram_user_id).collection
-    user_cards = [cards_dict[x] for x in user_cards]
+    user_cards_collection = User.get(user=None, update=telegram_user_id).collection
+    user_cards = []
+    # user_cards = [cards_dict[x] for x in user_cards]
+    for x in user_cards_collection:
+        if x not in cards_dict:
+            continue
+        user_cards.append(cards_dict[x])
     user_trade = User.get(user=None, update=telegram_user_id).trade
 
     card_counter = Counter(card['code'] for card in user_cards)
@@ -79,11 +84,12 @@ async def generate_collection_keyboard(update: Update, context: ContextTypes.DEF
     return reply_markup
 
 
-shop_inline_markup = InlineKeyboardMarkup([[InlineKeyboardButton("1 пак - 10 🪙", callback_data="pack_buy_1")],
-                                           [InlineKeyboardButton("2 пака - 20 🪙", callback_data="pack_buy_2")],
-                                           [InlineKeyboardButton("3 пака - 28 🪙", callback_data="pack_buy_3")],
-                                           [InlineKeyboardButton("5 паков - 47 🪙", callback_data="pack_buy_5")],
-                                           [InlineKeyboardButton("10 паков - 90 🪙", callback_data="pack_buy_10")]])
+shop_inline_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Стандартный пак - 10 🪙",
+                                                                 callback_data="pack_buy_standard")],
+                                           [InlineKeyboardButton("Золотой пак - 30 🪙",
+                                                                 callback_data="pack_buy_pack_gold")],
+                                           [InlineKeyboardButton("Драгоценный пак - 50 🪙",
+                                                                 callback_data="pack_buy_gem")]])
 
 
 def build_menu(buttons,
@@ -120,7 +126,7 @@ shop_menu_buttons = [[KeyboardButton("Паки"), KeyboardButton("Получен
                      [KeyboardButton("Меню")]]
 
 other_menu_buttons = [[KeyboardButton("Монетка"),  # KeyboardButton("Битва картами")],
-                      KeyboardButton("Все карты")], [KeyboardButton("MonoF1"), KeyboardButton("Меню")]]
+                       KeyboardButton("Все карты")], [KeyboardButton("MonoF1"), KeyboardButton("Меню")]]
 
 coinflip_menu_buttons = [[KeyboardButton("С игроком"), KeyboardButton("С ботом")], [KeyboardButton("Меню")]]
 
