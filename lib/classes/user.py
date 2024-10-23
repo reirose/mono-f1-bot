@@ -58,7 +58,7 @@ class User:
                      "last_roll": [],
                      "rolls_available": {
                          "standard": 1,
-                         "gold": 0,
+                         "pack_gold": 0,
                          "gem": 0
                      },
                      "dor": datetime.datetime.now().timestamp(),

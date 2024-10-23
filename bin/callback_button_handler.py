@@ -16,7 +16,7 @@ from bin.anon_trade import (
 from bin.battle import battle_init_menu, battle_confirm_choice, battle_init_game
 from bin.coinflip import coinflip_result
 from bin.collection import send_card_list, show_card, list_cards, get_collection_s, get_card_image
-from bin.market import market_sell_list_menu, shop_menu
+from bin.market import shop_menu
 from bin.roll import roll_new_continue, roll_new
 from lib.classes.user import User
 from lib.init import BOT_INFO, logger
@@ -361,7 +361,7 @@ async def handle_market_sell_card(update, context, query, _):
 
 async def handle_market_buy_card(update, context, query, _):
     await query.answer()
-    await market_sell_list_menu(update, context)
+    # await market_sell_list_menu(update, context)
 
 
 async def handle_market_card(_, context, query, __):
