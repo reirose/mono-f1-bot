@@ -48,6 +48,7 @@ async def show_card(query, context, in_market: bool, page: int = 0, edit_message
     reply_markup_buttons = [
         [InlineKeyboardButton("Продать", callback_data=f"{market_prefix}sell_{card['code']}_{page}")],
         [InlineKeyboardButton("Выбрать для трейда", callback_data=f"anon_trade_add_{card_code}_{page}")],
+        [InlineKeyboardButton("Выставить на Маркете", callback_data=f"market_sell_card_{card_code}")],
         [InlineKeyboardButton("Закрыть", callback_data=f"{market_prefix}close_card_{page}")]
     ]
     reply_markup = InlineKeyboardMarkup(reply_markup_buttons)
@@ -111,7 +112,8 @@ async def send_card_list(update: Update, context: ContextTypes.DEFAULT_TYPE,
     if update.callback_query and (not update.callback_query.data.startswith("sell_confirm_") and
                                   not update.callback_query.data == "close_card" and
                                   not update.callback_query.data.startswith("market_close_") and
-                                  not update.callback_query.data.startswith("anon_trade_confirm_sell_")):
+                                  not update.callback_query.data.startswith("anon_trade_confirm_sell_") and
+                                  not update.callback_query.data.startswith("market_confirm_sell_")):
         await update.callback_query.answer()
         if closed_card:
             await update.callback_query.delete_message()

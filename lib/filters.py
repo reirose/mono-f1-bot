@@ -174,6 +174,7 @@ coinflip_pve_button_filter = FilterCoinflipPVEButton()
 my_offers_button_filter = FilterMyOffersButton()
 offers_button_filter = FilterOffersButton()
 market_offers_button_filter = FilterMarketOffersButton()
+market_my_offers_button_filter = FilterMarketMyOffersButton()
 
 is_admin = IsAdminFilter()
 dev_mode = DevMode()

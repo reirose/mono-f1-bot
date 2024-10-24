@@ -16,7 +16,8 @@ from bin.anon_trade import (
 from bin.battle import battle_init_menu, battle_confirm_choice, battle_init_game
 from bin.coinflip import coinflip_result
 from bin.collection import send_card_list, show_card, list_cards, get_collection_s, get_card_image
-from bin.market import shop_menu
+from bin.market import shop_menu, market_offers_show_card, market_offers_menu, market_offer_show, market_sell_card, \
+    market_buy_offer, market_confirm_sell_card, market_show_my_offers_list, market_my_offer_show, market_offer_remove
 from bin.roll import roll_new_continue, roll_new
 from lib.classes.user import User
 from lib.init import BOT_INFO, logger
@@ -34,7 +35,6 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     handlers = {
         "page_": handle_page,
-        "market_page_": handle_market_page,
         "trade_page_": handle_trade_page,
         "anon_trade_sell_page_": handle_anon_trade_sell_page,
         "anon_trade_buy_page_": handle_anon_trade_buy_page,
@@ -42,12 +42,8 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "anon_trade_view_my_offers_page_": handle_anon_trade_view_my_offers_page,
         "c_": handle_card,
         "close_": handle_close,
-        "market_close_": handle_market_close,
         "sell_": handle_sell,
         "pack_buy_": handle_pack_buy,
-        "market_sell_card": handle_market_sell_card,
-        "market_buy_card": handle_market_buy_card,
-        "market_c": handle_market_card,
         "collection_sort_": handle_collection_sort,
         "trade_c_": handle_trade_card,
         "trade_confirm_": handle_trade_confirm,
@@ -74,7 +70,19 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "roll_": handle_roll_new_continue,
         "battle_page_": handle_battle_choice_page,
         "battle_select_c_": handle_battle_select,
-        "pack_open_": handle_pack_open
+        "pack_open_": handle_pack_open,
+        "market_offers_close": handle_market_offers_close,
+        "market_offers_page_": handle_market_offers_page,
+        "market_offers": handle_market_back_button,
+        # "market_offer_card_page_": handle_market_offer_card_page,
+        "market_offer_card_": handle_market_offer_card,
+        "market_offer_show_": handle_market_offer_show,
+        "market_buy_offer_": handle_market_buy_offer,
+        "market_confirm_sell_card_": handle_market_confirm_sell_card,
+        "market_my_offer_show_": handle_market_my_offer_show,
+        "market_my_offers_list": handle_market_my_offers_list,
+        "market_my_offers_page_": handle_market_my_offers_page,
+        "market_offer_remove_": handle_market_my_offer_remove
     }
 
     for prefix, handler in handlers.items():
@@ -96,9 +104,14 @@ async def handle_battle_choice_page(update, context, query, _):
     await battle_init_menu(update, context, page=page)
 
 
-async def handle_market_page(update, context, query, _):
-    page = int(query.data.split("_")[2])
-    await send_card_list(update, context, query.from_user, page, in_market=True, trade_receiver=0)
+async def handle_market_offers_page(update, context, query, _):
+    await query.answer()
+    await market_offers_menu(update, context)
+
+
+async def handle_market_my_offers_page(update, context, query, _):
+    await query.answer()
+    await market_show_my_offers_list(update, context)
 
 
 async def handle_trade_page(update, context, query, _):
@@ -159,7 +172,10 @@ async def handle_anon_trade_view_my_offers_page(_, context, query, __):
 async def handle_card(_, context, query, __):
     inline_keyboard = query.message.to_dict().get('reply_markup').get('inline_keyboard')
     page_index = next((i for i, item in enumerate(inline_keyboard[-1]) if item['callback_data'] == 'noop'), 0)
-    page = int(inline_keyboard[-1][page_index]['text']) - 1
+    try:
+        page = int(inline_keyboard[-1][page_index]['text']) - 1
+    except ValueError:
+        page = 0
     try:
         await query.delete_message()
     except Exception as e:
@@ -351,12 +367,9 @@ async def handle_pack_buy(update, context, query, user):
                                         reply_markup=reply_markup)
 
 
-async def handle_market_sell_card(update, context, query, _):
-    reply_markup = await generate_collection_keyboard(update, context, query.from_user.id, page=0, in_market=True)
-    await context.bot.edit_message_text(chat_id=update.effective_user.id,
-                                        message_id=query.message.message_id,
-                                        text="Выберите карту:",
-                                        reply_markup=reply_markup)
+# async def handle_market_sell_card(update, context, query, _):
+#     await query.answer()
+#     await market_sell_card(update, context)
 
 
 async def handle_market_buy_card(update, context, query, _):
@@ -375,7 +388,6 @@ async def handle_collection_sort(_, context, query, user):
         if z not in cards_dict:
             continue
         coll.update({z: {"card": cards_dict[z], "n": user.collection.count(z)}})
-    # coll = {z: {"card": cards_dict[z], "n": user.collection.count(z)} for z in user.collection}
     coll = dict(sorted(coll.items(), key=lambda x: sort_keys_by[sorted_by][x[1]['card'][sorted_by]]))
 
     next_sort_type = sort_list[(sort_list.index(sorted_by) + 1) % len(sort_list)]
@@ -741,3 +753,48 @@ async def handle_pack_open(update, context, query, __):
     else:
         await query.delete_message()
     await roll_new(update, context, pack_type=re.search("pack_open_(.+)", query.data).group(1))
+
+
+async def handle_market_offer_card(update, context, query, __):
+    await query.answer()
+    await market_offers_show_card(update, context)
+
+
+async def handle_market_back_button(update, context, query, __):
+    await query.answer()
+    await market_offers_menu(update, context)
+
+
+async def handle_market_offer_show(update, context, query, __):
+    await query.answer()
+    await market_offer_show(update, context)
+
+
+async def handle_market_buy_offer(update, context, _, __):
+    # await query.answer()
+    await market_buy_offer(update, context)
+
+
+async def handle_market_confirm_sell_card(update, context, query, __):
+    await query.answer()
+    await market_confirm_sell_card(update, context)
+
+
+async def handle_market_offers_close(__, ___, query, _):
+    await query.answer()
+    await query.delete_message()
+
+
+async def handle_market_my_offers_list(update, context, query, _):
+    await query.answer()
+    await market_show_my_offers_list(update, context)
+
+
+async def handle_market_my_offer_show(update, context, query, _):
+    await query.answer()
+    await market_my_offer_show(update, context)
+
+
+async def handle_market_my_offer_remove(update, context, query, _):
+    await query.answer()
+    await market_offer_remove(update, context)

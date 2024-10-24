@@ -8,7 +8,7 @@ from bin.callback_button_handler import button_callback
 from bin.coinflip import coinflip_conv_handler, abort, coinflip_menu
 from bin.coinflip_pve import bot_coinflip_conv_handler
 from bin.collection import view_collection_list, collection_menu, list_cards, collection_completeness
-from bin.market import shop_menu, market_offers_menu, market_menu_new
+from bin.market import shop_menu, market_offers_menu, market_menu_new, conv_handler, market_show_my_offers_list
 from bin.menu import menu, about_me, achievements
 from bin.roll import roll_menu, packs_menu
 from bin.service_commands import dev_mode_change, unstuck, give_user, ribbon_info, get_logs, update_github, \
@@ -23,7 +23,7 @@ from lib.filters import (other_button_filter, menu_button_filter, roll_menu_butt
                          dev_mode, packs_shop_button_filter, me_button_filter, not_banned_filter,
                          is_admin, all_cards_button_filter, shop_button_filter, coinflip_menu_button_filter,
                          anon_trade_button_filter, offers_button_filter, my_offers_button_filter,
-                         market_offers_button_filter, market_button_filter)
+                         market_offers_button_filter, market_button_filter, market_my_offers_button_filter)
 from lib.routines import update_cards, scheduler, update_free_roll, clear_logs, notify_free_pack, async_scheduler
 
 scheduler.start()
@@ -79,10 +79,12 @@ def main():
                                    collection_completeness))
     app.add_handler(MessageHandler(dev_mode & coinflip_menu_button_filter & not_banned_filter, coinflip_menu))
     app.add_handler(MessageHandler(dev_mode & market_offers_button_filter & not_banned_filter, market_offers_menu))
+    app.add_handler(MessageHandler(dev_mode & market_my_offers_button_filter & not_banned_filter,
+                                   market_show_my_offers_list))
     app.add_handler(MessageHandler(dev_mode & market_button_filter & not_banned_filter, market_menu_new))
 
     # обработчик беседы (для продажи)
-    # app.add_handler(conv_handler)
+    app.add_handler(conv_handler)
     app.add_handler(trade_conv_handler)
     app.add_handler(coinflip_conv_handler)
     app.add_handler(bot_coinflip_conv_handler)
