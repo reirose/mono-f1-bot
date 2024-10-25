@@ -1,3 +1,5 @@
+from random import randint
+
 from telegram import Update
 from telegram.ext import ContextTypes
 
@@ -35,5 +37,6 @@ async def bot_check_achievements(update: Update, context: ContextTypes.DEFAULT_T
         await context.bot.send_message(text=f"Получено достижение: <i>{achievements_dict[ach]['name']}</i>",
                                        chat_id=user.id,
                                        parse_mode="HTML")
+        user.coins += randint(10, 20)
     user.achievements += new_achievements
     user.write()

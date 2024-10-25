@@ -23,7 +23,6 @@ async def shop_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 def generate_market_my_offers_keyboard(**kwargs):
     user = kwargs.get("user", None)
-    page = kwargs.get("page", 0)
     if not user:
         return None
 
@@ -322,7 +321,7 @@ conv_handler = ConversationHandler(
 )
 
 
-async def market_show_my_offers_list(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def market_show_my_offers_list(update: Update, _: ContextTypes.DEFAULT_TYPE):
     user = User.get(update.effective_user)
     page = 0
     if update.callback_query:
@@ -340,7 +339,7 @@ async def market_show_my_offers_list(update: Update, context: ContextTypes.DEFAU
                                              reply_markup=kb)
 
 
-async def market_my_offer_show(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def market_my_offer_show(update: Update, _: ContextTypes.DEFAULT_TYPE):
     offer_id = update.callback_query.data.split("_")[-1]
     offer = MARKET_COLLECTION.find_one({"id": offer_id})
     resp = ("Предложение по карточке:\n"

@@ -186,6 +186,9 @@ async def view_collection_list(update: Update, context: ContextTypes.DEFAULT_TYP
                                    reply_markup=collection_menu_markup)
 
     response = await get_collection_s(coll, user, context.bot, sorted_by)
+    if not response:
+        response = "Тут ничего нет :с"
+        reply_markup = None
 
     await context.bot.send_message(chat_id=user.id,
                                    text=response,

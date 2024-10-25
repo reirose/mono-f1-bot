@@ -60,10 +60,10 @@ def select_card_weighted(garant: bool = None, user: User = None,
             categories.append(category)
             break
 
-    if not any(cat in ["gold", "ruby", 'champion', 'sapphire', 'platinum'] for cat in categories) and garant:
+    if not any(cat in ["gold", "ruby", 'sapphire', 'platinum'] for cat in categories) and garant:
         logger.log(BOT_INFO, "garant rolled")
-        categories.append(random.choices(["gold", "champion", "platinum", "ruby", "sapphire"],
-                                         [.5460, .2009, .0739, .0272, .01])[0])
+        categories.append(random.choices(["gold", "platinum", "ruby", "sapphire"],
+                                         [.5460, .2009, .0739, .0272])[0])
 
     rolled_cards = []
     for cat in categories:

@@ -16,7 +16,7 @@ from bin.anon_trade import (
 from bin.battle import battle_init_menu, battle_confirm_choice, battle_init_game
 from bin.coinflip import coinflip_result
 from bin.collection import send_card_list, show_card, list_cards, get_collection_s, get_card_image
-from bin.market import shop_menu, market_offers_show_card, market_offers_menu, market_offer_show, market_sell_card, \
+from bin.market import shop_menu, market_offers_show_card, market_offers_menu, market_offer_show, \
     market_buy_offer, market_confirm_sell_card, market_show_my_offers_list, market_my_offer_show, market_offer_remove
 from bin.roll import roll_new_continue, roll_new
 from lib.classes.user import User
@@ -342,7 +342,8 @@ async def show_sell_confirmation(_, context, query, user, card_code, sell_n, pag
     await query.answer()
 
 
-async def handle_pack_buy(update, context, query, user):
+async def handle_pack_buy(update, context, query, _):
+    user = User.get(update.effective_user)
     pack_type = re.search("pack_buy_(.+)", query.data).group(1)
     price = packs_prices.get(pack_type)
 
@@ -365,16 +366,6 @@ async def handle_pack_buy(update, context, query, user):
                                         message_id=query.message.message_id,
                                         text=response,
                                         reply_markup=reply_markup)
-
-
-# async def handle_market_sell_card(update, context, query, _):
-#     await query.answer()
-#     await market_sell_card(update, context)
-
-
-async def handle_market_buy_card(update, context, query, _):
-    await query.answer()
-    # await market_sell_list_menu(update, context)
 
 
 async def handle_market_card(_, context, query, __):
@@ -749,7 +740,7 @@ async def handle_choice_confirm(update, context, *_):
 async def handle_pack_open(update, context, query, __):
     await query.answer()
     if query.message.photo:
-        query.edit_message_reply_markup(reply_markup=None)
+        await query.edit_message_reply_markup(reply_markup=None)
     else:
         await query.delete_message()
     await roll_new(update, context, pack_type=re.search("pack_open_(.+)", query.data).group(1))
