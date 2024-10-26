@@ -9,7 +9,7 @@ from bin.coinflip import coinflip_conv_handler, abort, coinflip_menu
 from bin.coinflip_pve import bot_coinflip_conv_handler
 from bin.collection import view_collection_list, collection_menu, list_cards, collection_completeness
 from bin.market import shop_menu, market_offers_menu, market_menu_new, conv_handler, market_show_my_offers_list
-from bin.menu import menu, about_me, achievements
+from bin.menu import menu, achievements
 from bin.pitstop import pitstop_conv_handler, pitstop_menu
 from bin.roll import roll_menu, packs_menu
 from bin.service_commands import dev_mode_change, unstuck, give_user, ribbon_info, get_logs, update_github, \
@@ -67,7 +67,6 @@ def main():
     app.add_handler(MessageHandler(dev_mode & my_offers_button_filter & not_banned_filter,
                                    anon_trade_show_my_offers))
     app.add_handler(MessageHandler(dev_mode & menu_button_filter, menu))
-    app.add_handler(MessageHandler(dev_mode & me_button_filter & not_banned_filter, about_me))
     app.add_handler(MessageHandler(dev_mode & roll_menu_button_filter & not_banned_filter, roll_menu))
     app.add_handler(MessageHandler(dev_mode & roll_button_filter & not_banned_filter, packs_menu))
     app.add_handler(MessageHandler(dev_mode & collection_menu_button_filter & not_banned_filter,

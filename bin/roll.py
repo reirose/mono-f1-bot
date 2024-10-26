@@ -98,9 +98,9 @@ async def roll_menu(update: Update, _: ContextTypes.DEFAULT_TYPE):
     time_left = "меньше минуты" if (not hrs and not mins and not (next_free_roll_time // 60)) \
         else f"{hrs} ч {mins} мин"
 
-    response = (f"🃏 <b>Доступно паков:</b> {sum(user.rolls_available.values())}\n"
-                f"Гарант: {user.garant}\n\n"
-                f"До следующего бесплатного пака: {time_left}")
+    response = (f"✅ <b>Доступно паков:</b> {sum(user.rolls_available.values())}\n"
+                f"🧮 Гарант: <i>через {garant_value - user.garant} паков</i>\n\n"
+                f"До следующего бесплатного пака: <i>{time_left}</i>")
 
     await mes.reply_text(response,
                          parse_mode="HTML",
@@ -161,8 +161,10 @@ async def roll_new(update: Update, _: ContextTypes.DEFAULT_TYPE, **kwargs):
 
     await update.effective_chat.send_photo(
         card_pic,
-        caption=f"Получена карта: {translation.get(card['category'])} {card['name']}!"
-                f"{' 🆕' if card['code'] not in user.collection else ''}",
+        caption=f"Получено:\n\n"
+        f"<b>{card['name']}!</b>{' 🆕' if card['code'] not in user.collection else ''}\n\n"
+        f"<b>Сет:</b> {translation.get(card['type'])}\n"
+        f"<b>Категория:</b> {translation.get(card['category'])}",
         parse_mode="HTML",
         reply_markup=keyboard
     )
@@ -200,8 +202,10 @@ async def roll_new_continue(update: Update, _: ContextTypes.DEFAULT_TYPE):
 
     await update.effective_user.send_photo(
         card_pic,
-        caption=f"Получена карта: {translation.get(card['category'])} {card['name']}!"
-                f"{' 🆕' if card['code'] not in user.collection else ''}",
+        caption=f"Получено:\n\n"
+        f"<b>{card['name']}!</b>{' 🆕' if card['code'] not in user.collection else ''}\n\n"
+        f"<b>Сет:</b> {translation.get(card['type'])}\n"
+        f"<b>Категория:</b> {translation.get(card['category'])}",
         parse_mode="HTML",
         reply_markup=keyboard
     )

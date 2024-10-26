@@ -72,7 +72,7 @@ class FilterCollectionListButton(filters.MessageFilter):
 
 class FilterShowCardButton(filters.MessageFilter):
     def filter(self, message) -> bool:
-        return message.text is not None and re.search("Посмотреть карту", message.text) is not None
+        return message.text is not None and re.search("Просмотр карт", message.text) is not None
 
 
 class FilterPacksShopButton(filters.MessageFilter):

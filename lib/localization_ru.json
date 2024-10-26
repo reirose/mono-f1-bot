@@ -20,7 +20,7 @@
   "game_cancelled": "Успешно!",
   "no_card": "У вас нет этой карточки :(",
   "offer_not_exist": "Предложения не существует!",
-  "card_info": "<b>{card_name}</b>\n{desc_str}\n{card_team}Тип карты: {card_type}\nРедкость: {card_category}\n\n{card_count}",
+  "card_info": "<b>{card_name}</b>\n{desc_str}\n{card_team}<b>Сет</b>: {card_type}\n<b>Категория</b>: {card_category}\n\n{card_count}",
   "no_cards_in_collection": "У вас нет карточек. Чтобы получить их -  перейдите в раздел Получение карт.",
   "battle_choose_card": "Выберите карту, которой хотите сыграть:",
   "user_not_found": "Пользователя с таким ID или именем не существует. Проверьте данные и повторите ввод."

@@ -27,38 +27,22 @@ async def menu(update: Update, _: ContextTypes.DEFAULT_TYPE):
                                  "нажмите /collectors_ribbon_info</i>") if all_cards_rolled else ""
 
     banned_badge = "⚱️" if user.status == "banned" else ""
-
-    response = (f"{banned_badge}<b>{user.username} • {user.id}</b>{collectors_badge}\n\n"
-                f"Карт в коллекции: {cards_n}\n"
-                f"<i>из которых уникальные: {unique_cards_n}</i>\n"
-                f"Монет: {user.coins} 🪙"
-                f"{collectors_badge_redeem_s}")
-
-    await mes.reply_text(response,
-                         reply_markup=main_menu_markup,
-                         parse_mode="HTML")
-
-
-async def about_me(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user = User.get(update.effective_user)
-    await bot_check_achievements(update, context)
-    mes = update.message
-
     days_in_game = int((datetime.datetime.now().timestamp() - user.date_of_registration) // 86400) + 1
 
     packs_opened = user.statistics["packs_opened"]
     coins_spent = user.statistics["coins_spent"]
     trades_complete = user.statistics["trades_complete"]
     collectors_badges = user.statistics["collectors_badge"]
-    collectors_badges_s = f"Лент Коллекционера: {collectors_badges}🎗\n" if collectors_badges else ""
 
-    response = (f"<b>{user.username} • {user.id}</b>\n\n"
-                f"{collectors_badges_s}"
-                f"Паков открыто: {packs_opened}\n"
-                f"Монет потрачено: {coins_spent} 🪙\n"
-                f"Совершено обменов: {trades_complete}\n"
-                f"Дней в игре: {days_in_game}\n\n"
-                f"Достижения: /achievements")
+    response = (f"{banned_badge}<b>{user.username} • {user.id}</b>{collectors_badge}\n\n"
+                f"🃏 Карт в коллекции: {cards_n}\n"
+                f"💎 Уникальных: {unique_cards_n}\n"
+                f"🪙 Монет: {user.coins}\n"
+                f"📅 Дней в игре: <i>{days_in_game}</i>\n\n"
+                f"🤝🏻 Обменов совершено: {trades_complete}\n"
+                f"💸 Монет потрачено: {coins_spent}\n"
+                f"📌 Достижения: /achievements"
+                f"{collectors_badge_redeem_s}")
 
     await mes.reply_text(response,
                          reply_markup=main_menu_markup,

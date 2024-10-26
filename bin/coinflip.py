@@ -10,7 +10,7 @@ from lib.keyboard_markup import coinflip_menu_markup
 
 
 async def coinflip_menu(update: Update, __: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Выберите режим игры", reply_markup=coinflip_menu_markup)
+    await update.message.reply_text("🎮", reply_markup=coinflip_menu_markup)
 
 
 async def coinflip_entry(update: Update, _: ContextTypes.DEFAULT_TYPE):

@@ -241,3 +241,22 @@ achievements_dict = {
 
 
 cards_pics_cache = {}
+
+
+pitstop_difficulty_parameters = {
+    "easy": {
+        "length": 5,
+        "time": 5,
+        "reward": 5
+    },
+    "normal": {
+        "length": 7,
+        "time": 5,
+        "reward": 10
+    },
+    "hard": {
+        "length": 7,
+        "time": 3,
+        "reward": 15
+    },
+}

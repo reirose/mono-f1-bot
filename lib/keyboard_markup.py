@@ -117,8 +117,7 @@ def get_collection_list(user_collection: list) -> list:
         else [KeyboardButton("Меню")]
 
 
-main_menu_buttons = [KeyboardButton("Получение карт"), KeyboardButton("Коллекция"),
-                     KeyboardButton("Обо мне"), KeyboardButton("Другое")]
+main_menu_buttons = [KeyboardButton("Получение карт"), KeyboardButton("Коллекция"), KeyboardButton("Другое")]
 
 roll_menu_buttons = [[KeyboardButton("Открыть пак")], [KeyboardButton("Магазин"), KeyboardButton("Меню")]]
 
@@ -130,7 +129,7 @@ other_menu_buttons = [[KeyboardButton("Монетка"), KeyboardButton("Пит-
 
 coinflip_menu_buttons = [[KeyboardButton("С игроком"), KeyboardButton("С ботом")], [KeyboardButton("Меню")]]
 
-collection_menu_buttons = [KeyboardButton("Список карт"), KeyboardButton("Посмотреть карту"),
+collection_menu_buttons = [KeyboardButton("Список карт"), KeyboardButton("Просмотр карт"),
                            KeyboardButton("Отправить"), KeyboardButton("Трейды"),
                            KeyboardButton("Меню")]
 
