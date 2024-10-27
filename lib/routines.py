@@ -29,10 +29,10 @@ def update_cards():
     db_data = sorted(list(CARDS_COLLECTION.find({}, {"_id": 0})),
                      key=lambda y: (type_sort_keys[y['type']], y['name']))
     for x in db_data:
-        cards_list.append(x)
         cards_dict.update({x["code"]: x})
-        cards_by_category[x["category"]].append(x["code"])
-        if x["type"] not in ["limited"]:
+        if x["type"] not in ["limited", "duo", "team"]:
+            cards_list.append(x)
+            cards_by_category[x["category"]].append(x["code"])
             roll_cards_dict.update({x["code"]: x})
 
     logger.log(BOT_INFO, f"Updated {len(db_data)} cards.")

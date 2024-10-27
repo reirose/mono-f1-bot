@@ -14,7 +14,7 @@ from lib.init import BOT_INFO, logger
 from lib.keyboard_markup import roll_menu_markup
 from lib.variables import cards_by_category, translation, garant_list, \
     roll_cards_dict, category_sort_keys, garant_value, category_distribution, cards_dict, \
-    cumulative_probability_by_category, MAX_CARDS_IN_PACK
+    cumulative_probability_by_category, MAX_CARDS_IN_PACK, cards_pics_cache
 
 
 def generate_available_packs_keyboard(user: User):
@@ -159,7 +159,7 @@ async def roll_new(update: Update, _: ContextTypes.DEFAULT_TYPE, **kwargs):
     except FileNotFoundError:
         card_pic = open("bin/img/card.png", 'rb')
 
-    await update.effective_chat.send_photo(
+    sent = await update.effective_chat.send_photo(
         card_pic,
         caption=f"Получено:\n\n"
         f"<b>{card['name']}!</b>{' 🆕' if card['code'] not in user.collection else ''}\n\n"
@@ -168,6 +168,9 @@ async def roll_new(update: Update, _: ContextTypes.DEFAULT_TYPE, **kwargs):
         parse_mode="HTML",
         reply_markup=keyboard
     )
+    if card["code"] not in cards_pics_cache:
+        cards_pics_cache.update({card['code']: sent.photo[-1].file_id})
+        print(f"Cached {card['name']}: {sent.photo[-1].file_size} bytes (first: {sent.photo[0].file_size} bytes)")
 
     user.collection.append(card['code'])
     user.write()
@@ -200,7 +203,7 @@ async def roll_new_continue(update: Update, _: ContextTypes.DEFAULT_TYPE):
     except FileNotFoundError:
         card_pic = open("bin/img/card.png", 'rb')
 
-    await update.effective_user.send_photo(
+    sent = await update.effective_user.send_photo(
         card_pic,
         caption=f"Получено:\n\n"
         f"<b>{card['name']}!</b>{' 🆕' if card['code'] not in user.collection else ''}\n\n"
@@ -209,6 +212,10 @@ async def roll_new_continue(update: Update, _: ContextTypes.DEFAULT_TYPE):
         parse_mode="HTML",
         reply_markup=keyboard
     )
+
+    if card["code"] not in cards_pics_cache:
+        cards_pics_cache.update({card['code']: sent.photo[-1].file_id})
+        print(f"Cached {card['name']}: {sent.photo[-1].file_size} bytes (first: {sent.photo[0].file_size} bytes)")
 
     user.collection.append(card['code'])
     user.write()

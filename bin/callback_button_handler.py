@@ -597,8 +597,7 @@ async def handle_anon_trade_close_buy(_, __, query, ___):
     await query.delete_message()
 
 
-async def handle_anon_trade_view_offer(*_, query, user):
-    await query.answer()
+async def handle_anon_trade_view_offer(__, _, query, user):
     receiver_id, wts, wtb = re.search("anon_trade_view_offer_(.+)_c_(.+)_c_(.+)", query.data).groups()
     wts = "c_" + wts
     wtb = "c_" + wtb

@@ -41,7 +41,7 @@ async def menu(update: Update, _: ContextTypes.DEFAULT_TYPE):
                 f"📅 Дней в игре: <i>{days_in_game}</i>\n\n"
                 f"🤝🏻 Обменов совершено: {trades_complete}\n"
                 f"💸 Монет потрачено: {coins_spent}\n"
-                f"📌 Достижения: /achievements"
+                f"⭐️ Достижения: /achievements"
                 f"{collectors_badge_redeem_s}")
 
     await mes.reply_text(response,

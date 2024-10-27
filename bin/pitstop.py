@@ -22,7 +22,7 @@ async def pitstop_menu(update: Update, _: ContextTypes.DEFAULT_TYPE):
         return
     await update.effective_chat.send_message("Правила игры: даётся случайный набор из 5 букв, ваша цель — "
                                              "успеть повторить этот набор. Не успеете — следующая попытка "
-                                             "через 30 минут!\n\nВыбирайте сложность игры и мы присупаем!",
+                                             "через 30 минут!\n\nВыбирайте сложность игры и мы приступаем!",
                                              reply_markup=InlineKeyboardMarkup([[
                                                  InlineKeyboardButton("Легко",
                                                                       callback_data="pitstop_start_easy")],

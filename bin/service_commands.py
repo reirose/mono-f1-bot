@@ -24,9 +24,6 @@ class UpdateError(Exception):
     pass
 
 
-
-
-
 async def update_user(user: 'User', update_type: str,
                       value: str, context: ContextTypes.DEFAULT_TYPE) -> None:
     if update_type == "all_cards":
@@ -44,7 +41,9 @@ async def update_user(user: 'User', update_type: str,
                                        f"Монеты: {value}",
                                        parse_mode="HTML")
     elif update_type == "rolls":
-        user.rolls_available += int(value)
+        if len(value) != 2:
+            return
+        user.rolls_available[value[0]] += int(value[1])
         await context.bot.send_message(user.id,
                                        "<b>Получено</b>:\n"
                                        f"Крутки: {value}",
@@ -64,8 +63,9 @@ async def update_user(user: 'User', update_type: str,
 
 async def give_user(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     try:
-        if len(context.args) != 3:
-            raise UpdateError("Неверное количество аргументов. Ожидается 3: цель, тип обновления, значение")
+        if not len(context.args):
+            raise UpdateError("Неверное количество аргументов. Ожидается 3 или более: цель, тип обновления, "
+                              "дополнительные значение")
 
         target, update_type, value = context.args
 
