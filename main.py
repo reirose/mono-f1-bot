@@ -13,7 +13,7 @@ from bin.menu import menu, achievements
 from bin.pitstop import pitstop_conv_handler, pitstop_menu
 from bin.roll import roll_menu, packs_menu
 from bin.service_commands import dev_mode_change, unstuck, give_user, ribbon_info, get_logs, update_github, \
-    handle_promo_link, generate_promo_link
+    handle_promo_link, generate_promo_link, cancel_action
 from bin.other import other_menu
 from bin.packs_shop import packs_shop_menu
 from bin.trade import trade_conv_handler
@@ -57,6 +57,7 @@ def main():
     app.add_handler(CommandHandler("coinflip_cancel", abort, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("collectors_ribbon_info", ribbon_info, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("gh_update", update_github, filters=is_admin))
+    # app.add_handler(CommandHandler("cancel", cancel_action, filters=not_banned_filter))
 
     # обработчики текстовых сообщений (для кнопок)
     app.add_handler(MessageHandler(dev_mode & other_button_filter & not_banned_filter, other_menu))

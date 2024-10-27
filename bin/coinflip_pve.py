@@ -93,5 +93,6 @@ bot_coinflip_conv_handler = ConversationHandler(
     states={
         "bot_coinflip_bet_handle": [MessageHandler(filters.TEXT & ~filters.COMMAND, bot_coinflip_bet_handle)],
     },
-    fallbacks=[CommandHandler("bot_coinflip_abort", bot_cancel)]
+    fallbacks=[CommandHandler("cancel", bot_cancel)],
+    allow_reentry=True  # This will allow canceling at any point
 )

@@ -22,11 +22,11 @@ async def coinflip_entry(update: Update, _: ContextTypes.DEFAULT_TYPE):
 
     if user.coinflip:
         await update.message.reply_text("У вас есть незаконченная игра! Если вы хотите отозвать предложение - нажмите "
-                                        "/coinflip_cancel", parse_mode="HTML")
+                                        "/cancel", parse_mode="HTML")
         return ConversationHandler.END
 
     await update.message.reply_text("Введите имя или ID пользователя, с которым хотите сыграть\n(вы можете прервать "
-                                    "операцию командой /coinflip_abort)")
+                                    "операцию командой /cancel)")
     return "coinflip_parse_id"
 
 
@@ -48,7 +48,7 @@ async def coinflip_parse_id(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if not receiver.coins:
         await mes.reply_text("У пользователя нет монет. Попробуйте сыграть с кем-то другим!(вы можете прервать "
-                             "операцию командой /coinflip_abort)")
+                             "операцию командой /cancel)")
         return "coinflip_parse_id"
 
     if receiver.coinflip:
@@ -111,6 +111,7 @@ async def abort(update: Update, _: ContextTypes.DEFAULT_TYPE):
     user.write()
 
     await update.message.reply_text("Успешно!")
+    return coinflip_conv_handler.END
 
 
 async def coinflip_result(context: ContextTypes.DEFAULT_TYPE):
@@ -148,5 +149,6 @@ coinflip_conv_handler = ConversationHandler(
         "coinflip_parse_id": [MessageHandler(filters.TEXT & ~filters.COMMAND, coinflip_parse_id)],
         "coinflip_bet_handle": [MessageHandler(filters.TEXT & ~filters.COMMAND, coinflip_bet_handle)],
     },
-    fallbacks=[CommandHandler("coinflip_abort", cancel)]
+    fallbacks=[CommandHandler("cancel", cancel)],
+    allow_reentry=True  # This will allow canceling at any point
 )

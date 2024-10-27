@@ -6,7 +6,7 @@ import sys
 import uuid
 
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
-from telegram.ext import ContextTypes
+from telegram.ext import ContextTypes, ConversationHandler
 
 from bin.menu import menu
 from lib.classes.user import User
@@ -208,3 +208,8 @@ async def generate_promo_link(update: Update, context: ContextTypes.DEFAULT_TYPE
     PROMO_LINKS_COLLECTION.insert_one({"id": promo_id, "activations": activations})
     await update.effective_chat.send_message(f"Ваша промо-ссылка (х{activations}): "
                                              f"https://t.me/monof1alphabot?start=promo_" + promo_id)
+
+
+async def cancel_action(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await menu(update, context)
+    return ConversationHandler.END

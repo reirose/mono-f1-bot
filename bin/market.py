@@ -317,7 +317,8 @@ conv_handler = ConversationHandler(
         "market_sell_card_parse_price": [MessageHandler(filters.TEXT & ~filters.COMMAND,
                                                         handle_market_sell_card_parse_price)],
     },
-    fallbacks=[CommandHandler("cancel", collection_menu)]
+    fallbacks=[CommandHandler("cancel", collection_menu)],
+    allow_reentry=True  # This will allow canceling at any point
 )
 
 

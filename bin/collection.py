@@ -1,7 +1,7 @@
 import re
 
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, Bot
-from telegram.ext import ContextTypes
+from telegram.ext import ContextTypes, ConversationHandler
 
 from lib.classes.user import User
 from lib.keyboard_markup import collection_menu_markup, generate_collection_keyboard
@@ -136,6 +136,7 @@ async def collection_menu(update: Update, _: ContextTypes.DEFAULT_TYPE):
         return
     await mes.reply_text("Выберите действие",
                          reply_markup=collection_menu_markup)
+    return ConversationHandler.END
 
 
 async def get_collection_s(coll: dict, user: User, bot: Bot, sorted_by: str = 'category'):

@@ -43,7 +43,7 @@ async def trade_handle(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def cancel_trade(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await collection_menu(update, context)
-    return ConversationHandler.END
+    return trade_conv_handler.END
 
 
 trade_conv_handler = ConversationHandler(
@@ -51,5 +51,6 @@ trade_conv_handler = ConversationHandler(
     states={
         "trade_init": [MessageHandler(filters.TEXT & ~filters.COMMAND, trade_handle)],
     },
-    fallbacks=[CommandHandler("cancel", cancel_trade)]
+    fallbacks=[CommandHandler("cancel", cancel_trade)],
+    allow_reentry=True  # This will allow canceling at any point
 )
