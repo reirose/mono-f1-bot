@@ -91,7 +91,7 @@ async def pitstop_fail(context):
     return pitstop_conv_handler.END
 
 
-def reset_user(context):
+async def reset_user(context):
     user_id = context.job.data[0]
     pitstop_kd_list.remove(user_id)
 
@@ -101,5 +101,6 @@ pitstop_conv_handler = ConversationHandler(
     states={
         "pitstop_parse_input": [MessageHandler(filters.TEXT & ~filters.COMMAND, pitstop_parse_input)],
     },
-    fallbacks=[]
+    fallbacks=[],
+    allow_reentry=True
 )

@@ -202,6 +202,8 @@ async def anon_trade_buy_card_show_offers(update: Update, context: ContextTypes.
     except KeyError:
         context.user_data["anon_trade_page"] = 0
 
+    context.user_data["anon_trade_offers"] = offers
+
     card_name = cards_dict[card_code]['name']
     response = f"Предложения по {card_name}:"
     keyboard = generate_trade_offers_keyboard(context, offers=offers, user_id=update.callback_query.from_user.id)

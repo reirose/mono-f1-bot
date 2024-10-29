@@ -140,7 +140,8 @@ async def collection_menu(update: Update, _: ContextTypes.DEFAULT_TYPE):
 
 
 async def get_collection_s(coll: dict, user: User, bot: Bot, sorted_by: str = 'category'):
-    response = ""
+    response = "Ваша коллекция:\n"
+    # first = False
     try:
         prev = ''
     except IndexError:
@@ -151,7 +152,12 @@ async def get_collection_s(coll: dict, user: User, bot: Bot, sorted_by: str = 'c
 
     for x in coll:
         card = coll[x]["card"]
-        next_type_div = f'<b>\n{translation[card[sorted_by]]}\n</b>' if card[sorted_by] != prev else ''
+        next_type_div = f'<b>\n{translation[card[sorted_by]]}\n</b>' \
+            if card[sorted_by] != prev else ''
+        # next_type_div = f'<b>{"\n" if first else ""}{translation[card[sorted_by]]}\n</b>' \
+        #     if card[sorted_by] != prev else ''
+        # if next_type_div:
+        #     first = True
         n = coll[x]["n"]
         n_of = f'({n} шт)' if n > 1 else ''
 
@@ -182,14 +188,14 @@ async def view_collection_list(update: Update, context: ContextTypes.DEFAULT_TYP
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton(sort_list_transl[sorted_by],
                                                                callback_data="collection_sort_" + next_sort_type)]])
 
-    await context.bot.send_message(chat_id=user.id,
-                                   text="Ваша коллекция:\n\n",
-                                   reply_markup=collection_menu_markup)
+    # await context.bot.send_message(chat_id=user.id,
+    #                                text="Ваша коллекция:\n\n",
+    #                                reply_markup=collection_menu_markup)
 
     response = await get_collection_s(coll, user, context.bot, sorted_by)
-    if not response:
-        response = "Тут ничего нет :с"
-        reply_markup = None
+    if response == "Ваша коллекция:\n":
+        reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Как-то тут пустовато 👀",
+                                                                   callback_data="noop")]])
 
     await context.bot.send_message(chat_id=user.id,
                                    text=response,

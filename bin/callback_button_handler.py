@@ -139,7 +139,6 @@ async def handle_anon_trade_buy_page(_, context, query, __):
 
 async def handle_anon_trade_view_offer_page(_, context, query, user):
     page = int(query.data.split("_")[-1])
-    context.user_data["anon_trade_page"] = page
     try:
         offers = context.user_data["anon_trade_offers"]
     except KeyError:
@@ -584,11 +583,9 @@ async def handle_anon_trade_buy(update, context, query, _):
 
 async def handle_anon_trade_view_buy_list(update, context, query, user):
     await query.answer()
-    try:
-        page = context.user_data['anon_trade_page']
-    except KeyError:
+    page = context.user_data.get("anon_trade_page", 0)
+    if not page:
         context.user_data['anon_trade_page'] = 0
-        page = 0
     await anon_trade_choose_menu(update, context, page=page, user_id=user.id)
 
 
