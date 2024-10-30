@@ -19,6 +19,7 @@ from bin.collection import send_card_list, show_card, list_cards, get_collection
 from bin.market import shop_menu, market_offers_show_card, market_offers_menu, market_offer_show, \
     market_buy_offer, market_confirm_sell_card, market_show_my_offers_list, market_my_offer_show, market_offer_remove
 from bin.roll import roll_new_continue, roll_new
+from bin.settings import change_settings
 from lib.classes.user import User
 from lib.init import BOT_INFO, logger
 from lib.keyboard_markup import shop_inline_markup, generate_collection_keyboard
@@ -82,7 +83,8 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "market_my_offer_show_": handle_market_my_offer_show,
         "market_my_offers_list": handle_market_my_offers_list,
         "market_my_offers_page_": handle_market_my_offers_page,
-        "market_offer_remove_": handle_market_my_offer_remove
+        "market_offer_remove_": handle_market_my_offer_remove,
+        "settings_set_": handle_settings_set
     }
 
     for prefix, handler in handlers.items():
@@ -785,3 +787,7 @@ async def handle_market_my_offer_show(update, context, query, _):
 async def handle_market_my_offer_remove(update, context, query, _):
     await query.answer()
     await market_offer_remove(update, context)
+
+
+async def handle_settings_set(update, context, __, _):
+    await change_settings(update, context)

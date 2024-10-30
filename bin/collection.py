@@ -7,7 +7,7 @@ from lib.classes.user import User
 from lib.keyboard_markup import collection_menu_markup, generate_collection_keyboard
 from lib.messages_templates import get_message_text
 from lib.variables import cards_dict, translation, sort_keys_by, sort_list, \
-    sort_list_transl, category_color, cards_pics_cache
+    sort_list_transl, category_color, cards_pics_cache, check_cross_marks_colors
 
 
 def get_card_image(card_id: str, is_limited: bool = False):
@@ -214,7 +214,9 @@ async def collection_completeness(update: Update, _: ContextTypes.DEFAULT_TYPE):
         if prev != card_d["type"]:
             resp += "\n<b>" + translation[card_d["type"]] + "</b>\n"
             prev = card_d["type"]
-        resp += f"{card_d['name']} {'☑️' if card in user.collection else ''}\n"
+        check_mark = check_cross_marks_colors["check"][user.settings.get("check")]
+        cross_mark = check_cross_marks_colors["cross"][user.settings.get("cross")]
+        resp += f"{card_d['name']} {check_mark if card in user.collection else cross_mark}\n"
 
     resp += f"\n<i>Вы собрали {completeness}% всех карт в игре!</i>"
 

@@ -125,7 +125,7 @@ shop_menu_buttons = [[KeyboardButton("Паки"), KeyboardButton("Маркет")
                      [KeyboardButton("Получение карт"), KeyboardButton("Меню")]]
 
 other_menu_buttons = [[KeyboardButton("Монетка"), KeyboardButton("Пит-стоп")], [KeyboardButton("Все карты"),
-                      KeyboardButton("MonoF1"), KeyboardButton("Меню")]]
+                      KeyboardButton("Настройки"), KeyboardButton("Меню")]]
 
 coinflip_menu_buttons = [[KeyboardButton("С игроком"), KeyboardButton("С ботом")], [KeyboardButton("Меню")]]
 

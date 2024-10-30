@@ -71,7 +71,10 @@ translation: dict = {
     "": "Другое",
     "standard": "Стандартный",
     "pack_gold": "Золотой",
-    "gem": "Драгоценный"
+    "gem": "Драгоценный",
+    "new_message": "Стандартное",
+    "edit_message": "Компактное",
+    "one_message": "Быстрое"
 }
 
 probability_by_category: dict = {
@@ -95,7 +98,7 @@ cumulative_probability_by_category: dict = {
         "gold": .45,
     },
     "gem": {
-        "sapphire":  .1,
+        "sapphire": .1,
         "ruby": .2,
         "platinum": .3,
     }
@@ -239,9 +242,7 @@ achievements_dict = {
          "desc": "30 дней в игре. Неплохо для новичка"}
 }
 
-
 cards_pics_cache = {}
-
 
 pitstop_difficulty_parameters = {
     "easy": {
@@ -260,3 +261,13 @@ pitstop_difficulty_parameters = {
         "reward": 15
     },
 }
+
+check_cross_marks_colors = {
+    "check": {"grey": "☑️",
+              "green": "✅"},
+    "cross": {"none": "",
+              "red": "❌",
+              "grey": "✖️"}
+}
+
+roll_types = ["new_message", "edit_message", "one_message"]

@@ -13,19 +13,20 @@ from bin.menu import menu, achievements
 from bin.pitstop import pitstop_conv_handler, pitstop_menu
 from bin.roll import roll_menu, packs_menu
 from bin.service_commands import dev_mode_change, unstuck, give_user, ribbon_info, get_logs, update_github, \
-    handle_promo_link, generate_promo_link, cancel_action
+    handle_promo_link, generate_promo_link
 from bin.other import other_menu
 from bin.packs_shop import packs_shop_menu
+from bin.settings import settings_menu
 from bin.trade import trade_conv_handler
 
 from lib.init import TOKEN, client, BOT_INFO
 from lib.filters import (other_button_filter, menu_button_filter, roll_menu_button_filter, roll_button_filter,
                          collection_menu_button_filter, show_card_button_filter, collection_list_button_filter,
-                         dev_mode, packs_shop_button_filter, me_button_filter, not_banned_filter,
+                         dev_mode, packs_shop_button_filter, not_banned_filter,
                          is_admin, all_cards_button_filter, shop_button_filter, coinflip_menu_button_filter,
                          anon_trade_button_filter, offers_button_filter, my_offers_button_filter,
                          market_offers_button_filter, market_button_filter, market_my_offers_button_filter,
-                         pitstop_button_filter)
+                         pitstop_button_filter, settings_button_filter)
 from lib.routines import update_cards, scheduler, update_free_roll, clear_logs, notify_free_pack, async_scheduler
 
 scheduler.start()
@@ -53,11 +54,10 @@ def main():
     app.add_handler(CommandHandler("packs", packs_menu, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("unstuck", unstuck, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("achievements", achievements, filters=dev_mode & not_banned_filter))
-    # app.add_handler(CommandHandler("buy", buy_command, has_args=True, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("coinflip_cancel", abort, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("collectors_ribbon_info", ribbon_info, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("gh_update", update_github, filters=is_admin))
-    # app.add_handler(CommandHandler("cancel", cancel_action, filters=not_banned_filter))
+    app.add_handler(CommandHandler("settings", settings_menu, filters=dev_mode & not_banned_filter))
 
     # обработчики текстовых сообщений (для кнопок)
     app.add_handler(MessageHandler(dev_mode & other_button_filter & not_banned_filter, other_menu))
@@ -86,6 +86,7 @@ def main():
     app.add_handler(MessageHandler(dev_mode & market_button_filter & not_banned_filter, market_menu_new))
     app.add_handler(MessageHandler(dev_mode & market_button_filter & not_banned_filter, market_menu_new))
     app.add_handler(MessageHandler(dev_mode & pitstop_button_filter & not_banned_filter, pitstop_menu))
+    app.add_handler(MessageHandler(dev_mode & settings_button_filter & not_banned_filter, settings_menu))
 
     # обработчик беседы (для продажи)
     app.add_handler(conv_handler)

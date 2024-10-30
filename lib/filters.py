@@ -158,6 +158,11 @@ class FilterPitstopButton(filters.MessageFilter):
         return message.text is not None and re.search("Пит-стоп", message.text) is not None
 
 
+class FilterSettingsButton(filters.MessageFilter):
+    def filter(self, message: Message) -> bool:
+        return message.text is not None and re.search("Настройки", message.text) is not None
+
+
 not_banned_filter = FilterUserNotBanned()
 anon_trade_button_filter = FilterAnonTradeButton()
 other_button_filter = FilterOtherButton()
@@ -181,6 +186,7 @@ offers_button_filter = FilterOffersButton()
 market_offers_button_filter = FilterMarketOffersButton()
 market_my_offers_button_filter = FilterMarketMyOffersButton()
 pitstop_button_filter = FilterPitstopButton()
+settings_button_filter = FilterSettingsButton()
 
 is_admin = IsAdminFilter()
 dev_mode = DevMode()
