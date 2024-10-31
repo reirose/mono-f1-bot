@@ -58,6 +58,7 @@ def main():
     app.add_handler(CommandHandler("collectors_ribbon_info", ribbon_info, filters=dev_mode & not_banned_filter))
     app.add_handler(CommandHandler("gh_update", update_github, filters=is_admin))
     app.add_handler(CommandHandler("settings", settings_menu, filters=dev_mode & not_banned_filter))
+    app.add_handler(CommandHandler("notif", notify_free_pack, filters=dev_mode & not_banned_filter))
 
     # обработчики текстовых сообщений (для кнопок)
     app.add_handler(MessageHandler(dev_mode & other_button_filter & not_banned_filter, other_menu))
