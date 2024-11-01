@@ -1,3 +1,4 @@
+import json
 import logging
 
 from telegram import Update
@@ -29,6 +30,7 @@ from lib.filters import (other_button_filter, menu_button_filter, roll_menu_butt
                          pitstop_button_filter, settings_button_filter)
 from lib.routines import update_cards, scheduler, update_free_roll, clear_logs, notify_free_pack, async_scheduler, \
     check_trades_market_expiration
+from lib.variables import cards_dict
 
 scheduler.start()
 async_scheduler.start()
@@ -37,7 +39,7 @@ scheduler.add_job(update_free_roll, 'cron', hour=8, minute=0, second=0)
 scheduler.add_job(update_free_roll, 'cron', hour=20, minute=0, second=0)
 async_scheduler.add_job(notify_free_pack, 'cron', hour=8, minute=0, second=0)
 async_scheduler.add_job(notify_free_pack, 'cron', hour=20, minute=0, second=0)
-async_scheduler.add_job(check_trades_market_expiration, 'cron', hour=0, minute=0, second=0)
+async_scheduler.add_job(check_trades_market_expiration, 'cron', hour=6, minute=0, second=0)
 scheduler.add_job(clear_logs, 'interval', hours=1)
 
 
@@ -105,6 +107,7 @@ def main():
 
 if __name__ == "__main__":
     update_cards()
+    print(json.dumps(cards_dict, indent=4))
     logging.log(BOT_INFO, "starting")
     main()
     client.close()

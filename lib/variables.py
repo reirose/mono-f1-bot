@@ -264,7 +264,8 @@ pitstop_difficulty_parameters = {
 
 check_cross_marks_colors = {
     "check": {"grey": "☑️",
-              "green": "✅"},
+              "green": "✅",
+              "none": ""},
     "cross": {"none": "",
               "red": "❌",
               "grey": "✖️"}

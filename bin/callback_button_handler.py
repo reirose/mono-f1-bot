@@ -616,14 +616,17 @@ async def handle_anon_trade_view_offer(__, _, query, user):
 
 async def handle_anon_trade_offer_confirm(update, context, query, user):
     receiver_id, wtb, wts = re.search("anon_trade_offer_confirm_(.+)_c_(.+)_c_(.+)", query.data).groups()
-    wts = "c_" + wts
     wtb = "c_" + wtb
+    wts = "c_" + wts
 
     receiver = User.get(None, int(receiver_id))
     try:
         user.collection.remove(wts)
         user.collection.append(wtb)
-        receiver.anon_trade.remove({'wts': wtb, 'wtb': wts})
+        for offer in receiver.anon_trade:
+            if offer.get("wts") == wtb and offer.get("wtb") == wts:
+                due = offer.get("due", 0)
+        receiver.anon_trade.remove({'wts': wtb, 'wtb': wts, 'due': due})
         receiver.collection.append(wts)
     except ValueError:
         await query.delete_message()
@@ -703,7 +706,10 @@ async def handle_anon_trade_my_offer_remove(*_, query, ___):
 async def handle_anon_trade_my_offer_remove_confirm(update, context, query, user):
     page = context.user_data.get("page", 0)
     wts, wtb = re.search("anon_trade_my_offer_remove_confirm_c_(.+)_c_(.+)", query.data).groups()
-    offer = {'wts': f'c_{wts}', 'wtb': f"c_{wtb}"}
+    for offer in user.anon_trade:
+        if offer.get('wts') == wts and offer.get('wtb') == wtb:
+            due = offer.get('due')
+    offer = {'wts': f'c_{wts}', 'wtb': f"c_{wtb}", "due": due}
     try:
         user.anon_trade.remove(offer)
         user.collection.append("c_" + wts)

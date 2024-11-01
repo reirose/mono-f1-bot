@@ -21,11 +21,6 @@ def generate_settings_keyboard(user: User):
     # Next Roll Type
     next_roll_type_index = (roll_types.index(settings['roll_type']) + 1) % len(roll_types)
     next_roll_type_name = roll_types[next_roll_type_index]
-
-    # Output or use the next values
-    print(f"Next Check Color: {next_check_color_name}")
-    print(f"Next Cross Color: {next_cross_color_name}")
-    print(f"Next Roll Type: {next_roll_type_name}")
     keyboard = [
         [InlineKeyboardButton(f"Цвет галочек: "
                               f"{check_cross_marks_colors['check'][settings['check']]}",
@@ -33,8 +28,8 @@ def generate_settings_keyboard(user: User):
         [InlineKeyboardButton(f"Цвет крестиков: "
                               f"{check_cross_marks_colors['cross'][settings['cross']]}",
                               callback_data=f"settings_set_cross_{next_cross_color_name}")],
-        [InlineKeyboardButton(f"Открытие паков: {translation[settings['roll_type']]}",
-                              callback_data=f"settings_set_roll_type_{next_roll_type_name}")]
+        # [InlineKeyboardButton(f"Открытие паков: {translation[settings['roll_type']]}",
+        #                       callback_data=f"settings_set_roll_type_{next_roll_type_name}")]
     ]
     return InlineKeyboardMarkup(keyboard)
 

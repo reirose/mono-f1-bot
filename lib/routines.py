@@ -1,7 +1,9 @@
 """
 Рутинные функции, не столь относящиеся к игровому процессу, сколь к работе бота
 """
+import asyncio
 import time
+from typing import Coroutine
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -35,9 +37,9 @@ def update_cards():
                      key=lambda y: (type_sort_keys[y['type']], y['name']))
     for x in db_data:
         cards_dict.update({x["code"]: x})
+        cards_by_category[x["category"]].append(x["code"])
+        cards_list.append(x)
         if x["type"] not in ["limited", "duo", "team"]:
-            cards_list.append(x)
-            cards_by_category[x["category"]].append(x["code"])
             roll_cards_dict.update({x["code"]: x})
 
     logger.log(BOT_INFO, f"Updated {len(db_data)} cards.")
@@ -67,8 +69,7 @@ def clear_logs():
     logger.log(BOT_INFO, "cleared logs successfully")
 
 
-async def check_trades_market_expiration(*_):
-    print("check_trades_market_expiration")
+async def check_trades_market_expiration():
     bot = Bot(token=TOKEN)
     users = list(USER_COLLECTION.find({"anon_trade": {"$ne": []}}, {"_id": 0, "anon_trade": 1, "id": 1}))
     now = time.time()
@@ -80,23 +81,24 @@ async def check_trades_market_expiration(*_):
                 u.anon_trade.remove(offer)
                 u.collection.append(offer.get("wts"))
                 u.write()
-                wts = cards_dict[offer['wts']]['name']
-                wtb = cards_dict[offer['wtb']]['name']
+                wts = cards_dict.get(offer['wts'], {"name": "[Данные удалены]"})['name']
+                wtb = cards_dict.get(offer['wtb'], {"name": "[Данные удалены]"})['name']
                 await bot.send_message(chat_id=u.id,
-                                       text=f"Ваш трейд-оффер <i>[{wts} <-> {wtb}]</i> "
+                                       text=f"Ваш трейд-оффер <i>[{wts} на {wtb}]</i> "
                                             f"был снят из-за простоя",
                                        parse_mode="HTML")
 
     market_offers = list(MARKET_COLLECTION.find({}, {}))
     for offer in market_offers:
         if offer.get("due", 0) < now:
+            print(offer)
             MARKET_COLLECTION.delete_one({"_id": offer.get('_id')})
             u = User.get(None, offer.get('seller'))
             if not u:
                 continue
             u.collection.append(offer.get('code'))
             u.write()
-            card_name = cards_dict[offer.get('code')]['name']
+            card_name = cards_dict.get(offer.get('code'), {"name": "[Данные удалены]"})['name']
             await bot.send_message(chat_id=u.id,
                                    text=f"Ваше предложение на Маркете <i>[{card_name} за {offer.get('price')} 🪙]</i> "
                                         f"было снято из-за простоя",
