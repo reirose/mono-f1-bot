@@ -1,9 +1,7 @@
 """
 Рутинные функции, не столь относящиеся к игровому процессу, сколь к работе бота
 """
-import asyncio
 import time
-from typing import Coroutine
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -37,9 +35,9 @@ def update_cards():
                      key=lambda y: (type_sort_keys[y['type']], y['name']))
     for x in db_data:
         cards_dict.update({x["code"]: x})
-        cards_by_category[x["category"]].append(x["code"])
         cards_list.append(x)
         if x["type"] not in ["limited", "duo", "team"]:
+            cards_by_category[x["category"]].append(x["code"])
             roll_cards_dict.update({x["code"]: x})
 
     logger.log(BOT_INFO, f"Updated {len(db_data)} cards.")

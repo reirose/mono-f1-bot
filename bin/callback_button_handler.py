@@ -691,7 +691,7 @@ async def handle_anon_trade_show_my_offers(update, context, *_):
     await anon_trade_show_my_offers(update, context, page=page)
 
 
-async def handle_anon_trade_my_offer_remove(*_, query, ___):
+async def handle_anon_trade_my_offer_remove(_, __, query, ___):
     wts, wtb = re.search("anon_trade_my_offer_remove_c_(.+)_c_(.+)", query.data).groups()
     resp = "Вы уверены, что хотите отменить предложение?"
     keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("Да",
@@ -706,8 +706,10 @@ async def handle_anon_trade_my_offer_remove(*_, query, ___):
 async def handle_anon_trade_my_offer_remove_confirm(update, context, query, user):
     page = context.user_data.get("page", 0)
     wts, wtb = re.search("anon_trade_my_offer_remove_confirm_c_(.+)_c_(.+)", query.data).groups()
+    print(wts, wtb)
     for offer in user.anon_trade:
-        if offer.get('wts') == wts and offer.get('wtb') == wtb:
+        print(offer)
+        if offer.get('wtb') == f'c_{wtb}' and offer.get('wts') == f"c_{wts}":
             due = offer.get('due')
     offer = {'wts': f'c_{wts}', 'wtb': f"c_{wtb}", "due": due}
     try:
