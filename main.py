@@ -27,7 +27,8 @@ from lib.filters import (other_button_filter, menu_button_filter, roll_menu_butt
                          anon_trade_button_filter, offers_button_filter, my_offers_button_filter,
                          market_offers_button_filter, market_button_filter, market_my_offers_button_filter,
                          pitstop_button_filter, settings_button_filter)
-from lib.routines import update_cards, scheduler, update_free_roll, clear_logs, notify_free_pack, async_scheduler
+from lib.routines import update_cards, scheduler, update_free_roll, clear_logs, notify_free_pack, async_scheduler, \
+    check_trades_market_expiration
 
 scheduler.start()
 async_scheduler.start()
@@ -36,6 +37,7 @@ scheduler.add_job(update_free_roll, 'cron', hour=8, minute=0, second=0)
 scheduler.add_job(update_free_roll, 'cron', hour=20, minute=0, second=0)
 async_scheduler.add_job(notify_free_pack, 'cron', hour=8, minute=0, second=0)
 async_scheduler.add_job(notify_free_pack, 'cron', hour=20, minute=0, second=0)
+async_scheduler.add_job(check_trades_market_expiration, 'cron', hour=0, minute=0, second=0)
 scheduler.add_job(clear_logs, 'interval', hours=1)
 
 

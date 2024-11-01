@@ -1,5 +1,6 @@
 import math
 import re
+import time
 import uuid
 
 import pymongo
@@ -214,7 +215,10 @@ async def market_offer_show(update: Update, _: ContextTypes.DEFAULT_TYPE):
         return
 
     card_name = cards_dict.get(offer["code"])["name"]
-    seller = User.get(None, update=offer["seller"]).username
+    seller = User.get(None, update=offer["seller"])
+    if not seller:
+        return
+    seller = seller.username
     price = offer["price"]
     resp = (f"Предложение по карте <b>{card_name}</b>:\n\n"
             f"Продавец: <i>{seller}</i>\n"
@@ -302,7 +306,8 @@ async def market_confirm_sell_card(update: Update, _: ContextTypes.DEFAULT_TYPE)
     MARKET_COLLECTION.insert_one({"id": uuid.uuid4().hex[-8:],
                                   "code": card_code,
                                   "seller": user.id,
-                                  "price": price})
+                                  "price": price,
+                                  "due": time.time() + (60 * 24 * 7)})
     user.collection.remove(card_code)
     user.write()
     await update.callback_query.edit_message_text(f"Вы выставили карту {cards_dict[card_code]['name']}"
@@ -343,9 +348,24 @@ async def market_show_my_offers_list(update: Update, _: ContextTypes.DEFAULT_TYP
 async def market_my_offer_show(update: Update, _: ContextTypes.DEFAULT_TYPE):
     offer_id = update.callback_query.data.split("_")[-1]
     offer = MARKET_COLLECTION.find_one({"id": offer_id})
-    resp = ("Предложение по карточке:\n"
+
+    due_dict = {
+        1: "день",
+        2: "дня",
+        3: "дня",
+        4: "дня",
+        5: "дней",
+        6: "дней",
+        7: "дней",
+    }
+
+    due = offer.get('due')
+    due = int((due - time.time()) // (60*24)) + 1
+
+    resp = ("Предложение по карте:\n\n"
             f"Карта: <b>{cards_dict[offer['code']]['name']}</b>\n"
-            f"Цена: <i>{offer['price']}</i> 🪙")
+            f"Цена: <i>{offer['price']}</i> 🪙\n\n"
+            f"До автоматической отмены: {due} {due_dict[due]}")
     kb = InlineKeyboardMarkup([[InlineKeyboardButton("Отменить", callback_data=f"market_offer_remove_{offer_id}")],
                                [InlineKeyboardButton("Назад", callback_data="market_my_offers_list")]])
     await update.callback_query.edit_message_text(resp,

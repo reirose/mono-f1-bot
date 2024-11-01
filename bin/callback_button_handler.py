@@ -1,6 +1,7 @@
 import datetime
 import random
 import re
+import time
 
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.error import BadRequest
@@ -555,7 +556,7 @@ async def handle_anon_trade_confirm_sell(update, context, query, user):
     wts = "c_" + re.search("anon_trade_confirm_sell_c_(.+)_c_(.+)", query.data).group(1)
     await query.delete_message()
 
-    user.anon_trade.append({"wts": wts, "wtb": wtb})
+    user.anon_trade.append({"wts": wts, "wtb": wtb, "due": time.time() + (60 * 24 * 7)})
     user.collection.remove(wts)
     user.write()
 

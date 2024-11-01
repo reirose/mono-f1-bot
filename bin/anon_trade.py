@@ -1,4 +1,5 @@
 import math
+import time
 from typing import Literal
 
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
@@ -173,7 +174,8 @@ async def anon_trade_confirm_sell(update: Update, _: ContextTypes.DEFAULT_TYPE, 
     wtb_name = cards_dict[wtb]['name']
     resp = ("Вы уверены, что хотите создать предложение обмена?\n\n"
             f"Отдаёте: {wts_name}\n"
-            f"Получаете: {wtb_name}")
+            f"Получаете: {wtb_name}\n\n"
+            f"<i>Ваше предложение будет автоматически отменено через 7 дней</i>")
 
     reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Да",
                                                                callback_data=f"anon_trade_confirm_sell_{wts}_{wtb}")],
@@ -181,7 +183,8 @@ async def anon_trade_confirm_sell(update: Update, _: ContextTypes.DEFAULT_TYPE, 
                                                                callback_data=f"anon_trade_cancel_sell_{wts}")]])
 
     await update.callback_query.edit_message_text(text=resp,
-                                                  reply_markup=reply_markup)
+                                                  reply_markup=reply_markup,
+                                                  parse_mode="HTML")
 
 
 async def anon_trade_buy_card_show_offers(update: Update, context: ContextTypes.DEFAULT_TYPE, **kwargs):
@@ -227,9 +230,33 @@ async def anon_trade_show_my_offers(update: Update, context: ContextTypes.DEFAUL
 
 async def anon_trade_show_my_offer(update: Update, _: ContextTypes.DEFAULT_TYPE, **kwargs):
     wts, wtb = kwargs['wts'], kwargs['wtb']
-    resp = ("Ваше предложение обмена:\n"
-            f"Предлагаете: {cards_dict[wts]['name']}\n"
-            f"В обмен на: {cards_dict[wtb]['name']}")
+    data = USER_COLLECTION.find_one({"id": update.effective_user.id,
+                                    "anon_trade": {"$elemMatch": {"wts": wts, "wtb": wtb}}},
+                                    {"anon_trade": 1, "_id": 0}).get("anon_trade")
+    due = 0
+    for offer in data:
+        if offer['wts'] == wts and offer['wtb'] == wtb:
+            due = offer['due']
+
+    due = int((due - time.time()) // (60*24)) + 1
+
+    due_dict = {
+        1: "день",
+        2: "дня",
+        3: "дня",
+        4: "дня",
+        5: "дней",
+        6: "дней",
+        7: "дней",
+    }
+
+    resp = ("Ваше предложение обмена:\n\n"
+            f"Вы предлагаете: {cards_dict[wts]['name']}\n"
+            f"В обмен на: {cards_dict[wtb]['name']}\n\n"
+            f"До автоматической отмены: {due} {due_dict[due]}")
+
+    del due_dict
+
     keyboard = InlineKeyboardMarkup([[InlineKeyboardButton("Отменить предложение",
                                                            callback_data="anon_trade_my_offer_"
                                                                          f"remove_{wts}_{wtb}")],
