@@ -4,7 +4,7 @@ import re
 
 from typing import Literal
 
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, InputMedia, InputMediaPhoto
 from telegram.ext import ContextTypes
 
 from bin.achievements import bot_check_achievements
